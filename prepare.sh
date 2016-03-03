@@ -34,7 +34,7 @@ apt-get install -y nodejs nodejs-legacy npm
 apt-get install -y etcd
 
 # check and install configurable-http-proxy
-which configurable-http-proxy &>/dev/null || npm install -g jupyter/configurable-http-proxy
+which configurable-http-proxy &>/dev/null || npm install -g configurable-http-proxy
 
 # prepare basefs of lxc
 tempdir=/opt/docklet/local/temp

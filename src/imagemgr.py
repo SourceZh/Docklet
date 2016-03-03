@@ -35,7 +35,7 @@ class ImageMgr():
     def __init__(self):
         self.NFS_PREFIX = env.getenv('FS_PREFIX') 
         self.imgpath = self.NFS_PREFIX + "/global/images/"
-        self.srcpath = env.getenv('DOCKLET_LIB') + "/" #"/home/zhong/docklet-dev-2/docklet/src/"
+        self.srcpath = env.getenv('DOCKLET_LIB') + "/" 
         self.imageserver = "192.168.6.249"
     
     def datetime_toString(self,dt):
@@ -128,12 +128,12 @@ class ImageMgr():
         logger.info("image:%s remove success" % imagetmp)
 
         
-    def newvg(self,size=1000,vgname="docklet-group",fp="/home/docklet-dev/local/docklet-storage"):
+    def newvg(self,size=1000,vgname="docklet-group",fp="/opt/docklet/local/docklet-storage"):
         logger.info("size: %s, vg: %s, fp: %s" % (size, vgname, fp))
         info=self.sys_call(self.srcpath+"lvmtool.sh new group %s %s %s" % (vgname,size,fp))
         logger.info(info)
 
-    def recoveryvg(self,vgname="docklet-group",fp="/home/docklet-dev/local/docklet-storage"):
+    def recoveryvg(self,vgname="docklet-group",fp="/opt/docklet/local/docklet-storage"):
         """
         rv = self.sys_return(self.srcpath+"lvmtool.sh check group %s" % vgname)
         if rv == 1:
@@ -180,7 +180,7 @@ class ImageMgr():
             logger.info("lv %s not exist" % lxc)
             return 1
 
-    def checkPOOL(self,vgname="docklet-group",fp="/home/docklet-zhong/local/docklet-storage"):
+    def checkPOOL(self,vgname="docklet-group",fp="/opt/docklet/local/docklet-storage"):
         rv = self.sys_return(self.srcpath+"lvmtool.sh check group %s" % vgname)
         if rv == 1:
             logger.info("vg %s not exist" % vgname)
@@ -192,7 +192,7 @@ class ImageMgr():
             logger.info("vg %s exist" % vgname)
             return 0
 
-    def deletePOOL(self,vgname="docklet-group",fp="/home/docklet-zhong/local/docklet-storage"):
+    def deletePOOL(self,vgname="docklet-group",fp="/opt/docklet/local/docklet-storage"):
         self.sys_call("vgremove -f %s" % vgname)
         self.sys_call("umount /dev/loop0")
         self.sys_call("losetup -d /dev/loop0")
