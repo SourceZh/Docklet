@@ -25,18 +25,11 @@ class createClusterView(normalView):
     def post(self):
         index1 = self.image.rindex("_")
         index2 = self.image[:index1].rindex("_")
-        servicelist = ''
-        for service in self.services:
-            if servicelist == '':
-                servicelist = servicelist + service
-            else:
-                servicelist = servicelist + ';' + service
         data = {
             "clustername": self.clustername,
             'imagename': self.image[:index2],
             'imageowner': self.image[index2+1:index1],
             'imagetype': self.image[index1+1:],
-            'servicelist': servicelist
         }
         result = dockletRequest.post("/cluster/create/", data)
         if(result):

@@ -2,7 +2,6 @@
 
 import subprocess, os, json, random
 import imagemgr
-from servicetool import create_command
 from log import logger
 import env
 
@@ -21,7 +20,7 @@ class Container(object):
         self.lxcpath = "/var/lib/lxc"
         self.imgmgr = imagemgr.ImageMgr()
 
-    def create_container(self, lxc_name, username, clustername, clusterid, hostname, ip, gateway, vlanid, imagename, imageowner, imagetype, command=''):
+    def create_container(self, lxc_name, username, clustername, clusterid, hostname, ip, gateway, vlanid, imagename, imageowner, imagetype ):
         logger.info("create container %s of %s for %s" %(lxc_name, clustername, username))
         try:
             Ret = subprocess.run([self.libpath+"/lxc_control.sh",

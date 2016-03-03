@@ -1,1 +1,0 @@
-{"containers": [{"cmd": "ls > lsout"}], "service": "ls", "size": 1}

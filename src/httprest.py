@@ -166,9 +166,8 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
                 image['name'] = form.getvalue("imagename")
                 image['type'] = form.getvalue("imagetype")
                 image['owner'] = form.getvalue("imageowner")
-                servicelist = form.getvalue('servicelist')
                 logger.info ("handle request : create cluster %s with image %s " % (clustername, image['name']))
-                [status, result] = G_vclustermgr.create_cluster(clustername, user, image, servicelist)
+                [status, result] = G_vclustermgr.create_cluster(clustername, user, image)
                 if status:
                     self.response(200, {'success':'true', 'action':'create cluster', 'message':result})
                 else:

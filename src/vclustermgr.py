@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import os, random, json, sys, imagemgr, threading, servicemgr
+import os, random, json, sys, imagemgr, threading 
 import datetime
 
 from log import logger
@@ -51,12 +51,10 @@ class VclusterMgr(object):
                 self.recover_cluster(cluster, user)
         logger.info("recovered all vclusters for all users")
 
-    def create_cluster(self, clustername, username, image, servicelist = 'ssh'):
+    def create_cluster(self, clustername, username, image):
         if self.is_cluster(clustername, username):
             return [False, "cluster:%s already exists" % clustername]
-        #clustersize = self.defaultsize;
-        serviceconf = servicemgr.ServiceMgr(servicelist)
-        clustersize = serviceconf.get_size()
+        clustersize = self.defaultsize;
         logger.info ("starting cluster %s with %d containers for %s" % (clustername, clustersize, username))
         workers = self.nodemgr.get_rpcs()
         if (len(workers) == 0):
@@ -86,7 +84,7 @@ class VclusterMgr(object):
             lxc_name = username + "-" + str(clusterid) + "-" + str(i)
             hostname = "host-"+str(i)
             logger.info ("create container with : name-%s, username-%s, clustername-%s, clusterid-%s, hostname-%s, ip-%s, gateway-%s, imagename-%s, imageowner-%s, imagetype-%s" % (lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, imagename, imageowner, imagetype))
-            onework.create_container(lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, str(vlanid), imagename, imageowner, imagetype, serviceconf.get_command(i))
+            onework.create_container(lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, str(vlanid), imagename, imageowner, imagetype )
             logger.info("container create success")
             hosts = hosts + ips[i].split("/")[0] + "\t" + hostname + "\t" + hostname + "."+clustername + "\n"
             containers.append({ 'containername':lxc_name, 'hostname':hostname, 'ip':ips[i], 'host':self.nodemgr.rpc_to_ip(onework), 'image':image['name'], 'lastsave':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") })

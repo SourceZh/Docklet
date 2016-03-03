@@ -110,7 +110,6 @@ def listCluster():
 def createCluster():
     createClusterView.clustername = request.form["clusterName"]
     createClusterView.image = request.form["image"]
-    createClusterView.services = request.form.getlist("extentiveService")
     return createClusterView.as_view()
 
 @app.route("/workspace/scaleout/<clustername>/", methods=['POST'])
