@@ -1,0 +1,1 @@
+{"containers": [{"cmd": "ls"}], "service": "mysql", "size": 1}

@@ -1,0 +1,72 @@
+
+# ==================================================
+#
+# [Local config example]
+#
+# ==================================================
+
+# name of host cluster, every host cluster should have a unique name, 
+# default is docklet-vc
+# CLUSTER_NAME=docklet-vc
+
+# path to store global and local data for docklet
+# 	/opt/docklet/global must be a mountpoint of shared filesystem
+# 	that all nodes (master and slave) see it in the same content
+# default is /opt/docklet
+# FS_PREFIX=/opt/docklet
+
+
+# virtual cluster size, default is 1
+# CLUSTER_SIZE=1
+
+# cluster network ip address range, default is 172.16.0.1/16
+# CLUSTER_NET=172.16.0.1/16
+
+# CPU quota of container, total=100000 (100ms), default 100000
+# For a CPU with two cores, this can be set to 200000 
+# CONTAINER_CPU=50000
+
+# disk quota of container image upper layer, count in MB, default 1000
+# CONTAINER_DISK=1000
+
+# memory quota of container, count in MB, default 1000
+# CONTAINER_MEMORY=1000
+
+# lvm group size, count in MB, default is 5000
+# DISKPOOL_SIZE=5000
+
+# etcd address, one server address is ok, default is localhost:2379
+# ETCD=localhost:2379
+
+# specify the network interface
+# maybe you have more than one network interfaces
+# Default is eth0
+# NETWORK_DEVICE=eth0
+
+# the public docklet portal url. for a production system, 
+# it should be a valid URL, like http://docklet.info
+# default is MASTER_IP:PROXY_PORT
+# PORTAL_URL=http://locahost:8000
+
+# master listen ip, default listens on all interfaces
+# MASTER_IP=0.0.0.0
+
+# master listen port, default is 9000
+# MASTER_PORT=9000
+
+# worker listen port, default is 5000
+# WORKER_PORT=5000
+
+# configurable-http-proxy listen port, default is 8000
+# PROXY_PORT=8000
+
+# configurable-http-proxy api port, default is 8001
+# PROXY_API_PORT=8001
+
+# web listen port, default is 8888
+# WEB_PORT=8888
+
+# logging level, of DEBUG, INFO, WARNING, ERROR, CRITICAL
+# LOG_LEVEL=DEBUG
+# how many days log will be kept
+# LOG_LIFE=10
