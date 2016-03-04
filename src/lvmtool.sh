@@ -38,6 +38,7 @@ elif [[ $ACTION == 'recover' && $TYPE == 'group' && $STORAGE == 'file' ]];then
 	[ ! -f $FILE_PATH ] && echo "[Error] [lvmtool.sh] $FILE_PATH not found, unable to recover VG" && exit 1 
 	losetup /dev/loop0 &>/dev/null || losetup /dev/loop0 $FILE_PATH
 	losetup /dev/loop0 &>/dev/null || { echo "[Error] [lvmtool.sh] losetup failed"; exit 1; }
+	sleep 1
 	vgdisplay $GROUP_NAME &>/dev/null || vgcreate $GROUP_NAME /dev/loop0
 	vgdisplay $GROUP_NAME &>/dev/null || { echo "[Error] [lvmtool.sh] create VG failed"; exit 1; } 
 	echo "[Info] [lvmtool.sh] recover VG $GROUP_NAME success"

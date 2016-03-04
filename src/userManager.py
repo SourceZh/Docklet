@@ -22,7 +22,7 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from datetime import datetime
 
-e_mail_from_address = 'docklet@internetware.org'
+e_mail_from_address = 'NoReply@internetware.org'
 
 def administration_required(func):
     @wraps(func)
@@ -62,11 +62,13 @@ def token_required(func):
 def send_activated_email(to_address, username):
     #text = 'Dear '+ username + ':\n' + '  Your account in docklet has been activated'
     text = '<html><h4>Dear '+ username + ':</h4>'
-    text += '''<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your account in docklet has been activated</p>
-               <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click <a href='http://docklet.sei.pku.edu.cn:8000'>here</a> to enjoy your virtual cluseter!</p>
+    text += '''<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your account in <a href='%s'>%s</a> has been activated</p>
+               <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please enjoy !</p>
+               <br/>
+               <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please No Reply !</p>
                <br/><br/>
                <p> Docklet Team, SEI, PKU</p>
-            '''
+            ''' % (env.getenv("PORTAL_URL"), env.getenv("PORTAL_URL"))
     text += '<p>'+  str(datetime.utcnow()) + '</p>'
     text += '</html>'
     subject = 'Docklet account activated'
@@ -144,7 +146,7 @@ class userManager:
     def auth_pam(self, username, password):
         user = User.query.filter_by(username = username).first()
         pamresult = pam.authenticate(username, password)
-        if (user.auth_method != 'pam' or pamresult == False):
+        if (pamresult == False or user.auth_method != 'pam'):
             return {"success":'false', "reason": "User did not exist or Wrong password or PKU user exists"}
         if (user == None):
             newuser = self.newuser();
@@ -586,4 +588,3 @@ class userManager:
         user = um.query(ID = request.form["rowID"], cur_user = root).get('token',  None)
         result = um.modify(user = user, columnID = request.form["columnID"], newValue = request.form["newValue"], cur_user = root)
         return json.dumps(result)
-

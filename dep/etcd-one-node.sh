@@ -17,8 +17,7 @@ fi
 #                               :  new not means clear, old data is still alive
 
 depdir=${0%/*}
-#tempdir=$depdir/../__temp
-tempdir=/home/docklet/local
+tempdir=/opt/docklet/local
 [ ! -d $tempdir/log ] && mkdir -p $tempdir/log
 [ ! -d $tempdir/run ] && mkdir -p $tempdir/run
 

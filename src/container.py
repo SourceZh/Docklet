@@ -244,7 +244,7 @@ IP=%s
     # list containers in /var/lib/lxc/ as local
     # list containers in FS_PREFIX/global/... on this host as global
     def diff_containers(self):
-        localcontainers = self.list_containers()
+        [status, localcontainers] = self.list_containers()
         globalpath = self.fspath+"/global/users/"
         users = os.listdir(globalpath)
         globalcontainers = []

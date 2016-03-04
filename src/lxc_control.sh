@@ -95,10 +95,11 @@ elif [[ $CMD == "status" ]]; then
 	exit 1
 
 elif [[ $CMD == "check" ]]; then
-	$DOCKLET_LIB/lvmtool.sh check docklet-group $LXC_NAME || { echo "[lxc_control.sh] check lv for $LXC_NAME failed, lv not found"; exit 1; }
+	$DOCKLET_LIB/lvmtool.sh check volume docklet-group $LXC_NAME || { echo "[lxc_control.sh] check lv for $LXC_NAME failed, lv not found"; exit 1; }
 	[ -d $LAYER/upper ] || mkdir -p $LAYER/{upper,work} &>/dev/null
 	mountpoint $LAYER/upper &>/dev/null || mount /dev/docklet-group/$LXC_NAME $LAYER/upper
-	mountpoint $ROOTFS &>/dev/null || mount -t overlay overlay -olowerdir=$FS_PREFIX/local/basefs,upperdir=$LAYER/upper,workdir=$LAYER/work $ROOTFS
+	#mountpoint $ROOTFS &>/dev/null || mount -t overlay overlay -olowerdir=$FS_PREFIX/local/basefs,upperdir=$LAYER/upper,workdir=$LAYER/work $ROOTFS
+	mountpoint $ROOTFS &>/dev/null || mount -t aufs -o br=$LAYER/upper=rw:$FS_PREFIX/local/basefs=ro+wh none $ROOTFS
 	echo "[lxc_control.sh] check $LXC_NAME : success" && exit 0
 
 elif [[ $CMD == "recover" ]]; then
