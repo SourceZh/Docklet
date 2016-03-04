@@ -146,7 +146,7 @@ class userManager:
     def auth_pam(self, username, password):
         user = User.query.filter_by(username = username).first()
         pamresult = pam.authenticate(username, password)
-        if (user.auth_method != 'pam' or pamresult == False):
+        if (pamresult == False or user.auth_method != 'pam'):
             return {"success":'false', "reason": "User did not exist or Wrong password or PKU user exists"}
         if (user == None):
             newuser = self.newuser();
@@ -588,4 +588,3 @@ class userManager:
         user = um.query(ID = request.form["rowID"], cur_user = root).get('token',  None)
         result = um.modify(user = user, columnID = request.form["columnID"], newValue = request.form["newValue"], cur_user = root)
         return json.dumps(result)
-
