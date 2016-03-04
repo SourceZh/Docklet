@@ -15,6 +15,14 @@
 # default is /opt/docklet
 # FS_PREFIX=/opt/docklet
 
+# local storage type, file or disk, default is file
+# lvm is required  
+# file : a large file simulating raw disk for storing container files
+# disk : use raw disk for storing container files, if use this, 
+# - a disk must be specified by DISK , e.g, /dev/sda1
+# - this disk must be formatted as LVM  
+# STORAGE=file
+# DISK=/dev/sda1
 
 # virtual cluster size, default is 1
 # CLUSTER_SIZE=1

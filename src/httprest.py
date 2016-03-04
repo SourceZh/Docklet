@@ -17,6 +17,7 @@ from log import logger
 
 import os
 import http.server, cgi, json, sys, shutil
+from socketserver import ThreadingMixIn
 import nodemgr, vclustermgr, etcdlib, network, imagemgr
 from userManager import userManager
 import monitor
@@ -460,6 +461,8 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
             logger.warning ("request not supported ")
             self.response(400, {'success':'false', 'message':'not supported request'})
 
+class ThreadingHttpServer(ThreadingMixIn, http.server.HTTPServer):
+    pass
 
 if __name__ == '__main__':
     global G_nodemgr
@@ -570,7 +573,8 @@ if __name__ == '__main__':
     masterport = env.getenv('MASTER_PORT')
     logger.info("using MASTER_PORT %d", masterport)
 
-    server = http.server.HTTPServer((masterip, masterport), DockletHttpHandler)
+#   server = http.server.HTTPServer((masterip, masterport), DockletHttpHandler)
+    server = ThreadingHttpServer((masterip, masterport), DockletHttpHandler)
     logger.info("starting master server")
     server.serve_forever()
 

@@ -40,5 +40,9 @@ def getenv(key):
         return os.environ.get("LOG_LEVEL", "DEBUG")
     elif key == "LOG_LIFE":
         return os.environ.get("LOG_LIFE", 10)
+    elif key == "STORAGE":
+        return os.environ.get("STORAGE", "file")
+    elif key == "DISK":
+        return os.environ.get("DISK", "/dev/sda1")
     else:
         return os.environ[key]
