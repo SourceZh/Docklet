@@ -11,6 +11,7 @@ initlogging("docklet-worker")
 from log import logger
 
 import xmlrpc.server, subprocess, os, sys, time
+from socketserver import ThreadingMixIn
 import etcdlib, network, container, imagemgr
 import monitor
 
@@ -28,6 +29,9 @@ import monitor
 #      setup GRE tunnel
 #      start rpc service
 ##################################################################
+class ThreadXMLRPCServer(ThreadingMixIn,xmlrpc.server.SimpleXMLRPCServer):
+    pass
+
 class Worker(object):
     def __init__(self, etcdclient, addr, port):
         self.addr = addr
@@ -92,7 +96,8 @@ class Worker(object):
         # if ip-addr is "", it will listen ports of all IPs of this host
         logger.info ("initialize rpcserver %s:%d" % (self.addr, self.port))
         # logRequests=False : not print rpc log
-        self.rpcserver = xmlrpc.server.SimpleXMLRPCServer((self.addr, self.port), logRequests=False)
+        #self.rpcserver = xmlrpc.server.SimpleXMLRPCServer((self.addr, self.port), logRequests=False)
+        self.rpcserver = ThreadXMLRPCServer((self.addr, self.port), allow_none=True)
         self.rpcserver.register_introspection_functions()
         self.rpcserver.register_instance(Containers)
         # register functions or instances to server for rpc

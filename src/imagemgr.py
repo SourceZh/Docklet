@@ -225,7 +225,7 @@ class ImageMgr():
     def unshareImage(self,user,image):
         public_imgpath = self.imgpath + "public/" + user + "/"
         imgpath = self.imgpath + "private/" + user + "/"
-        if os.path.exists(imagepath + image):
+        if os.path.exists(imgpath + image):
             image_info_file = open(imgpath+"."+image+".info", 'r')
             [createtime, isshare] = image_info_file.readlines()
             isshare = "unshare"
