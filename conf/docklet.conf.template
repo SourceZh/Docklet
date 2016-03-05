@@ -66,7 +66,7 @@
 
 # ETCD: etcd address, default is localhost:2379
 # For a muti hosts environment, the administrator should configure how
-# etcd cluster
+# etcd cluster work together
 # ETCD=localhost:2379
 
 # NETWORK_DEVICE: specify the network interface docklet uses,
@@ -88,7 +88,7 @@
 # WORKER_PORT=9001
 
 # PROXY_PORT: the access port of the public protal, default is 8000
-# it is also the listen port of configurable-http-proxy, whhich 
+# it is also the listen port of configurable-http-proxy, which 
 # proxy connections from exteral public network to internal private 
 # container networks. Usually 80 is recommded for production environment.
 # PROXY_PORT=8000
