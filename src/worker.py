@@ -29,6 +29,7 @@ import monitor
 #      setup GRE tunnel
 #      start rpc service
 ##################################################################
+
 class ThreadXMLRPCServer(ThreadingMixIn,xmlrpc.server.SimpleXMLRPCServer):
     pass
 
@@ -46,8 +47,16 @@ class Worker(object):
 
         # register self to master
         self.etcd.setkey("machines/runnodes/"+self.addr, "waiting")
-        time.sleep(0.1)
-        [ status, value ] = self.etcd.getkey("machines/runnodes/"+self.addr)
+        for f in range (0, 3):
+            [status, value] = self.etcd.getkey("machines/runnodes/"+self.addr)
+            if not value.startswith("init"):
+                # master wakesup every 0.1s  to check register
+                logger.debug("worker % register to master failed %d \
+                        time, sleep %fs" % (self.addr, f+1, 0.1))
+                time.sleep(0.1)
+            else:
+                break
+
         if value.startswith("init"):
             # check token to check global directory
             [status, token_1] = self.etcd.getkey("token")
@@ -141,7 +150,7 @@ if __name__ == '__main__':
     logger.info ("using NETWORK_DEVICE %s" % net_dev )
 
     ipaddr = network.getip(net_dev)
-    if ipaddr==False:
+    if ipaddr is False:
         logger.error("network device is not correct")
         sys.exit(1)
     else:
@@ -168,10 +177,11 @@ if __name__ == '__main__':
     worker_port = env.getenv('WORKER_PORT')
     logger.info ("using WORKER_PORT %s" % worker_port )
 
-    con_collector = monitor.Container_Collector(etcdaddr,clustername,ipaddr,cpu_quota,mem_quota)
+    con_collector = monitor.Container_Collector(etcdaddr, clustername,
+        ipaddr, cpu_quota, mem_quota)
     con_collector.start()
     logger.info("CPU and Memory usage monitor started")
 
     logger.info("Starting worker")
-    worker = Worker(etcdclient, addr = ipaddr, port=worker_port)
+    worker = Worker(etcdclient, addr=ipaddr, port=worker_port)
     worker.start()

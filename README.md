@@ -96,12 +96,14 @@ The following settings should be taken care of:
 - ETCD : the etcd server address. For distributed muli hosts
   environment, it should be one of the ETCD public server address.
   For single host environment, the default value should be OK.
+- STORAGE : using disk or file to storage persistent data, for
+  single host, file is convenient.
 - FS_PREFIX: the working dir of docklet runtime. default is
   /opt/docklet.
 - CLUSTER_NET: the vcluster network ip address range, default is
   172.16.0.1/16. This network range should all be allocated to  and 
   managed by docklet. 
-- PROXY_PORT : the public port of the proxy. Users use
+- PROXY_PORT : the public port of docklet. Users use
   this port to visit the docklet system.
 - PORTAL_URL : the portal of the system. Users access the system
   by visiting this address. If the system is behind a firewall, then
@@ -117,7 +119,7 @@ Lets presume the file system server export filesystem as nfs
 **fileserver:/pub** :
 
 In each physical host to run docklet, mount **fileserver:/pub** to
-**FS_PEFIX/global/** .
+**FS_PEFIX/global** .
 
 For single host environment, it need not to configure distributed
 file system.
