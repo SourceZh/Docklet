@@ -3,6 +3,7 @@
 import threading, random, time, xmlrpc.client, sys
 import network
 from log import logger
+import env
 
 ##########################################
 #                NodeMgr
@@ -71,8 +72,9 @@ class NodeMgr(object):
 
     # thread target : watch whether a new node joins
     def _watchnewnode(self):
+        workerport = env.getenv('WORKER_PORT')
         while(True):
-            time.sleep(0.05)
+            time.sleep(0.1)
             [status, runlist] = self.etcd.listdir("machines/runnodes")
             if not status:
                 logger.warning ("get runnodes list failed from etcd ")    
@@ -90,10 +92,12 @@ class NodeMgr(object):
                         bridgeip = result[0]
                         self.etcd.setkey("network/workbridge", bridgeip)
                     if nodeip in self.allnodes:
-                        ##################################### HERE MAYBE NEED TO FIX ###################################
+                        ######## HERE MAYBE NEED TO FIX ###############
                         # here we must use "machines/runnodes/nodeip"
-                        # we cannot use node['key'], node['key'] is absolute path, etcd client will append the path to prefix, it will wrong
-                        ###############################################################################################
+                        # we cannot use node['key'], node['key'] is absolute 
+                        # path, etcd client will append the path to prefix, 
+                        # which is wrong
+                        ###############################################
                         self.etcd.setkey("machines/runnodes/"+nodeip, "init-"+self.mode)
                     else:
                         self.etcd.setkey('machines/runnodes/'+nodeip, "init-new")
@@ -101,19 +105,21 @@ class NodeMgr(object):
                     logger.info ("new node %s joins" % nodeip)
                     # setup GRE tunnels for new nodes
                     if self.addr == nodeip:
-                        logger.info ("worker start on master node. not need to setup GRE")
+                        logger.debug ("worker start on master node. not need to setup GRE")
                     else:
-                        logger.info ("setup GRE for %s" % nodeip)
+                        logger.debug ("setup GRE for %s" % nodeip)
                         network.netsetup("gre", nodeip)
                     self.runnodes.append(nodeip)
                     self.etcd.setkey("machines/runnodes/"+nodeip, "ok")
                     if nodeip not in self.allnodes:
                         self.allnodes.append(nodeip)
                         self.etcd.setkey("machines/allnodes/"+nodeip, "ok")
-                    logger.info ("all nodes are: %s" % self.allnodes)
-                    logger.info ("run nodes are: %s" % self.runnodes)
-                    self.rpcs.append(xmlrpc.client.ServerProxy("http://"+nodeip+":5000"))
-                    logger.info ("add %s in rpc client list" % nodeip)
+                    logger.debug ("all nodes are: %s" % self.allnodes)
+                    logger.debug ("run nodes are: %s" % self.runnodes)
+                    self.rpcs.append(xmlrpc.client.ServerProxy("http://%s:%s"
+                        % (nodeip, workerport)))
+                    logger.info ("add %s:%s in rpc client list" %
+                        (nodeip, workerport))
                     
     # get all run nodes' IP addr
     def get_nodeips(self):

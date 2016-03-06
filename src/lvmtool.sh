@@ -12,7 +12,7 @@
 ACTION=$1
 TYPE=$2
 
-if [[ $ACTION == 'new' && $TYPE == 'group' ]];then
+if [[ $ACTION == 'new' && $TYPE == 'group' && $STORAGE == 'file' ]];then
 	GROUP_NAME=$3
 	SIZE=$4
 	FILE_PATH=$5
@@ -32,13 +32,31 @@ if [[ $ACTION == 'new' && $TYPE == 'group' ]];then
 	echo "[Info] [lvmtool.sh] initialize lvm group:$GROUP_NAME with size ${SIZE}M success"
 	exit 0
 
-elif [[ $ACTION == 'recover' && $TYPE == 'group' ]];then
+elif [[ $ACTION == 'recover' && $TYPE == 'group' && $STORAGE == 'file' ]];then
 	GROUP_NAME=$3
 	FILE_PATH=$4
 	[ ! -f $FILE_PATH ] && echo "[Error] [lvmtool.sh] $FILE_PATH not found, unable to recover VG" && exit 1 
 	losetup /dev/loop0 &>/dev/null || losetup /dev/loop0 $FILE_PATH
 	losetup /dev/loop0 &>/dev/null || { echo "[Error] [lvmtool.sh] losetup failed"; exit 1; }
 	sleep 1
+	vgdisplay $GROUP_NAME &>/dev/null || vgcreate $GROUP_NAME /dev/loop0
+	vgdisplay $GROUP_NAME &>/dev/null || { echo "[Error] [lvmtool.sh] create VG failed"; exit 1; } 
+	echo "[Info] [lvmtool.sh] recover VG $GROUP_NAME success"
+	exit 0
+
+elif [[ $ACTION == 'new' && $TYPE == 'group' && $STORAGE == 'disk' ]];then
+	GROUP_NAME=$3
+	PV_NAME=$DISK
+	echo "[Info] [lvmtool.sh] begin initialize lvm group:$GROUP_NAME with size ${SIZE}M"
+	# clean vg, device and loop file
+	vgdisplay $GROUP_NAME &>/dev/null && echo "[Warnning] [lvmtool.sh] lvm group $GROUP_NAME already exists, delete it" && vgremove -f $GROUP_NAME 
+	vgdisplay $GROUP_NAME &>/dev/null && echo "### delete VG failed"
+	vgcreate $GROUP_NAME $PV_NAME
+	echo "[Info] [lvmtool.sh] initialize lvm group:$GROUP_NAME with size ${SIZE}M success"
+	exit 0
+
+elif [[ $ACTION == 'recover' && $TYPE == 'group' && $STORAGE == 'disk' ]];then
+	GROUP_NAME=$3
 	vgdisplay $GROUP_NAME &>/dev/null || vgcreate $GROUP_NAME /dev/loop0
 	vgdisplay $GROUP_NAME &>/dev/null || { echo "[Error] [lvmtool.sh] create VG failed"; exit 1; } 
 	echo "[Info] [lvmtool.sh] recover VG $GROUP_NAME success"
@@ -73,4 +91,3 @@ elif [[ $ACTION == 'delete' && $TYPE == 'volume' ]]; then
 else
 	echo "[Error] [lvmtool.sh] $ACTION $TYPE not supported" && exit 1
 fi
-

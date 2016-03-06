@@ -40,7 +40,9 @@ class Container(object):
             if not status:
                 [status, masterip] = self.etcd.getkey("service/master")
                 if status:
-                    authurl = "http://"+masterip+":8888/jupyter"
+                    webport = env.getenv("WEB_PORT")
+                    authurl = "http://%s:%s/jupyter" % (masterip,
+                            webport)
                 else:
                     logger.error ("get AUTH COOKIE URL failed for jupyter")
                     authurl = "error"
@@ -53,7 +55,7 @@ class Container(object):
             #       COOKIE_NAME -- cookie name to get from request and send to hub_api_url for authorization
             #       BASE_URL -- base url for notebook client to send request
             #       HUB_PREFIX -- prefix for login and logout
-            #       HUB_API_URL -- url for authorising cookie
+            #       HUB_API_URL -- url for authorizing cookie
             #       IP -- ip for listenning request
             if (username=='guest'):
                 cookiename='guest-cookie'

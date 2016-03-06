@@ -26,7 +26,7 @@ def getenv(key):
     elif key == "MASTER_PORT":
         return os.environ.get("MASTER_PORT", 9000)
     elif key == "WORKER_PORT":
-        return os.environ.get("WORKER_PORT", 5000)
+        return os.environ.get("WORKER_PORT", 9001)
     elif key == "PROXY_PORT":
         return os.environ.get("PROXY_PORT", 8000)
     elif key == "PROXY_API_PORT":
@@ -40,5 +40,7 @@ def getenv(key):
         return os.environ.get("LOG_LEVEL", "DEBUG")
     elif key == "LOG_LIFE":
         return os.environ.get("LOG_LIFE", 10)
+    elif key == "STORAGE":
+        return os.environ.get("STORAGE", "file")
     else:
         return os.environ[key]
