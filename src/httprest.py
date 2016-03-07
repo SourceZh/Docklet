@@ -571,10 +571,10 @@ if __name__ == '__main__':
     logger.info("using MASTER_IP %s", masterip)
 
     masterport = env.getenv('MASTER_PORT')
-    logger.info("using MASTER_PORT %d", masterport)
+    logger.info("using MASTER_PORT %d", int(masterport))
 
 #   server = http.server.HTTPServer((masterip, masterport), DockletHttpHandler)
-    server = ThreadingHttpServer((masterip, masterport), DockletHttpHandler)
+    server = ThreadingHttpServer((masterip, int(masterport)), DockletHttpHandler)
     logger.info("starting master server")
     server.serve_forever()
 

@@ -26,13 +26,13 @@ function getMemY()
 }
 function processCpuData(data)
 {
-	idle = data.monitor.cpuinfo.id;
-	var us = data.monitor.cpuinfo.us;
-	var sy = data.monitor.cpuinfo.sy;
-	var wa = data.monitor.cpuinfo.wa;
-	$("#cpu_us").html(us);
-	$("#cpu_sy").html(sy);
-	$("#cpu_wa").html(wa);
+	idle = data.monitor.cpuinfo.idle;
+	var us = data.monitor.cpuinfo.user;
+	var sy = data.monitor.cpuinfo.system;
+	var wa = data.monitor.cpuinfo.iowait;
+	$("#cpu_user").html(us);
+	$("#cpu_system").html(sy);
+	$("#cpu_iowait").html(wa);
 	$("#cpu_idle").html(idle);
 }
 function getCpuY()
@@ -50,12 +50,12 @@ function processDiskData(data)
 	disk_usedp = vals[0].usedp;
 	for(var idx = 0; idx < vals.length; ++idx)
 	{
-		var used = (vals[idx].used/MB).toFixed(2);
-		var total = (vals[idx].total/MB).toFixed(2);
-		var free = (vals[idx].free/MB).toFixed(2);
-		var usedp = (vals[idx].usedp);
+		var used = (vals[idx].used/MB/MB).toFixed(2);
+		var total = (vals[idx].total/MB/MB).toFixed(2);
+		var free = (vals[idx].free/MB/MB).toFixed(2);
+		var usedp = (vals[idx].percent);
 		var name = "#disk_" + (idx+1) + "_";
-		$(name+"filesystem").html(vals[idx].filesystem);
+		$(name+"device").html(vals[idx].device);
 		$(name+"used").html(used);
 		$(name+"total").html(total);
 		$(name+"free").html(free);

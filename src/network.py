@@ -207,7 +207,7 @@ class EnumPool(object):
         return [True, result]
 
     def acquire_cidr(self, num=1):
-        [status, result] = self.acquire(num)
+        [status, result] = self.acquire(int(num))
         if not status:
             return [status, result]
         return [True, list(map(lambda x:x+"/"+self.info.split('/')[1], result))]
