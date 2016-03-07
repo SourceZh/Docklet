@@ -29,6 +29,8 @@ fi
 # some packages' name maybe different in debian
 apt-get install -y cgmanager lxc lvm2 bridge-utils curl exim4 openssh-server openvswitch-switch 
 apt-get install -y python3 python3-netifaces python3-flask python3-flask-sqlalchemy
+apt-get install -y python3-psutil
+apt-get install -y python3-lxc
 apt-get install -y python3-requests python3-suds
 apt-get install -y nodejs nodejs-legacy npm
 apt-get install -y etcd
