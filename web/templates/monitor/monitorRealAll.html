@@ -112,8 +112,8 @@
 		}
 
        		$.post(url+"/cpuinfo",{},function(data){
-		       	var idle = data.monitor.cpuinfo.id;
-			var usedp = 100 - idle;
+		       	var idle = data.monitor.cpuinfo.idle;
+			    var usedp = (100 - idle).toFixed(2);
 		       	$("#"+index+"_cpu").html(String(usedp)+"%");	
 		       	},"json");
 
@@ -126,7 +126,7 @@
 
   	     	$.post(url+"/diskinfo",{},function(data){
 		       	var val = data.monitor.diskinfo;
-                var usedp = val[0].usedp;
+                var usedp = val[0].percent;
 		       	$("#"+index+"_disk").html(String(usedp)+"%");
 	               	},"json");
        		},"json");       

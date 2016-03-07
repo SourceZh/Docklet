@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import subprocess,re,sys,etcdlib
+import subprocess,re,sys,etcdlib,psutil
 import time,threading,json,traceback
 
 from log import logger
@@ -110,29 +110,23 @@ class Collector(threading.Thread):
         return
 
     def collect_meminfo(self):
-        output = subprocess.check_output(["free"],shell=True)
-        output = output.decode('utf-8')
-        parts = re.split('\n',output)
-        memparts = re.split(' +',parts[1])
-        self.etcdser.setkey('/meminfo/total',memparts[1])
-        self.etcdser.setkey('/meminfo/used',memparts[2])
-        self.etcdser.setkey('/meminfo/free',memparts[3])
-        self.etcdser.setkey('/meminfo/shared',memparts[4])
-        self.etcdser.setkey('/meminfo/buffers',memparts[5])
-        self.etcdser.setkey('/meminfo/cached',memparts[6])
+        meminfo = psutil.virtual_memory()
+        self.etcdser.setkey('/meminfo/total',meminfo.total/1024)
+        self.etcdser.setkey('/meminfo/used',meminfo.used/1024)
+        self.etcdser.setkey('/meminfo/free',meminfo.free/1024)
+        self.etcdser.setkey('/meminfo/buffers',meminfo.buffers/1024)
+        self.etcdser.setkey('/meminfo/cached',meminfo.buffers/1024)
+        self.etcdser.setkey('/meminfo/percent',meminfo.percent)
         #print(output)  
         #print(memparts)
         return
     
     def collect_cpuinfo(self):
-        output = subprocess.check_output(["vmstat 1 2"],shell=True)
-        output = output.decode('utf-8')
-        parts = output.split('\n')
-        cpuparts = re.split(' +',parts[3])
-        self.etcdser.setkey('/cpuinfo/us', cpuparts[13])
-        self.etcdser.setkey('/cpuinfo/sy', cpuparts[14])
-        self.etcdser.setkey('/cpuinfo/id', cpuparts[15])
-        self.etcdser.setkey('/cpuinfo/wa', cpuparts[16])
+        cpuinfo = psutil.cpu_times_percent(interval=1,percpu=False)
+        self.etcdser.setkey('/cpuinfo/user', cpuinfo.user)
+        self.etcdser.setkey('/cpuinfo/system', cpuinfo.system)
+        self.etcdser.setkey('/cpuinfo/idle', cpuinfo.idle)
+        self.etcdser.setkey('/cpuinfo/iowait', cpuinfo.iowait)
         output = subprocess.check_output(["cat /proc/cpuinfo"],shell=True)
         output = output.decode('utf-8')
         parts = output.split('\n')
@@ -152,26 +146,20 @@ class Collector(threading.Thread):
         return
 
     def collect_diskinfo(self):
-        output = subprocess.check_output(["df","-h"],shell=True)
-        output = output.decode('utf-8')
-        parts = re.split('\n',output)
+        parts = psutil.disk_partitions()
         setval = []
         for part in parts:
-            if part.startswith("/dev/s") or part.startswith("/dev/h"):
-                diskparts = re.split(' +',part)
+            if part.device.startswith("/dev/s") or part.device.startswith("/dev/h"):
                 diskval = {}
-                diskval['filesystem'] = diskparts[0]
-                diskval['total'] = diskparts[1]
-                diskval['used'] = diskparts[2]
-                diskval['free'] = diskparts[3]
-                diskval['usedp'] = diskparts[4].rstrip("%")
+                diskval['device'] = part.device
+                diskval['mountpoint'] = part.mountpoint
+                usage = psutil.disk_usage(part.mountpoint)
+                diskval['total'] = usage.total
+                diskval['used'] = usage.used
+                diskval['free'] = usage.free
+                diskval['percent'] = usage.percent
                 setval.append(diskval)
         self.etcdser.setkey('/diskinfo', setval)
-        #self.etcdser.setkey('/diskinfo/filesystem', diskparts[0])
-        #self.etcdser.setkey('/diskinfo/total', diskparts[1])
-        #self.etcdser.setkey('/diskinfo/used', diskparts[2])
-        #self.etcdser.setkey('/diskinfo/free', diskparts[3])
-        #self.etcdser.setkey('/diskinfo/usedp', diskparts[4].rstrip("%"))
         #print(output)
         #print(diskparts)
         return
@@ -258,17 +246,16 @@ class Fetcher:
         res['total'] = self.etcdser.getkey('/meminfo/total')[1]
         res['used'] = self.etcdser.getkey('/meminfo/used')[1]
         res['free'] = self.etcdser.getkey('/meminfo/free')[1]
-        res['shared'] = self.etcdser.getkey('/meminfo/shared')[1]
         res['buffers'] = self.etcdser.getkey('/meminfo/buffers')[1]
         res['cached'] = self.etcdser.getkey('/meminfo/cached')[1]
         return res
 
     def get_cpuinfo(self):
         res = {}
-        res['us'] = self.etcdser.getkey('/cpuinfo/us')[1]
-        res['sy'] = self.etcdser.getkey('/cpuinfo/sy')[1]
-        res['id'] = self.etcdser.getkey('/cpuinfo/id')[1]
-        res['wa'] = self.etcdser.getkey('/cpuinfo/wa')[1]
+        res['user'] = self.etcdser.getkey('/cpuinfo/user')[1]
+        res['system'] = self.etcdser.getkey('/cpuinfo/system')[1]
+        res['idle'] = self.etcdser.getkey('/cpuinfo/idle')[1]
+        res['iowait'] = self.etcdser.getkey('/cpuinfo/iowait')[1]
         #res['st'] = self.etcdser.getkey('/cpuinfo/st')[1]
         return res
 

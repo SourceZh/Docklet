@@ -54,8 +54,8 @@ class VclusterMgr(object):
     def create_cluster(self, clustername, username, image):
         if self.is_cluster(clustername, username):
             return [False, "cluster:%s already exists" % clustername]
-        clustersize = self.defaultsize;
-        logger.info ("starting cluster %s with %d containers for %s" % (clustername, clustersize, username))
+        clustersize = int(self.defaultsize);
+        logger.info ("starting cluster %s with %d containers for %s" % (clustername, int(clustersize), username))
         workers = self.nodemgr.get_rpcs()
         if (len(workers) == 0):
             logger.warning ("no workers to start containers, start cluster failed")
