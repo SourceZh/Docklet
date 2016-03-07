@@ -1,10 +1,10 @@
 {% extends "base.html"%}
 
 <!--
-	Config Page : 
-		1. images 
+	Config Page :
+		1. images
 		2. workspace templates
-		
+
 -->
 
 {% block title %}Docklet | Config{% endblock %}
@@ -128,13 +128,13 @@
                                  <td>{{ loop.index }}</td>
                                  <td>{{ container['containername'] }}</td>
                                  <td>{{ container['ip'] }}</td>
-                               
+
                                  {% if  clusterinfo['status']  == 'stopped' %}
 								 <td><div class="text-warning"><i class="fa fa-stop"></i> Stopped</div></td>
                                  {% else %}
 								 <td><div class="text-success"><i class="fa fa-play"></i> Running</div></td>
                                  {% endif %}
-                                 
+
 				 <td>{{ container['image'] }}</td>
 				 <td><button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#DelModal_{{ container['containername'] }}">Save</button></td>
                 {% if container['containername'][-2:] == '-0' %}
@@ -260,7 +260,7 @@
 					</td>
 				{% else %}
 					<td><div class="label label-outline-default">shared</div></td>
-					<td>	
+					<td>
 						<a href="/image/unshare/{{ image['name'] }}/"><button type="button" class="btn btn-xs btn-warning">unshare</button></a>
 						<a href="/image/delete/{{ image['name'] }}/"><button type="button" class="btn btn-xs btn-danger">delete</button></a>
 					</td>
@@ -273,7 +273,7 @@
 				<td>{{image['name']}}</td>
 				<td><div class="label label-outline-success">{{"public"}}</div></td>
 				<td>{{p_user}}</td>
-				<td>{{image['time']}}</td>	
+				<td>{{image['time']}}</td>
 				<td><a href="/image/description/{{image['name']}}_{{p_user}}_public/" target="_blank">{{image['description']}}</a></td>
 				<td></td>
 				{% if p_user == mysession['username'] %}
@@ -290,7 +290,7 @@
 	</div>
 	</div>
 </div>
-	 
+
 {% endblock %}
 
 {% block script_src %}
@@ -307,7 +307,7 @@
                      "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
                  }
              });
- 
+
              /* Init DataTables */
              var oTable = $('#editable').DataTable();
 
@@ -323,12 +323,12 @@
                          "column": oTable.fnGetPosition( this )[2]
                      };
                  },
- 
+
                  "width": "90%",
                  "height": "100%"
              } );
- 
- 
+
+
          });
              var oTable2 = $('#editable2').DataTable();
 
@@ -344,13 +344,13 @@
                          "column": oTable.fnGetPosition( this )[2]
                      };
                  },
- 
+
                  "width": "90%",
                  "height": "100%"
              } );
- 
- 
- 
+
+
+
          function fnClickAddRow() {
              $('#editable').dataTable().fnAddData( [
                  "Custom row",
@@ -364,7 +364,7 @@
                  "New row",
                  "New row",
                  "New row" ] );
- 
+
          }
  </script>
 

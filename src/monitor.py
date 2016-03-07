@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import subprocess,re,sys,etcdlib,psutil
 import time,threading,json,traceback
@@ -6,7 +6,7 @@ import time,threading,json,traceback
 from log import logger
 
 class Container_Collector(threading.Thread):
-    
+
     def __init__(self,etcdaddr,cluster_name,host,cpu_quota,mem_quota):
         threading.Thread.__init__(self)
         self.thread_stop = False
@@ -17,14 +17,14 @@ class Container_Collector(threading.Thread):
         self.cpu_quota = float(cpu_quota)/100000.0
         self.mem_quota = float(mem_quota)*1000000/1024
         self.interval = 2
-        return 
-    
+        return
+
     def list_container(self):
         output = subprocess.check_output(["sudo lxc-ls"],shell=True)
         output = output.decode('utf-8')
         containers = re.split('\s+',output)
         return containers
-    
+
     def collect_containerinfo(self,container_name):
         output = subprocess.check_output("sudo lxc-info -n %s" % (container_name),shell=True)
         output = output.decode('utf-8')
@@ -70,7 +70,7 @@ class Container_Collector(threading.Thread):
         #print(output)
         #print(parts)
         return True
-    
+
     def run(self):
         cnt = 0
         while not self.thread_stop:
@@ -94,13 +94,13 @@ class Container_Collector(threading.Thread):
                 self.etcdser.setkey('/%s/containerslist'%(self.host), conlist)
             cnt = (cnt+1)%5
         return
-    
+
     def stop(self):
         self.thread_stop = True
 
 
 class Collector(threading.Thread):
-    
+
     def __init__(self,etcdaddr,cluster_name,host):
         threading.Thread.__init__(self)
         self.host = host
@@ -117,10 +117,10 @@ class Collector(threading.Thread):
         self.etcdser.setkey('/meminfo/buffers',meminfo.buffers/1024)
         self.etcdser.setkey('/meminfo/cached',meminfo.buffers/1024)
         self.etcdser.setkey('/meminfo/percent',meminfo.percent)
-        #print(output)  
+        #print(output)
         #print(memparts)
         return
-    
+
     def collect_cpuinfo(self):
         cpuinfo = psutil.cpu_times_percent(interval=1,percpu=False)
         self.etcdser.setkey('/cpuinfo/user', cpuinfo.user)
@@ -183,7 +183,7 @@ class Collector(threading.Thread):
         res["OSKmachine"] = output.rstrip('\n')
         self.etcdser.setkey('/osinfo',res)
         return
-    
+
     def run(self):
         self.collect_osinfo()
         while not self.thread_stop:
@@ -194,7 +194,7 @@ class Collector(threading.Thread):
             time.sleep(self.interval)
             #   print(self.etcdser.getkey('/meminfo/total'))
         return
-    
+
     def stop(self):
         self.thread_stop = True
 
@@ -218,7 +218,7 @@ class Container_Fetcher:
         res['unit'] = self.etcdser.getkey('/%s/mem_use/unit'%(container_name))[1]
         res['usedp'] = self.etcdser.getkey('/%s/mem_use/usedp'%(container_name))[1]
         return res
-    
+
     def get_basic_info(self,container_name):
         res = self.etcdser.getkey("/%s/basic_info"%(container_name))
         if res[0] == False:
@@ -230,11 +230,11 @@ class Fetcher:
 
     def __init__(self,etcdaddr,cluster_name,host):
         self.etcdser = etcdlib.Client(etcdaddr,"/%s/monitor/%s" % (cluster_name,host))
-        return  
+        return
 
     #def get_clcnt(self):
     #   return DockletMonitor.clcnt
-    
+
     #def get_nodecnt(self):
     #   return DockletMonitor.nodecnt
 
