@@ -9,6 +9,12 @@
 #     delete group   :   lvmtool.sh delete group GROUP_NAME
 #     recover group  :   lvmtool.sh recover group GROUP_NAME FILE_PATH 
 
+[ -z $STORAGE ] && STORAGE="file"
+if [[ $STORAGE == 'disk' && -z $DISK ]]; then
+    echo "[lvmtool.sh] storage is disk but disk is undeclare"
+    exit 1
+fi
+
 ACTION=$1
 TYPE=$2
 
@@ -68,6 +74,7 @@ elif [[ "$ACTION" == "new" && $TYPE == "volume"  ]]; then
 	SIZE=$5
 	lvdisplay $GROUP_NAME/$VOLUME_NAME &>/dev/null && echo "[Warnning] [lvmtool.sh] logical volume already exists, delete it" && lvremove -f $GROUP_NAME/$VOLUME_NAME
 	lvcreate -L ${SIZE}M -n $VOLUME_NAME $GROUP_NAME
+    lvdisplay $GROUP_NAME/$VOLUME_NAME &>/dev/null || { echo "[Warnning] lvcreate failed, maybe exceed the limit of vg" ; exit 1; }
 	echo "[Info] [lvmtool.sh] create lv for $LXC_NAME success"
 	exit 0
 

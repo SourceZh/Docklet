@@ -378,4 +378,4 @@ if __name__ == '__main__':
         elif opt in ("-p", "--port"):
             webport = int(arg)
 
-    app.run(host = webip, port = webport, debug = True)
+    app.run(host = webip, port = webport, debug = True, threaded=True)
