@@ -20,6 +20,7 @@ class addClusterView(normalView):
 
 class createClusterView(normalView):
     template_path = "dashboard.html"
+    error_path = "error.html"
 
     @classmethod
     def post(self):
@@ -32,11 +33,11 @@ class createClusterView(normalView):
             'imagetype': self.image[index1+1:],
         }
         result = dockletRequest.post("/cluster/create/", data)
-        if(result):
+        if(result.get('success', None) == "true"):
             return dashboardView.as_view()
             #return self.render(self.template_path, user = session['username'])
         else:
-            self.error()
+            return self.render(self.error_path, message = "create cluster failed, please contact the administrator")
 
 class descriptionImageView(normalView):
     template_path = "image_description.html"
@@ -58,6 +59,8 @@ class descriptionImageView(normalView):
             self.error()
 
 class scaleoutView(normalView):
+    error_path = "error.html"
+
     @classmethod
     def post(self):
         index1 = self.image.rindex("_")
@@ -69,10 +72,10 @@ class scaleoutView(normalView):
             'imagetype': self.image[index1+1:]
         }
         result = dockletRequest.post("/cluster/scaleout/", data)
-        if(result):
+        if(result.get('success', None) == "true"):
             return configView.as_view()
         else:
-            self.error()
+            return self.render(self.error_path, message = "scale out failed, please contact the administrator")
 
 class scaleinView(normalView):
     @classmethod
