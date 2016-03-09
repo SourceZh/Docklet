@@ -147,6 +147,9 @@ httprest.py, the configurable-http-proxy and the docklet web of web.py.
 
 You can check the daemon status by running `bin/docklet-master status`
 
+If the master failed to start, you could try `bin/docklet-master init`
+to initialize the whole system.
+
 More usages can be found by typing `bin/docklet-master`
 
 The master logs are in **FS_PREFIX/local/log/docklet-master.log** and
