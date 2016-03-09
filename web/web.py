@@ -313,7 +313,8 @@ def jupyter_control():
 # for download basefs.tar.bz
 @app.route('/download/basefs', methods=['GET'])
 def download():
-    return send_from_directory(app.runpath+'/../__temp', 'basefs.tar.bz', as_attachment=True)
+    fsdir = env.getenv("FS_PREFIX")
+    return send_from_directory(fsdir+'/local', 'basefs.tar.bz', as_attachment=True)
 
 # jupyter auth APIs
 @app.route('/jupyter/', methods=['GET'])

@@ -2,7 +2,7 @@
 
 import subprocess
 
-class iptool(object):
+class ipcontrol(object):
     @staticmethod
     def parse(cmdout):
         links = {}
@@ -54,7 +54,7 @@ class iptool(object):
         pass
 
 
-class ovs(object):
+class ovscontrol(object):
     @staticmethod
     def list_bridges():
         pass

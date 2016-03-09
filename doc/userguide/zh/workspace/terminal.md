@@ -19,6 +19,11 @@ Jupyter Notebook的WEB Terminal有个很重要的特点：可以在后台运行�
 如果要执行多个任务，可以打开多个 Terminal，
 也可以在一个 Terminal 中使用 [tmux](https://tmux.github.io) 。
 
+补充：对于 Chrome 浏览器的用户，终端的字体可能不是等宽的，导致终端的宽度
+会常常变化，可以通过设置 Chrome 的字体来修复这一问题。具体做法是： Chrome -> 
+设置 -> 显示高级设置 -> 自定义字体 中，将**宽度固定的字体**修改为某种等宽字体，
+比如 Droid Sans Mono
+
 ### 安装软件包 ###
 
 用户可以在WEB Terminal中安装软件包。基础系统是Ubuntu，用户使用 `apt-get`

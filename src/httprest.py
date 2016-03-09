@@ -548,7 +548,8 @@ if __name__ == '__main__':
             etcdclient.deldir("machines/runnodes")
         etcdclient.createdir("machines/runnodes")
 
-    G_usermgr = userManager('root', 'unias1616')
+    #G_usermgr = userManager('root', 'unias1616')
+    G_usermgr = userManager('root')
     clusternet = env.getenv("CLUSTER_NET")
     logger.info("using CLUSTER_NET %s" % clusternet)
 
