@@ -34,6 +34,33 @@ CONFIG=/var/lib/lxc/$LXC_NAME/config
 if [[ "$CMD" == "create" ]]; then
 	[ ! -d $FS_PREFIX/global/users/$USERNAME ] && echo "[lxc_control.sh] user $USERNAME directory not found" && exit 1
 
+	# *************************************************************
+	# *** prepare rootfs, this maybe move to imagemgr.py later  ***
+	# *** and it should be called in container.py , not here    ***
+	# *************************************************************
+	# clean ROOTFS and LAYER
+	mountpoint $ROOTFS &>/dev/null && echo "[lxc_control.sh] $ROOTFS not clean"  && umount -l $ROOTFS 
+	mountpoint $LAYER &>/dev/null && echo "[lxc_control.sh] $LAYER not clean" && umount -l $LAYER 
+	rm -rf $ROOTFS $LAYER &>/dev/null
+	mkdir -p $ROOTFS $LAYER &>/dev/null
+	# get lvm volume for container
+	if $DOCKLET_LIB/lvmtool.sh check volume docklet-group $LXC_NAME; then
+		echo "[lxc_control.sh] volume $LXC_NAME already exists, delete it"
+		$DOCKLET_LIB/lvmtool.sh delete volume docklet-group $LXC_NAME
+	fi
+	$DOCKLET_LIB/lvmtool.sh new volume docklet-group $LXC_NAME $CONTAINER_DISK
+    if [ $? -eq 1 ]; then exit 1
+    fi
+	mkfs.ext4 /dev/docklet-group/$LXC_NAME &>/dev/null
+	mkdir -p $LAYER/upper
+	#mkdir -p $LAYER/{upper,work}
+	mount /dev/docklet-group/$LXC_NAME $LAYER/upper
+	# overlay : should add overlay module in kernel -- modprobe overlay
+	# lowerdir:ro, upperdir:rw
+	# workdir: an empty dir with the same filesystem with upperdir
+	#          needed by overlay, not used by us
+	#mount -t overlay overlay -olowerdir=$FS_PREFIX/local/basefs,upperdir=$LAYER/upper,workdir=$LAYER/work $ROOTFS
+
 	mkdir -p /var/lib/lxc/$LXC_NAME
 	# gen config for container
 	echo "[lxc_control.sh] generate config file for $LXC_NAME"
@@ -51,30 +78,6 @@ if [[ "$CMD" == "create" ]]; then
 		-e "s|%VLANID%|$VLANID|g" \
 		$DOCKLET_CONF/container.conf > $CONFIG
 
-	# *************************************************************
-	# *** prepare rootfs, this maybe move to imagemgr.py later  ***
-	# *** and it should be called in container.py , not here    ***
-	# *************************************************************
-	# clean ROOTFS and LAYER
-	mountpoint $ROOTFS &>/dev/null && echo "[lxc_control.sh] $ROOTFS not clean"  && umount -l $ROOTFS 
-	mountpoint $LAYER &>/dev/null && echo "[lxc_control.sh] $LAYER not clean" && umount -l $LAYER 
-	rm -rf $ROOTFS $LAYER &>/dev/null
-	mkdir -p $ROOTFS $LAYER &>/dev/null
-	# get lvm volume for container
-	if $DOCKLET_LIB/lvmtool.sh check volume docklet-group $LXC_NAME; then
-		echo "[lxc_control.sh] volume $LXC_NAME already exists, delete it"
-		$DOCKLET_LIB/lvmtool.sh delete volume docklet-group $LXC_NAME
-	fi
-	mkdir -p $LAYER/upper
-	#mkdir -p $LAYER/{upper,work}
-	$DOCKLET_LIB/lvmtool.sh new volume docklet-group $LXC_NAME $CONTAINER_DISK
-	mkfs.ext4 /dev/docklet-group/$LXC_NAME &>/dev/null
-	mount /dev/docklet-group/$LXC_NAME $LAYER/upper
-	# overlay : should add overlay module in kernel -- modprobe overlay
-	# lowerdir:ro, upperdir:rw
-	# workdir: an empty dir with the same filesystem with upperdir
-	#          needed by overlay, not used by us
-	#mount -t overlay overlay -olowerdir=$FS_PREFIX/local/basefs,upperdir=$LAYER/upper,workdir=$LAYER/work $ROOTFS
 
 	echo "[lxc_control.sh] create $LXC_NAME success with CONFIG:$CONFIG and ROOTFS:$ROOTFS"
 

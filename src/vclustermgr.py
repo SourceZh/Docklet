@@ -84,7 +84,10 @@ class VclusterMgr(object):
             lxc_name = username + "-" + str(clusterid) + "-" + str(i)
             hostname = "host-"+str(i)
             logger.info ("create container with : name-%s, username-%s, clustername-%s, clusterid-%s, hostname-%s, ip-%s, gateway-%s, imagename-%s, imageowner-%s, imagetype-%s" % (lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, imagename, imageowner, imagetype))
-            onework.create_container(lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, str(vlanid), imagename, imageowner, imagetype )
+            [success,message] = onework.create_container(lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, str(vlanid), imagename, imageowner, imagetype )
+            if success is False:
+                logger.info("container create failed, so vcluster create failed")
+                return [False, message]
             logger.info("container create success")
             hosts = hosts + ips[i].split("/")[0] + "\t" + hostname + "\t" + hostname + "."+clustername + "\n"
             containers.append({ 'containername':lxc_name, 'hostname':hostname, 'ip':ips[i], 'host':self.nodemgr.rpc_to_ip(onework), 'image':image['name'], 'lastsave':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") })
@@ -122,7 +125,10 @@ class VclusterMgr(object):
         onework = workers[random.randint(0, len(workers)-1)]
         lxc_name = username + "-" + str(clusterid) + "-" + str(cid)
         hostname = "host-" + str(cid)
-        onework.create_container(lxc_name, username, clustername, clusterid, hostname, ip, gateway, str(vlanid), imagename, imageowner, imagetype)
+        [success, message] = onework.create_container(lxc_name, username, clustername, clusterid, hostname, ip, gateway, str(vlanid), imagename, imageowner, imagetype)
+        if success is False:
+            logger.info("create container failed, so scale out failed")
+            return [False, message]
         if clusterinfo['status'] == "running":
             onework.start_container(lxc_name)
         onework.start_services(lxc_name, ["ssh"]) # TODO: need fix

@@ -25,10 +25,14 @@ doc_folder = os.path.realpath(os.path.abspath(os.path.join(this_folder,"..", "do
 if src_folder not in sys.path:
     sys.path.insert(0, src_folder)
 
+# must first init loadenv
+import tools, env
+config = env.getenv("CONFIG")
+tools.loadenv(config)
+
 from log import initlogging
 initlogging("docklet-web")
 from log import logger
-import env
 
 app = Flask(__name__)
 
@@ -367,6 +371,11 @@ if __name__ == '__main__':
     webip = "0.0.0.0"
     webport = env.getenv("WEB_PORT")
 
+    import dockletreq.dockletrequest
+    dockletreq.dockletrequest.endpoint = 'http://%s:%d' % (env.getenv('MASTER_IP'), env.getenv('MASTER_PORT')) 
+
+    print(dockletreq.dockletrequest.endpoint)
+
     try:
         opts, args = getopt.getopt(sys.argv[1:], "i:p:", ["ip=", "port="])
     except getopt.GetoptError:
@@ -378,4 +387,4 @@ if __name__ == '__main__':
         elif opt in ("-p", "--port"):
             webport = int(arg)
 
-    app.run(host = webip, port = webport, debug = True)
+    app.run(host = webip, port = webport, debug = True, threaded=True)
