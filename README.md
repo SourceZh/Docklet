@@ -140,9 +140,10 @@ First, select a server with 2 network interface card, one having a
 public IP address/url, e.g., docklet.info; the other having a private IP
 address, e.g., 172.16.0.1. This server will be the master.
 
-If you first run docklet, run `bin/docklet-master init` to init and start docklet master.
-Otherwise, run  `bin/docklet-master start`, will start master in recovery mode in background using 
-conf/docklet.conf. It means docklet will recover workspaces in starting.
+If it is the first time you start docklet, run `bin/docklet-master init`
+to init and start docklet master. Otherwise, run  `bin/docklet-master start`, 
+which will start master in recovery mode in background using 
+conf/docklet.conf. It means docklet will recover workspaces existed.
 
 This script in fact will start three daemons: the docklet master of
 httprest.py, the configurable-http-proxy and the docklet web of web.py.

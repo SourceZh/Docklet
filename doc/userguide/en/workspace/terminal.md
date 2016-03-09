@@ -20,6 +20,7 @@ back.
 If the user will perform multiple tasks, they can open several
 Terminals, or using [tmux](https://tmux.github.io) in one Terminal.
 
+**Note**:
 Sometimes, in Chrome, the fonts of terminal may be not monospaced. 
 This may cause the width of terminal not fixed and commands' output not aligned. 
 Here is the way to fix it : Chrome -> Settings -> Show Advanced Settings ->
