@@ -44,13 +44,13 @@ tempdir=/opt/docklet/local/temp
 echo "Generating docklet.conf from template "
 cp conf/docklet.conf.template conf/docklet.conf
 
-echo "Try downloading basefsf.tar.bz to $tempdir"
+#echo "Try downloading basefsf.tar.bz to $tempdir"
 
-[[ ! -d $tempdir ]] && mkdir -p $tempdir
-if [[ ! -f $tempdir/basefs.tar.bz ]]; then
-    echo "Downloading basefs.tar.bz to $tempdir"
-	wget http://sei.pku.edu.cn:8000/download/basefs -O $tempdir/basefs.tar.bz
-fi
+#[[ ! -d $tempdir ]] && mkdir -p $tempdir
+#if [[ ! -f $tempdir/basefs.tar.bz ]]; then
+#    echo "Downloading basefs.tar.bz to $tempdir"
+#	wget http://sei.pku.edu.cn:8000/download/basefs -O $tempdir/basefs.tar.bz
+#fi
 
 
 echo ""
@@ -59,8 +59,23 @@ echo "All preparation installation is done."
 
 echo ""
 
-echo "NOTE: Please run dpkg-reconfigure exim4-config, just select internet site"
+echo "Before staring, you need a basefs mirror. "
+echo "A demo mini basefs mirror is provided at: "
+echo "  http://docklet.internetware.org/mirror/basefs-mini.tar.bz"
+echo "Please download it to FS_PREFIX/local and then extract it. "
+echo "Probably you will get a dicectory structure like"
+echo "  /opt/docklet/local/basefs/etc "
+echo "  /opt/docklet/local/basefs/bin "
+echo "  /opt/docklet/local/basefs/..."
+echo " 
+echo "Yes, that is it, the basefs is ready." 
+
+
+echo "Next, make sure exim4 is can deliver mail out. To enable, run:"
+echo "dpkg-reconfigure exim4-config"
+echo "select internet site"
 
 echo ""
 
-echo "Then start docklet as described in README"
+echo "Then start docklet as described in README.md"
+
