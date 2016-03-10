@@ -146,8 +146,8 @@ class userManager:
     def auth_pam(self, username, password):
         user = User.query.filter_by(username = username).first()
         pamresult = pam.authenticate(username, password)
-        if (pamresult == False or user.auth_method != 'pam'):
-            return {"success":'false', "reason": "User did not exist or Wrong password or PKU user exists"}
+        if (pamresult == False or (user != None and user.auth_method != 'pam')):
+            return {"success":'false', "reason": "Wrong password or wrong login method"}
         if (user == None):
             newuser = self.newuser();
             newuser.username = username
