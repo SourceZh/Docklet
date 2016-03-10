@@ -67,9 +67,8 @@ echo "Probably you will get a dicectory structure like"
 echo "  /opt/docklet/local/basefs/etc "
 echo "  /opt/docklet/local/basefs/bin "
 echo "  /opt/docklet/local/basefs/..."
-echo " 
+echo " "
 echo "Yes, that is it, the basefs is ready." 
-
 
 echo "Next, make sure exim4 is can deliver mail out. To enable, run:"
 echo "dpkg-reconfigure exim4-config"
@@ -77,5 +76,5 @@ echo "select internet site"
 
 echo ""
 
-echo "Then start docklet as described in README.md"
 
+echo "Then start docklet as described in README.md"
