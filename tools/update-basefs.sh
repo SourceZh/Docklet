@@ -1,8 +1,9 @@
 #!/bin/sh
 
 ## WARNING
-## This sript is just for for my own convenience 
-## It may not function corrently on your basefs image
+## This sript is just for my own convenience . my image is
+## based on Ubuntu xenial. I did not test it for other distros.
+## Therefore this script may not work for your basefs image.
 ##
 
 

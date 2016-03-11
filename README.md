@@ -168,7 +168,7 @@ The `doc/userguide` may needs to get compiled. run `make` in
 
 Worker needs a basefs image to boot container.
 
-You can create such a image with `lxc-create -n test -t download`, 
+You can create such an image with `lxc-create -n test -t download`, 
 and then copy the rootfs to **FS_PREFIX/local**, and renamed `rootfs` 
 to `basefs`.
 
