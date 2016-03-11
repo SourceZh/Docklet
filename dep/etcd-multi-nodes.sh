@@ -1,5 +1,6 @@
 #!/bin/bash
 
+which etcd &>/dev/null || { echo "etcd not installed, please install etcd first" && exit 1; }
 
 if [ $# -eq 0 ] ; then
     echo "Usage: `basename $0` ip1 ip2 ip3"
@@ -29,14 +30,11 @@ done
 #                               :  new not means clear 
 
 
-# download etcd 
-[ ! -f etcd ] && wget http://www.unias.org/trac/docklet/downloads/1 -O etcd.tar.gz && tar xzvf etcd.tar.gz
-
-./etcd -name etcd_1 \
-       -initial-advertise-peer-urls http://$etcd_1:2380 \
-       -listen-peer-urls http://$etcd_1:2380 \
-       -listen-client-urls http://$etcd_1:2379 \
-       -advertise-client-urls http://$etcd_1:2379 \
-       -initial-cluster-token etcd-cluster \
-       -initial-cluster $CLUSTER \
-       -initial-cluster-state new 
+etcd --name etcd_1 \
+     --initial-advertise-peer-urls http://$etcd_1:2380 \
+     --listen-peer-urls http://$etcd_1:2380 \
+     --listen-client-urls http://$etcd_1:2379 \
+     --advertise-client-urls http://$etcd_1:2379 \
+     --initial-cluster-token etcd-cluster \
+     --initial-cluster $CLUSTER \
+     --initial-cluster-state new 

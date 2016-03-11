@@ -37,38 +37,26 @@ apt-get install -y etcd
 
 # check and install configurable-http-proxy
 which configurable-http-proxy &>/dev/null || npm install -g configurable-http-proxy
+which configurable-http-proxy &>/dev/null || { echo "Error : install configurable-http-proxy failed, you should try again" && exit 1; }
 
-# prepare basefs of lxc
-tempdir=/opt/docklet/local/temp
-
-echo "Generating docklet.conf from template "
-cp conf/docklet.conf.template conf/docklet.conf
-
-#echo "Try downloading basefsf.tar.bz to $tempdir"
-
-#[[ ! -d $tempdir ]] && mkdir -p $tempdir
-#if [[ ! -f $tempdir/basefs.tar.bz ]]; then
-#    echo "Downloading basefs.tar.bz to $tempdir"
-#	wget http://sei.pku.edu.cn:8000/download/basefs -O $tempdir/basefs.tar.bz
-#fi
-
+[[ -f conf/docklet.conf ]] || { echo "Generating docklet.conf from template" && cp conf/docklet.conf.template conf/docklet.conf; }
 
 echo ""
-
 echo "All preparation installation is done."
-
+echo "****************************************"
+echo "* Please Read Lines Below Before Start *"
+echo "****************************************"
 echo ""
 
-echo "Before staring, you need a basefs mirror. "
+echo "Before staring : you need a basefs mirror. "
 echo "A demo mini basefs mirror is provided at: "
-echo "  http://docklet.internetware.org/mirror/basefs-mini.tar.bz"
-echo "Please download it to FS_PREFIX/local and then extract it. "
+echo "  http://iwork.internetware.org:81/basefs-0.11.tar.bz"
+echo "Please download it to FS_PREFIX/local and then extract it. (defalut FS_PRERIX is /opt/docklet)"
 echo "Probably you will get a dicectory structure like"
 echo "  /opt/docklet/local/basefs/etc "
 echo "  /opt/docklet/local/basefs/bin "
 echo "  /opt/docklet/local/basefs/..."
 echo " "
-echo "Yes, that is it, the basefs is ready." 
 
 echo "Next, make sure exim4 is can deliver mail out. To enable, run:"
 echo "dpkg-reconfigure exim4-config"
@@ -78,3 +66,4 @@ echo ""
 
 
 echo "Then start docklet as described in README.md"
+
