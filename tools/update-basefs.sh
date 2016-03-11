@@ -69,6 +69,12 @@ chroot $BASEFS systemctl mask systemd-logind.service
 echo "[*] Disabling apache2 service(if installed)"
 chroot $BASEFS update-rc.d apache2 disable
 
+echo "[*] Disabling ondemand service(if installed)"
+chroot $BASEFS update-rc.d ondemand disable
+
+echo "[*] Disabling dbus service(if installed)"
+chroot $BASEFS update-rc.d dbus disable
+
 echo "[*] Disabling mysql service(if installed)"
 chroot $BASEFS update-rc.d mysql disable
 
