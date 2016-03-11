@@ -46,27 +46,10 @@ class Container(object):
                 else:
                     logger.error ("get AUTH COOKIE URL failed for jupyter")
                     authurl = "error"
-            # generate start script for container
-            #scriptpath = self.lxcpath+'/'+lxc_name+'/rootfs/home/init'
-            #script = open(scriptpath, 'w')
-            # start-singlejupyter.sh
-            #       USERNAME -- user for this jupyter, like 'leebaok'
-            #       PORT -- port to start notebook, like 10000
-            #       COOKIE_NAME -- cookie name to get from request and send to hub_api_url for authorization
-            #       BASE_URL -- base url for notebook client to send request
-            #       HUB_PREFIX -- prefix for login and logout
-            #       HUB_API_URL -- url for authorizing cookie
-            #       IP -- ip for listenning request
             if (username=='guest'):
                 cookiename='guest-cookie'
             else:
                 cookiename='docklet-jupyter-cookie'
-
-            #script.write('/home/start-singlejupyter.sh '+username+' 10000 '+cookiename+' /go/'+username+'/'+clustername+' /jupyter '+authurl+' '+ip.split('/')[0])
-            #scripts = create_command(lxc_name, username, clustername, clusterid, hostname, ip, gateway, vlanid, command) + '\n'
-            #scripts = scripts + '/home/start-singlejupyter.sh '+username+' 10000 '+cookiename+' /go/'+username+'/'+clustername+' /jupyter '+authurl+' '+ip.split('/')[0]
-            #script.write(scripts)
-            #script.close()
 
             rundir = self.lxcpath+'/'+lxc_name+'/rootfs' + self.rundir
 
@@ -92,11 +75,6 @@ IP=%s
         authurl, ip.split('/')[0])
             config.write(jconfigs)
             config.close()
-
-            Ret = subprocess.run(["cp",self.confpath+'/node/start_jupyter.sh',
-                rundir],
-                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                    shell=False, check=True)
 
         except subprocess.CalledProcessError as sube:
             logger.error('create container %s failed: %s' % (lxc_name,

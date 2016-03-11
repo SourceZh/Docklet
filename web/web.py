@@ -311,10 +311,12 @@ def jupyter_control():
     return redirect('/dashboard/')
 
 # for download basefs.tar.bz
-@app.route('/download/basefs', methods=['GET'])
-def download():
-    fsdir = env.getenv("FS_PREFIX")
-    return send_from_directory(fsdir+'/local', 'basefs.tar.bz', as_attachment=True)
+# remove, not the function of docklet
+# should download it from a http server
+#@app.route('/download/basefs', methods=['GET'])
+#def download():
+    #fsdir = env.getenv("FS_PREFIX")
+    #return send_from_directory(fsdir+'/local', 'basefs.tar.bz', as_attachment=True)
 
 # jupyter auth APIs
 @app.route('/jupyter/', methods=['GET'])

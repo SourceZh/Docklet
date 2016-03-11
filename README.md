@@ -74,6 +74,9 @@ dep/
     etcd-multi-nodes.sh
     etcd-one-node.sh
 doc/
+tools/
+    update-basefs.sh
+    start_jupyter.sh
 ```
 
 If it is the first time install, users should run **prepare.sh** to
@@ -162,6 +165,18 @@ The `doc/userguide` may needs to get compiled. run `make` in
 `doc/userguide` to generate the userguide help.
 
 ### worker ###
+
+Worker needs a basefs image to boot container.
+
+You can create such a image with `lxc-create -n test -t download`, 
+and then copy the rootfs to **FS_PREFIX/local**, and renamed `rootfs` 
+to `basefs`.
+
+Note the `jupyerhub` package must be installed for this image.  And the 
+start script `tools/start_jupyter.sh` should be placed at
+`basefs/home/jupyter`.
+
+You can check and run `tools/update-basefs.sh` to update basefs.
 
 Run `bin/docklet-worker start`, will start worker in background.
 
