@@ -57,10 +57,18 @@ sed -i -- 's/dhcp/static/g' $BASEFS/etc/network/interfaces
 echo "[*] Setting $BASEFS/etc/resolv.conf"
 cp resolv.conf $BASEFS/etc/resolvconf/resolv.conf.d/base
 
+echo "[*] Masking console-getty.service"
+chroot $BASEFS systemctl mask console-getty.service
+
+echo "[*] Masking system-journald.service"
+chroot $BASEFS systemctl mask systemd-journald.service
+
 echo "[*] Disabling apache2 service(if installed)"
 chroot $BASEFS update-rc.d apache2 disable
+
 echo "[*] Disabling mysql service(if installed)"
 chroot $BASEFS update-rc.d mysql disable
+
 echo "[*] Disabling nginx service(if installed)"
 chroot $BASEFS update-rc.d nginx disable
 
