@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 
 # $1 : name of container ( name in lxc-start with -n)

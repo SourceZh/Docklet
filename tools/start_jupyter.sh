@@ -1,5 +1,9 @@
 #!/bin/sh 
 
+#
+# this script should be placed in basefs/home/jupyter
+# 
+
 # This next line determines what user the script runs as.
 DAEMON_USER=root
 
