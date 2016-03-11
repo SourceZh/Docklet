@@ -63,6 +63,9 @@ chroot $BASEFS systemctl mask console-getty.service
 echo "[*] Masking system-journald.service"
 chroot $BASEFS systemctl mask systemd-journald.service
 
+echo "[*] Masking system-logind.service"
+chroot $BASEFS systemctl mask systemd-logind.service
+
 echo "[*] Disabling apache2 service(if installed)"
 chroot $BASEFS update-rc.d apache2 disable
 
