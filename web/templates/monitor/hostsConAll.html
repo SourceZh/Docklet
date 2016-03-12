@@ -1,27 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}Docklet | Status{% endblock %}
+{% block title %}Docklet | Hosts{% endblock %}
 
-{% block panel_title %}Workspace VCluster Status{% endblock %}
+{% block panel_title %}Node list for {{ com_ip }}{% endblock %}
 
 {% block panel_list %}
 <ol class="breadcrumb">
   <li>
       <a href="/dashboard/">Home</a>
   </li>
-      <li class="active">
-      <strong>VClusterStatus</strong>
+  <li>
+      <a href='/hosts/'>Hosts</a>
+  </li>
+  <li class="active">
+      <strong>Node List</strong>
   </li>
 </ol>
 {% endblock %}
 
 {% block content %}
-{% for cluster in clusters %}
 	  <div class="row">
 	     <div class="col-md-12">
                  <div class="ibox float-e-margins">
                      <div class="ibox-title">
-                         <h5>VCluster Name: {{ cluster }}</h5>
+                         <h5>Total Nodes</h5>
                          <div class="ibox-tools">
                              <a class="collapse-link">
                                  <i class="fa fa-chevron-up"></i>
@@ -32,35 +34,38 @@
                          </div>
                      </div>
                      <div class="ibox-content table-responsive">
-
                          <table class="table table-bordered">
                              <thead>
                              <tr>
-				 <th>Node ID</th>
-				 <th>Node Name</th>
+				 <th>NO</th>
+				 <th>Name</th>
+                                 <th>State</th>
+                                 <th>PID</th>
                                  <th>IP Address</th>
-                                 <th>Status</th>
 				 <th>Cpu used</th>
 				 <th>Mem used</th>
 				 <th>Summary</th>
                              </tr>
                              </thead>
                              <tbody>
-                             {% for container in containers[cluster]['containers'] %}
+                             {% for container in containerslist %}
                              <tr>
                                  <td>{{ loop.index }}</td>
-                                 <td>{{ container['containername'] }}</td>
-                                 <td>{{ container['ip'] }}</td>
-                               
-                                 {% if containers[cluster]['status'] == 'stopped' %}
-                                 <td><div id='{{cluster}}_{{ loop.index }}_state' class="label label-danger">Stopped</div></td>
+                                 <td>{{ container['Name'] }}</td>
+                                 {% if container['State'] == 'STOPPED' %}
+                                 <td><div id='{{ loop.index }}_state' class="label label-danger">Stopped</div></td>
+                                 <td id='{{ loop.index }}_pid'>--</td>
+                                 <td id='{{ loop.index }}_ip'>--</td>
                                  {% else %}
-                                 <td><div id='{{cluster}}_{{ loop.index }}_state' class="label label-primary">Running</div></td>
+                                 <td><div id='{{ loop.index }}_state' class="label label-primary">Running</div></td>
+                                 <td id='{{ loop.index }}_pid'>{{ container['PID'] }}</td>
+                                 <td id='{{ loop.inde }}_ip'>{{ container['IP'] }}</td>
                                  {% endif %}
-                                 <td id='{{cluster}}_{{ loop.index }}_cpu'>--</td>
-                                 <td id='{{cluster}}_{{ loop.index }}_mem'>--</td>
-                                 
-                                 <td><a class="btn btn-info btn-xs" href='/vclusters/{{ cluster }}/{{ container['containername'] }}/'>Realtime</a></td>
+                                 <td id='{{ loop.index }}_cpu'>--</td>
+                                 <td id='{{ loop.index }}_mem'>--</td>
+                                 <td><a class="btn btn-info btn-xs"
+                                         href='/vclusters/root/{{
+                                         container['Name'] }}/'>Realtime</a></td>
 			     </tr>
                              {% endfor %}
                              </tbody>
@@ -71,7 +76,6 @@
              </div>
 	   </div>
 
-{% endfor %}
 {% endblock %}
 
 {% block script_src %}
@@ -104,17 +108,15 @@
        		}
 
        		$.post(url+"/cpu_use",{},function(data){
-		       	var usedp = data.monitor.cpu_use.usedp;
-		       	$("#"+index+"_cpu").html((usedp/0.01).toFixed(2)+"%");	
+		       	var val = data.monitor.cpu_use.val;
+			var unit = data.monitor.cpu_use.unit;
+		       	$("#"+index+"_cpu").html(val +" "+ unit);	
 		       	},"json");
 
        		$.post(url+"/mem_use",{},function(data){
-		       	var usedp = data.monitor.mem_use.usedp;
-			var unit = data.monitor.mem_use.unit;
-			var quota = data.monitor.mem_use.quota;
-			var val = data.monitor.mem_use.val;
-			var out = "("+val+unit+"/"+quota+unit+")";
-		       	$("#"+index+"_mem").html((usedp/0.01).toFixed(2)+"%<br/>"+out);	
+		       	var val = data.monitor.mem_use.val;
+			var unit = data.monitor.mem_use.unit
+		       	$("#"+index+"_mem").html(val+" "+unit);	
 		       	},"json");
 
        		},"json");       
@@ -123,13 +125,11 @@
    function updateAll()
    {
         var host = window.location.host;
-        var url0 = "http://" + host + "/monitor/node/";
-
-	{% for cluster in clusters %}
-	{% for container in containers[cluster]['containers'] %}
-        url = url0 + '{{ container['containername'] }}';
-   	update(url,'{{cluster}}_{{ loop.index }}');
-	{% endfor %}
+        var url0 = "http://" + host + "/monitor/vnodes/";
+        
+	{% for container in containerslist %}
+        url = url0 + '{{ container['Name'] }}';
+   	update(url,'{{ loop.index }}');
 	{% endfor %}
    }
    setInterval(updateAll,5000);

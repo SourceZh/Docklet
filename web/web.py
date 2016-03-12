@@ -201,34 +201,34 @@ def deleteImage(image):
 
 @app.route("/hosts/", methods=['GET'])
 @administration_required
-def monitorRealAll():
-    return monitorRealAllView.as_view()
+def hosts():
+    return hostsView.as_view()
 
 @app.route("/hosts/<com_ip>/", methods=['GET'])
 @administration_required
-def monitorReal(com_ip):
-    monitorRealView.com_ip = com_ip
-    return monitorRealView.as_view()
+def hostsRealtime(com_ip):
+    hostsRealtimeView.com_ip = com_ip
+    return hostsRealtimeView.as_view()
 
 @app.route("/hosts/<com_ip>/containers/", methods=['GET'])
 @administration_required
-def monitorRealConAll(com_ip):
+def hostsConAll(com_ip):
     monitorRealConAllView.com_ip = com_ip
-    return monitorRealConAllView.as_view()
+    return hostsConAllView.as_view()
 
 @app.route("/vclusters/", methods=['GET'])
 @login_required
-def monitor():
-    return monitorView.as_view()
+def status():
+    return statusView.as_view()
 
 @app.route("/vclusters/<vcluster_name>/<node_name>/", methods=['GET'])
 @login_required
-def monitorNode(vcluster_name,node_name):
-    monitorNodeView.node_name = node_name
-    return monitorNodeView.as_view()
+def statusRealtime(vcluster_name,node_name):
+    statusRealtimeView.node_name = node_name
+    return statusRealtimeView.as_view()
 
-@app.route("/monitor/real/<comid>/<infotype>", methods=['POST'])
-@app.route("/monitor/node/<comid>/<infotype>", methods=['POST'])
+@app.route("/monitor/hosts/<comid>/<infotype>", methods=['POST'])
+@app.route("/monitor/vnodes/<comid>/<infotype>", methods=['POST'])
 @login_required
 def monitor_request(comid,infotype):
     data = {

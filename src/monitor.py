@@ -12,8 +12,8 @@ class Container_Collector(threading.Thread):
         self.thread_stop = False
         self.host = host
         self.etcdser = etcdlib.Client(etcdaddr,"/%s/monitor" % (cluster_name))
-        self.etcdser.setkey('/cpu_quota', cpu_quota)
-        self.etcdser.setkey('/mem_quota', mem_quota)
+        self.etcdser.setkey('/vnodes/cpu_quota', cpu_quota)
+        self.etcdser.setkey('/vnodes/mem_quota', mem_quota)
         self.cpu_quota = float(cpu_quota)/100000.0
         self.mem_quota = float(mem_quota)*1000000/1024
         self.interval = 2
@@ -40,33 +40,33 @@ class Container_Collector(threading.Thread):
         basic_info['Name'] = info['Name']
         basic_info['State'] = info['State']
         if(info['State'] == 'STOPPED'):
-            self.etcdser.setkey('/%s/basic_info'%(container_name), basic_info)
+            self.etcdser.setkey('/vnodes/%s/basic_info'%(container_name), basic_info)
             return False
         basic_info['PID'] = info['PID']
         basic_info['IP'] = info['IP']
-        self.etcdser.setkey('/%s/basic_info'%(container_name), basic_info)
+        self.etcdser.setkey('/vnodes/%s/basic_info'%(container_name), basic_info)
         cpu_parts = re.split(' +',info['CPU use'])
         cpu_val = cpu_parts[0].strip()
         cpu_unit = cpu_parts[1].strip()
-        res = self.etcdser.getkey('/%s/cpu_use/val'%(container_name))
+        res = self.etcdser.getkey('/vnodes/%s/cpu_use/val'%(container_name))
         cpu_last = 0
         if res[0] == True:
             cpu_last = float(res[1])
-        self.etcdser.setkey('/%s/cpu_use/val'%(container_name), cpu_val)
-        self.etcdser.setkey('/%s/cpu_use/unit'%(container_name), cpu_unit)
+        self.etcdser.setkey('/vnodes/%s/cpu_use/val'%(container_name), cpu_val)
+        self.etcdser.setkey('/vnodes/%s/cpu_use/unit'%(container_name), cpu_unit)
         cpu_usedp = (float(cpu_val)-float(cpu_last))/(self.cpu_quota*self.interval*1.3)
         if(cpu_usedp > 1):
             cpu_usedp = 1
-        self.etcdser.setkey('/%s/cpu_use/usedp'%(container_name), cpu_usedp)
+        self.etcdser.setkey('/vnodes/%s/cpu_use/usedp'%(container_name), cpu_usedp)
         mem_parts = re.split(' +',info['Memory use'])
         mem_val = mem_parts[0].strip()
         mem_unit = mem_parts[1].strip()
-        self.etcdser.setkey('/%s/mem_use/val'%(container_name), mem_val)
-        self.etcdser.setkey('/%s/mem_use/unit'%(container_name), mem_unit)
+        self.etcdser.setkey('/vnodes/%s/mem_use/val'%(container_name), mem_val)
+        self.etcdser.setkey('/vnodes/%s/mem_use/unit'%(container_name), mem_unit)
         if(mem_unit == "MiB"):
             mem_val = float(mem_val) * 1024
         mem_usedp = float(mem_val) / self.mem_quota
-        self.etcdser.setkey('/%s/mem_use/usedp'%(container_name), mem_usedp)
+        self.etcdser.setkey('/vnodes/%s/mem_use/usedp'%(container_name), mem_usedp)
         #print(output)
         #print(parts)
         return True
@@ -87,11 +87,11 @@ class Container_Collector(threading.Thread):
                         #pass
                         logger.warning(err)
             containers_num = len(containers)-1
-            self.etcdser.setkey('/%s/containers/total'%(self.host), containers_num)
-            self.etcdser.setkey('/%s/containers/running'%(self.host), countR)
+            self.etcdser.setkey('/hosts/%s/containers/total'%(self.host), containers_num)
+            self.etcdser.setkey('/hosts/%s/containers/running'%(self.host), countR)
             time.sleep(self.interval)
             if cnt == 0:
-                self.etcdser.setkey('/%s/containerslist'%(self.host), conlist)
+                self.etcdser.setkey('/hosts/%s/containerslist'%(self.host), conlist)
             cnt = (cnt+1)%5
         return
 
@@ -105,7 +105,7 @@ class Collector(threading.Thread):
         threading.Thread.__init__(self)
         self.host = host
         self.thread_stop = False
-        self.etcdser = etcdlib.Client(etcdaddr,"/%s/monitor/%s" % (cluster_name,host))
+        self.etcdser = etcdlib.Client(etcdaddr,"/%s/monitor/hosts/%s" % (cluster_name,host))
         self.interval = 1
         return
 
@@ -200,7 +200,7 @@ class Collector(threading.Thread):
 
 class Container_Fetcher:
     def __init__(self,etcdaddr,cluster_name):
-        self.etcdser = etcdlib.Client(etcdaddr,"/%s/monitor" % (cluster_name))
+        self.etcdser = etcdlib.Client(etcdaddr,"/%s/monitor/vnodes" % (cluster_name))
         return
 
     def get_cpu_use(self,container_name):
@@ -229,7 +229,7 @@ class Container_Fetcher:
 class Fetcher:
 
     def __init__(self,etcdaddr,cluster_name,host):
-        self.etcdser = etcdlib.Client(etcdaddr,"/%s/monitor/%s" % (cluster_name,host))
+        self.etcdser = etcdlib.Client(etcdaddr,"/%s/monitor/hosts/%s" % (cluster_name,host))
         return
 
     #def get_clcnt(self):

@@ -135,7 +135,7 @@
    function updateAll()
    {
         var host = window.location.host;
-        var url0 = "http://" + host + "/monitor/real/";
+        var url0 = "http://" + host + "/monitor/hosts/";
    {% for phym in machines %}
         url = url0 + '{{ phym['ip'] }}';
    	update(url,'{{ loop.index }}');

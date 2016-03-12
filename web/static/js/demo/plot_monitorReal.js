@@ -188,7 +188,7 @@ function plot_graph(container,url,processData,getY) {
 var host = window.location.host;
 
 var com_ip = $("#com_ip").html();
-var url = "http://" + host + "/monitor/real/"+com_ip;
+var url = "http://" + host + "/monitor/hosts/"+com_ip;
 
 plot_graph($("#mem-chart"), url + "/meminfo",processMemData,getMemY);
 plot_graph($("#cpu-chart"), url +  "/cpuinfo",processCpuData,getCpuY);

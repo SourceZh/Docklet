@@ -296,7 +296,7 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
         elif cmds[0] == 'monitor':
             logger.info("handle request: monitor")
             res = {}
-            if cmds[1] == 'real':
+            if cmds[1] == 'hosts':
                 com_id = cmds[2]
                 fetcher = monitor.Fetcher(etcdaddr,G_clustername,com_id)
                 if cmds[3] == 'meminfo':
@@ -330,7 +330,7 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
                     return
 
                 self.response(200, {'success':'true', 'monitor':res})
-            elif cmds[1] == 'node':
+            elif cmds[1] == 'vnodes':
                 fetcher = monitor.Container_Fetcher(etcdaddr,G_clustername)
                 if cmds[3] == 'cpu_use':
                     res['cpu_use'] = fetcher.get_cpu_use(cmds[2])
