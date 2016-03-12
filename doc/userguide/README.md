@@ -1,5 +1,0 @@
-Docklet User Guide
-==================
-
-
-
