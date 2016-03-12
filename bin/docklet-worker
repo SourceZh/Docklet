@@ -42,7 +42,7 @@ PIDFILE=$RUN_DIR/$DAEMON_NAME.pid
 
 ###########
 
-do_start () {
+pre_start () {
     log_daemon_msg "Starting $DAEMON_NAME in $FS_PREFIX"
 
     [ ! -d $FS_PREFIX/global ] && mkdir -p $FS_PREFIX/global
@@ -77,9 +77,6 @@ do_start () {
 		[ ! -f $tempdir/basefs.tar.bz ] && log_daemon_msg "$tempdir/basefs.tar.bz not exist, run prepare.sh first" && exit 1
 		tar xvf $tempdir/basefs.tar.bz -C $FS_PREFIX/local > /dev/null
 	fi
-
-    start-stop-daemon --start --oknodo --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON -- $DAEMON_OPTS
-    log_end_msg $?
 }
 
 do_stop () {
@@ -90,11 +87,18 @@ do_stop () {
 
 case "$1" in
     start)
-        do_start
+        pre_start
+        start-stop-daemon --start --oknodo --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON -- $DAEMON_OPTS
+        log_end_msg $?
         ;;
 
     stop)
         do_stop
+        ;;
+
+    console)
+        pre_start
+        cprofilev $DAEMON $DAEMON_OPTS
         ;;
 
     restart)
