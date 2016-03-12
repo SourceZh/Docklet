@@ -21,7 +21,6 @@ import getopt
 import sys, inspect
 this_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
 src_folder = os.path.realpath(os.path.abspath(os.path.join(this_folder,"..", "src")))
-doc_folder = os.path.realpath(os.path.abspath(os.path.join(this_folder,"..", "doc", "userguide","_book")))
 if src_folder not in sys.path:
     sys.path.insert(0, src_folder)
 
@@ -86,12 +85,7 @@ def dashboard_guest():
 
 @app.route("/document/", methods=['GET'])
 def redirect_dochome():
-    return redirect("/document/index.html")
-
-@app.route("/document/<path:path>", methods=['GET'])
-def help_info(path):
-    return send_from_directory(doc_folder, path)
-
+    return redirect("http://docklet.unias.org/doc/userguide")
 
 @app.route("/config/", methods=['GET'])
 @login_required
