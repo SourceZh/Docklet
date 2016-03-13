@@ -42,5 +42,11 @@ def getenv(key):
         return int(os.environ.get("LOG_LIFE", 10))
     elif key == "STORAGE":
         return os.environ.get("STORAGE", "file")
+    elif key =="EXTERNAL_LOGIN":
+        return os.environ.get("EXTERNAL_LOGIN", "FALSE")
+    elif key =="EXTERNAL_LOGIN_URL":
+        return os.environ.get("EXTERNAL_LOGIN_URL", "/external_login/")
+    elif key =="EXTERNAL_LOGIN_CALLBACK_URL":
+        return os.environ.get("EXTERNAL_LOGIN_CALLBACK_URL", "/external_login_callback/")
     else:
         return os.environ[key]

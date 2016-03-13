@@ -5,34 +5,34 @@
 #
 # ==================================================
 
-# CLUSTER_NAME: name of host cluster, every host cluster should have 
+# CLUSTER_NAME: name of host cluster, every host cluster should have
 # a unique name, default is docklet-vc
 # CLUSTER_NAME=docklet-vc
 
 # FS_PREFIX: path to store global and local data for docklet
 # default is /opt/docklet.
 #
-# Note: $FS_PREFIX/global is for storing persistent data, e.g., 
+# Note: $FS_PREFIX/global is for storing persistent data, e.g.,
 # custom container images, user data, etc. For a multi hosts
 # environement, it is the mountpoint of the distributed filesystem
 # that all physical hosts (master and slave) share.
-# E.g., for a system with three hosts: computing hosts A and B, 
-# strorage host C. Host C exports its stroage filesystem through nfs 
+# E.g., for a system with three hosts: computing hosts A and B,
+# strorage host C. Host C exports its stroage filesystem through nfs
 # as C:/data, then host A and B should mount C:/data to $FS_PREFIX/global.
 # Please make sure that the mount is OK before launching docklet.
 #
 # FS_PREFIX=/opt/docklet
 
 # STORAGE: local storage type, file or disk, default is file
-#  note lvm is required for either case  
+#  note lvm is required for either case
 #
-# file : a large file simulating raw disk storing container runtime 
+# file : a large file simulating raw disk storing container runtime
 # data, located in FS_PREFIX/local, for single machine testing purpose.
 #
-# disk : raw disk for storing container files, for production purpose. 
+# disk : raw disk for storing container files, for production purpose.
 # If using disk, a partition must be allocated to docklet
 # - a disk device name must be specified by DISK , e.g, /dev/sdc9
-# - this device must be formatted as Linux-LVM, and initialized 
+# - this device must be formatted as Linux-LVM, and initialized
 # as a physical volume (pvcreate /dev/sdc9) in advance.
 # TAKE CARE to ensure the disk is OK before launching docklet.
 #
@@ -50,10 +50,10 @@
 # CONTAINER_CPU: CPU quota of container, default is 100000
 # A single CPU core has total=100000 (100ms), so the default 100000
 # mean a single container can occupy a whole core.
-# For a CPU with two cores, this can be set to 200000 
+# For a CPU with two cores, this can be set to 200000
 # CONTAINER_CPU=50000
 
-# CONTAINER_DISK: disk quota of container image upper layer, count in MB, 
+# CONTAINER_DISK: disk quota of container image upper layer, count in MB,
 # default is 1000
 # CONTAINER_DISK=1000
 
@@ -61,7 +61,7 @@
 # CONTAINER_MEMORY=1000
 
 # DISKPOOL_SIZE: lvm group size, count in MB, default is 5000
-# Only valid with STORAGE=file 
+# Only valid with STORAGE=file
 # DISKPOOL_SIZE=5000
 
 # ETCD: etcd address, default is localhost:2379
@@ -73,7 +73,7 @@
 # Default is eth0
 # NETWORK_DEVICE=eth0
 
-# PORTAL_URL: the public docklet portal url. for a production system, 
+# PORTAL_URL: the public docklet portal url. for a production system,
 # it should be a valid URL, like http://docklet.info
 # default is MASTER_IP:PROXY_PORT
 # PORTAL_URL=http://locahost:8000
@@ -88,8 +88,8 @@
 # WORKER_PORT=9001
 
 # PROXY_PORT: the access port of the public protal, default is 8000
-# it is also the listen port of configurable-http-proxy, which 
-# proxy connections from exteral public network to internal private 
+# it is also the listen port of configurable-http-proxy, which
+# proxy connections from exteral public network to internal private
 # container networks. Usually 80 is recommded for production environment.
 # PROXY_PORT=8000
 
@@ -99,10 +99,10 @@
 # PROXY_API_PORT=8001
 
 # WEB_PORT: docklet web listening port, default is 8888
-# Note: docklet web server is located behind the docklet proxy. 
+# Note: docklet web server is located behind the docklet proxy.
 # Users access docklet first through proxy, then docklet web server.
 # Therefore, it is not for user direct access.  In most cases,
-# admins need not to change the default value. 
+# admins need not to change the default value.
 # WEB_PORT=8888
 
 # LOG_LEVEL: logging level, of DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -111,3 +111,12 @@
 
 # LOG_LIFE: how many days the logs will be kept, default is 10
 # LOG_LIFE=10
+
+#EXTERNAL_LOGIN: whether docklet will use external account to log in
+# EXTERNAL_LOGIN=FALSE
+
+#EXTERNAL_LOGIN_URL: the url docklet will listen for external logging in
+# EXTERNAL_LOGIN_URL=/iaaa_auth/
+
+#EXTERNAL_LOGIN_CALLBACK_URL: the callback url docklet will listen for external logging in
+# EXTERNAL_LOGIN_CALLBACK_URL=/pkulogin/

@@ -24,9 +24,9 @@ import monitor
 import proxytool
 import guest_control, threading
 
-import hashlib
-from suds.client import Client
-import requests
+external_login = env.getenv('EXTERNAL_LOGIN')
+if (external_login == 'TRUE'):
+    from userDependence import external_auth
 
 class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
     def response(self, code, output):
@@ -114,26 +114,16 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
                 return [False, "auth failed"]
             self.response(200, {'success':'true', 'action':'login', 'data': auth_result['data']})
             return [True, "auth succeeded"]
-        if cmds[0] == 'pkulogin':
-            logger.info ("handle request : PKU user login")
-            url = "https://iaaa.pku.edu.cn/iaaaWS/TokenValidation?WSDL"
-            remoteaddr = form.getvalue("ip")
-            appid = "iwork"
-            token = form.getvalue("token")
-            key = "2CF3E3B1A57A13BFE0530100007FB96E"
-            msg = remoteaddr + appid + token + key
-            m = hashlib.md5()
-            m.update(msg.encode("utf8"))
-            msg = m.hexdigest()
-
-            client = Client(url)
-            result = dict(client.service.validate(remoteaddr, appid, token, msg))
-            if (result['Status'] != 0):
-                self.response(200, {'success':'false',  'result': result})
+        if cmds[0] == 'external_login':
+            logger.info ("handle request : external user login")
+            try:
+                result = external_auth.auth_external(form)
+                self.response(200, result)
                 return result
-            result = G_usermgr.auth_iaaa(result['Info'])
-            self.response(200, result)
-            return result
+            except:
+                result = {'success': 'false', 'reason': 'Something wrong happened when auth an external account'}
+                self.response(200, result)
+                return result
 
         token = form.getvalue("token")
         if token == None:
@@ -577,4 +567,3 @@ if __name__ == '__main__':
     server = ThreadingHttpServer((masterip, int(masterport)), DockletHttpHandler)
     logger.info("starting master server")
     server.serve_forever()
-

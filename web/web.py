@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-from flask import Flask, request, session, render_template, redirect, send_from_directory, make_response, url_for
+from flask import Flask, request, session, render_template, redirect, send_from_directory, make_response, url_for, abort
 from authenticate.auth import login_required, administration_required,activated_required
-from authenticate.login import loginView, logoutView, iaaa_authView, pkuloginView
+from authenticate.login import loginView, logoutView
 from authenticate.register import registerView
 from dashboard.dashboard import dashboardView
 from monitor.monitor import *
@@ -17,6 +17,7 @@ import json
 from jupytercookie import cookie_tool
 import os
 import getopt
+
 
 import sys, inspect
 this_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
@@ -33,6 +34,12 @@ from log import initlogging
 initlogging("docklet-web")
 from log import logger
 
+external_login = env.getenv('EXTERNAL_LOGIN')
+external_login_url = env.getenv('EXTERNAL_LOGIN_URL')
+external_login_callback_url = env.getenv('EXTERNAL_LOGIN_CALLBACK_URL') 
+if (external_login == 'TRUE'):
+    from authenticate.external import external_loginView, external_login_callbackView
+
 app = Flask(__name__)
 
 
@@ -45,13 +52,19 @@ def home():
 def login():
     return loginView.as_view()
 
-@app.route("/iaaa_auth/", methods=['GET'])
-def iaaa_auth():
-    return iaaa_authView.as_view()
+@app.route(external_login_url, methods=['GET'])
+def external_login_func():
+    try:
+        return external_loginView.as_view()
+    except:
+        abort(500)
 
-@app.route("/pkulogin/", methods=['GET'])
-def pkulogin():
-    return pkuloginView.as_view()
+@app.route(external_login_callback_url, methods=['GET'])
+def external_login_callback():
+    try:
+        return external_login_callbackView.as_view()
+    except:
+        abort(500)
 
 @app.route("/logout/", methods=["GET"])
 @login_required
