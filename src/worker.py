@@ -10,9 +10,10 @@ from log import initlogging
 initlogging("docklet-worker")
 from log import logger
 
-import xmlrpc.server, subprocess, os, sys, time
+import xmlrpc.server, sys, time
 from socketserver import ThreadingMixIn
 import etcdlib, network, container, imagemgr
+from nettools import netcontrol
 import monitor
 
 ##################################################################
@@ -119,15 +120,19 @@ class Worker(object):
             logger.info ("master also on this node. reuse master's network")
         else:
             logger.info ("initialize network")
-            [status, result] = self.etcd.getkey("network/workbridge")
-            if not status:
-                logger.error ("get bridge IP failed, please check whether master set bridge IP for worker")
-            self.bridgeip = result
+            # 'docklet-br' of worker do not need IP Addr. 
+            #[status, result] = self.etcd.getkey("network/workbridge")
+            #if not status:
+            #    logger.error ("get bridge IP failed, please check whether master set bridge IP for worker")
+            #self.bridgeip = result
             # create bridges for worker
-            logger.info ("initialize bridge with ip %s" % self.bridgeip)
-            network.netsetup("init", self.bridgeip)
+            #network.netsetup("init", self.bridgeip)
+            if not netcontrol.bridge_exists('docklet-br'):
+                netcontrol.new_bridge('docklet-br')
             logger.info ("setup GRE tunnel to master %s" % self.master)
-            network.netsetup("gre", self.master)
+            #network.netsetup("gre", self.master)
+            if not netcontrol.gre_exists('docklet-br', self.master):
+                netcontrol.setup_gre('docklet-br', self.master)
 
     # start service of worker
     def start(self):

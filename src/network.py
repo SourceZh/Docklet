@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-import json, sys, netifaces, subprocess
+import json, sys, netifaces
+from nettools import netcontrol
 
 from log import logger
-import env
 
 # getip : get ip from network interface
 # ifname : name of network interface
@@ -16,33 +16,6 @@ def getip(ifname):
             return netifaces.ifaddresses(ifname)[2][0]['addr']
         else:
             return False # network interface is down
-
-# netsetup : setup network, use netsetup.sh to do this work
-#       1. initialize bridges
-#       2. setup GRE tunnels
-def netsetup(action, ip):
-    path = env.getenv("DOCKLET_LIB")
-    if action == 'init':
-        logger.info ("initialize bridges")
-    else:
-        logger.info ("setup GRE tunnel")
-    # subprocess.getstatusoutput will get status and output
-    #                      and arg must be a string
-    #[status, output] = subprocess.getstatusoutput(path+"/netsetup.sh "+action+" "+ip)
-    # subprocess.call will print the result to console
-    #                      and args must be a list of string
-    logger.debug ("calling netsetup.sh %s %s" % (action, ip))
-    subprocess.call([path+"/netsetup.sh", action, ip])
-
-def init_gateway(gwname, gwip, vlanid):
-    path = env.getenv("DOCKLET_LIB")
-    logger.info("init gateway for %s with %s tag=%s" % (gwname, gwip, str(vlanid)) )
-    subprocess.call([path+"/netsetup.sh", "newgw", gwname, gwip, str(vlanid)])
-
-def del_gateway(gwname):
-    path = env.getenv("DOCKLET_LIB")
-    logger.info("delete gateway for %s" % gwname )
-    subprocess.call([path+"/netsetup.sh", "delgw", gwname])
 
 def ip_to_int(addr):
     [a, b, c, d] = addr.split('.')
@@ -391,7 +364,8 @@ class NetworkMgr(object):
             self.center.free(result, cidr)
             return [False, vlanid]
         self.users[username] = UserPool(addr_cidr = result+"/"+str(cidr), vlanid=vlanid)
-        init_gateway(username, self.users[username].get_gateway_cidr(), vlanid)
+        logger.info("setup gateway for %s with %s and vlan=%s" % (username, self.users[username].get_gateway_cidr(), str(vlanid)))
+        netcontrol.setup_gw('docklet-br', username, self.users[username].get_gateway_cidr(), str(vlanid))
         self.dump_user(username)
         del self.users[username]
         return [True, 'add user success']
@@ -405,7 +379,7 @@ class NetworkMgr(object):
         self.center.free(addr, int(cidr))
         self.dump_center()
         self.release_vlanid(self.users[username].vlanid)
-        del_gateway(username)
+        netcontrol.del_gw('docklet-br', username)
         self.etcd.deldir("network/users/"+username)
         del self.users[username]
         return [True, 'delete user success']
