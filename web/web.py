@@ -213,7 +213,7 @@ def hostsRealtime(com_ip):
 @app.route("/hosts/<com_ip>/containers/", methods=['GET'])
 @administration_required
 def hostsConAll(com_ip):
-    monitorRealConAllView.com_ip = com_ip
+    hostsConAllView.com_ip = com_ip
     return hostsConAllView.as_view()
 
 @app.route("/vclusters/", methods=['GET'])

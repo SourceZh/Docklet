@@ -1,0 +1,730 @@
+         4335 function calls in 2.059 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    2.059    2.059 <string>:1(<module>)
+        3    0.000    0.000    0.000    0.000 <string>:12(__new__)
+        2    0.000    0.000    0.000    0.000 __init__.py:1465(cpu_times)
+        1    0.000    0.000    1.001    1.001 __init__.py:1601(cpu_times_percent)
+        1    0.000    0.000    0.000    0.000 __init__.py:1618(calculate)
+        1    0.000    0.000    0.000    0.000 __init__.py:1683(virtual_memory)
+        3    0.000    0.000    0.000    0.000 __init__.py:1764(disk_usage)
+        1    0.000    0.000    0.001    0.001 __init__.py:1772(disk_partitions)
+        6    0.000    0.000    0.000    0.000 __init__.py:271(loads)
+        2    0.000    0.000    0.000    0.000 _common.py:116(wrapper)
+        4    0.000    0.000    0.000    0.000 _common.py:90(usage_percent)
+       42    0.000    0.000    0.000    0.000 _policybase.py:277(_sanitize_header)
+       44    0.000    0.000    0.000    0.000 _policybase.py:289(header_source_parse)
+       42    0.000    0.000    0.000    0.000 _policybase.py:307(header_fetch_parse)
+        3    0.000    0.000    0.000    0.000 _pslinux.py:140(open_binary)
+        1    0.000    0.000    0.000    0.000 _pslinux.py:144(open_text)
+        4    0.000    0.000    0.000    0.000 _pslinux.py:158(get_procfs_path)
+        1    0.000    0.000    0.000    0.000 _pslinux.py:254(virtual_memory)
+        2    0.000    0.000    0.000    0.000 _pslinux.py:331(cpu_times)
+        2    0.000    0.000    0.000    0.000 _pslinux.py:343(<listcomp>)
+        1    0.000    0.000    0.001    0.001 _pslinux.py:829(disk_partitions)
+        3    0.000    0.000    0.000    0.000 _psposix.py:119(disk_usage)
+       36    0.000    0.000    0.001    0.000 client.py:1053(putheader)
+        6    0.000    0.000    0.003    0.001 client.py:1081(endheaders)
+        6    0.000    0.000    0.004    0.001 client.py:1096(request)
+        6    0.000    0.000    0.004    0.001 client.py:1124(_send_request)
+        6    0.000    0.000    0.000    0.000 client.py:1126(<listcomp>)
+        6    0.000    0.000    0.037    0.006 client.py:1145(getresponse)
+        6    0.000    0.000    0.002    0.000 client.py:194(parse_headers)
+        6    0.000    0.000    0.000    0.000 client.py:227(__init__)
+        6    0.000    0.000    0.034    0.006 client.py:257(_read_status)
+        6    0.000    0.000    0.037    0.006 client.py:290(begin)
+        6    0.000    0.000    0.000    0.000 client.py:370(_check_close)
+        6    0.000    0.000    0.000    0.000 client.py:400(_close_conn)
+        6    0.000    0.000    0.000    0.000 client.py:405(close)
+        6    0.000    0.000    0.000    0.000 client.py:417(flush)
+        6    0.000    0.000    0.001    0.000 client.py:437(read)
+        6    0.000    0.000    0.000    0.000 client.py:591(_safe_read)
+        6    0.000    0.000    0.000    0.000 client.py:722(info)
+        6    0.000    0.000    0.000    0.000 client.py:741(__init__)
+        6    0.000    0.000    0.000    0.000 client.py:784(_get_hostport)
+        6    0.000    0.000    0.002    0.000 client.py:838(connect)
+        6    0.000    0.000    0.000    0.000 client.py:847(close)
+       12    0.000    0.000    0.003    0.000 client.py:861(send)
+       42    0.000    0.000    0.000    0.000 client.py:909(_output)
+        6    0.000    0.000    0.003    0.001 client.py:916(_send_output)
+        6    0.000    0.000    0.000    0.000 client.py:930(putrequest)
+        1    0.000    0.000    0.000    0.000 codecs.py:259(__init__)
+        1    0.000    0.000    0.000    0.000 codecs.py:308(__init__)
+        2    0.000    0.000    0.000    0.000 codecs.py:318(decode)
+        6    0.000    0.000    0.000    0.000 decoder.py:334(decode)
+        6    0.000    0.000    0.000    0.000 decoder.py:345(raw_decode)
+       12    0.000    0.000    0.000    0.000 enum.py:209(__call__)
+       12    0.000    0.000    0.000    0.000 enum.py:453(__new__)
+        2    0.000    0.000    0.000    0.000 error.py:43(__init__)
+        2    0.000    0.000    0.000    0.000 error.py:72(headers)
+        6    0.000    0.000    0.044    0.007 etcdlib.py:17(dorequest)
+        6    0.000    0.000    0.044    0.007 etcdlib.py:89(setkey)
+       12    0.000    0.000    0.000    0.000 feedparser.py:122(pushlines)
+       12    0.000    0.000    0.000    0.000 feedparser.py:125(__iter__)
+       62    0.000    0.000    0.000    0.000 feedparser.py:128(__next__)
+        6    0.000    0.000    0.000    0.000 feedparser.py:139(__init__)
+        6    0.000    0.000    0.000    0.000 feedparser.py:148(<lambda>)
+        6    0.000    0.000    0.001    0.000 feedparser.py:175(feed)
+       12    0.000    0.000    0.001    0.000 feedparser.py:180(_call_parse)
+        6    0.000    0.000    0.000    0.000 feedparser.py:186(close)
+        6    0.000    0.000    0.000    0.000 feedparser.py:199(_new_message)
+        6    0.000    0.000    0.000    0.000 feedparser.py:209(_pop_message)
+       12    0.000    0.000    0.001    0.000 feedparser.py:217(_parsegen)
+        6    0.000    0.000    0.000    0.000 feedparser.py:470(_parse_headers)
+        6    0.000    0.000    0.000    0.000 feedparser.py:53(__init__)
+        6    0.000    0.000    0.000    0.000 feedparser.py:69(close)
+       62    0.000    0.000    0.000    0.000 feedparser.py:75(readline)
+        6    0.000    0.000    0.000    0.000 feedparser.py:98(push)
+        6    0.000    0.000    0.000    0.000 idna.py:147(encode)
+       12    0.000    0.000    0.000    0.000 message.py:121(__init__)
+       24    0.000    0.000    0.000    0.000 message.py:30(_splitparam)
+        6    0.000    0.000    0.000    0.000 message.py:304(set_payload)
+       54    0.000    0.000    0.000    0.000 message.py:463(get)
+       44    0.000    0.000    0.000    0.000 message.py:480(set_raw)
+       24    0.000    0.000    0.000    0.000 message.py:565(get_content_type)
+       18    0.000    0.000    0.000    0.000 message.py:589(get_content_maintype)
+        1    0.000    0.000    0.003    0.003 monitor.py:116(collect_meminfo)
+        1    0.000    0.000    1.036    1.036 monitor.py:130(collect_cpuinfo)
+        1    0.000    0.000    0.004    0.004 monitor.py:156(collect_diskinfo)
+        1    0.000    0.000    0.012    0.012 monitor.py:177(collect_osinfo)
+        1    0.000    0.000    2.059    2.059 monitor.py:197(run)
+        6    0.000    0.000    0.000    0.000 os.py:817(fsencode)
+       12    0.000    0.000    0.000    0.000 parse.py:100(_coerce_args)
+        6    0.000    0.000    0.000    0.000 parse.py:288(urlparse)
+        6    0.000    0.000    0.000    0.000 parse.py:313(_splitnetloc)
+        6    0.000    0.000    0.000    0.000 parse.py:321(urlsplit)
+        6    0.000    0.000    0.000    0.000 parse.py:527(unquote)
+        6    0.000    0.000    0.000    0.000 parse.py:846(unwrap)
+        6    0.000    0.000    0.000    0.000 parse.py:855(splittype)
+        6    0.000    0.000    0.000    0.000 parse.py:868(splithost)
+       12    0.000    0.000    0.000    0.000 parse.py:89(_noop)
+        6    0.000    0.000    0.000    0.000 parse.py:930(splittag)
+        6    0.000    0.000    0.000    0.000 parser.py:18(__init__)
+        6    0.000    0.000    0.002    0.000 parser.py:42(parse)
+        6    0.000    0.000    0.002    0.000 parser.py:60(parsestr)
+        6    0.000    0.000    0.000    0.000 posixpath.py:145(dirname)
+        6    0.000    0.000    0.000    0.000 posixpath.py:39(_get_sep)
+       50    0.000    0.000    0.000    0.000 re.py:195(split)
+       50    0.000    0.000    0.000    0.000 re.py:278(_compile)
+        6    0.000    0.000    0.000    0.000 request.py:1160(do_request_)
+        6    0.000    0.000    0.042    0.007 request.py:1200(do_open)
+        6    0.000    0.000    0.000    0.000 request.py:1213(<genexpr>)
+       36    0.000    0.000    0.000    0.000 request.py:1226(<genexpr>)
+        6    0.000    0.000    0.042    0.007 request.py:1267(http_open)
+        6    0.000    0.000    0.042    0.007 request.py:139(urlopen)
+        6    0.000    0.000    0.000    0.000 request.py:247(request_host)
+        6    0.000    0.000    0.001    0.000 request.py:265(__init__)
+       20    0.000    0.000    0.000    0.000 request.py:283(full_url)
+        6    0.000    0.000    0.000    0.000 request.py:289(full_url)
+       24    0.000    0.000    0.000    0.000 request.py:302(data)
+        6    0.000    0.000    0.000    0.000 request.py:306(data)
+        6    0.000    0.000    0.000    0.000 request.py:320(_parse)
+        6    0.000    0.000    0.000    0.000 request.py:328(get_method)
+        6    0.000    0.000    0.000    0.000 request.py:333(get_full_url)
+        6    0.000    0.000    0.000    0.000 request.py:344(has_proxy)
+       24    0.000    0.000    0.000    0.000 request.py:351(add_unredirected_header)
+       30    0.000    0.000    0.000    0.000 request.py:355(has_header)
+       16    0.000    0.000    0.042    0.003 request.py:436(_call_chain)
+        6    0.000    0.000    0.042    0.007 request.py:447(open)
+        6    0.000    0.000    0.042    0.007 request.py:475(_open)
+        2    0.000    0.000    0.000    0.000 request.py:490(error)
+        6    0.000    0.000    0.000    0.000 request.py:574(http_response)
+        2    0.000    0.000    0.000    0.000 request.py:588(http_error_default)
+        2    0.000    0.000    0.000    0.000 response.py:19(__init__)
+        2    0.000    0.000    0.000    0.000 response.py:60(__init__)
+        2    0.000    0.000    0.000    0.000 response.py:71(__init__)
+        6    0.000    0.000    0.000    0.000 socket.py:129(__init__)
+        6    0.000    0.000    0.000    0.000 socket.py:208(makefile)
+        6    0.000    0.000    0.000    0.000 socket.py:393(_decref_socketios)
+        6    0.000    0.000    0.000    0.000 socket.py:399(_real_close)
+       12    0.000    0.000    0.000    0.000 socket.py:403(close)
+        6    0.000    0.000    0.000    0.000 socket.py:549(__init__)
+        6    0.000    0.000    0.034    0.006 socket.py:561(readinto)
+       12    0.000    0.000    0.000    0.000 socket.py:600(readable)
+        6    0.000    0.000    0.000    0.000 socket.py:638(close)
+        6    0.000    0.000    0.002    0.000 socket.py:677(create_connection)
+        6    0.000    0.000    0.001    0.000 socket.py:715(getaddrinfo)
+       12    0.000    0.000    0.000    0.000 socket.py:87(_intenum_converter)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:391(_generate_overlap_table)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:412(_compile_info)
+        2    0.000    0.000    0.000    0.000 sre_compile.py:513(isstring)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:516(_code)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:531(compile)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:64(_compile)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:105(__init__)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:165(append)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:167(getwidth)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:217(__init__)
+        2    0.000    0.000    0.000    0.000 sre_parse.py:226(__next)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:242(match)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:247(get)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:276(tell)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:429(_parse_sub)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:491(_parse)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:70(__init__)
+        2    0.000    0.000    0.000    0.000 sre_parse.py:75(groups)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:797(fix_flags)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:819(parse)
+        6    0.000    0.000    0.006    0.001 subprocess.py:1025(communicate)
+        6    0.000    0.000    0.000    0.000 subprocess.py:1074(poll)
+        6    0.000    0.000    0.000    0.000 subprocess.py:1367(_get_handles)
+        6    0.001    0.000    0.005    0.001 subprocess.py:1418(_execute_child)
+        6    0.000    0.000    0.000    0.000 subprocess.py:1545(_handle_exitstatus)
+       12    0.000    0.000    0.000    0.000 subprocess.py:1560(_internal_poll)
+        6    0.000    0.000    0.000    0.000 subprocess.py:1595(_try_wait)
+       12    0.000    0.000    0.000    0.000 subprocess.py:1608(wait)
+        6    0.000    0.000    0.000    0.000 subprocess.py:503(_cleanup)
+        6    0.000    0.000    0.012    0.002 subprocess.py:585(check_output)
+        6    0.000    0.000    0.000    0.000 subprocess.py:640(__init__)
+        6    0.000    0.000    0.012    0.002 subprocess.py:662(run)
+        6    0.000    0.000    0.005    0.001 subprocess.py:834(__init__)
+        6    0.000    0.000    0.000    0.000 subprocess.py:979(__enter__)
+        6    0.000    0.000    0.000    0.000 subprocess.py:982(__exit__)
+        6    0.000    0.000    0.000    0.000 subprocess.py:994(__del__)
+        2    0.000    0.000    0.000    0.000 tempfile.py:563(__init__)
+        2    0.000    0.000    0.000    0.000 tempfile.py:578(close)
+        2    0.000    0.000    0.000    0.000 tempfile.py:588(__del__)
+        2    0.000    0.000    0.000    0.000 tempfile.py:606(__init__)
+       42    0.000    0.000    0.000    0.000 utils.py:51(_has_surrogates)
+       22    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0xa1b980}
+        2    0.000    0.000    0.000    0.000 {built-in method _codecs.utf_8_decode}
+        6    0.002    0.000    0.002    0.000 {built-in method _posixsubprocess.fork_exec}
+        6    0.000    0.000    0.000    0.000 {built-in method _socket.getaddrinfo}
+        1    0.000    0.000    0.000    0.000 {built-in method _sre.compile}
+        6    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+        1    0.000    0.000    2.060    2.060 {built-in method builtins.exec}
+       52    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+       90    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+      113    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+      169    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+       15    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.ord}
+       14    0.000    0.000    0.000    0.000 {built-in method builtins.round}
+        8    0.000    0.000    0.000    0.000 {built-in method builtins.sorted}
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.sum}
+        6    0.000    0.000    0.000    0.000 {built-in method fromkeys}
+       10    0.000    0.000    0.000    0.000 {built-in method io.open}
+        6    0.000    0.000    0.000    0.000 {built-in method posix.WEXITSTATUS}
+        6    0.000    0.000    0.000    0.000 {built-in method posix.WIFEXITED}
+        6    0.000    0.000    0.000    0.000 {built-in method posix.WIFSIGNALED}
+       18    0.000    0.000    0.000    0.000 {built-in method posix.close}
+       12    0.000    0.000    0.000    0.000 {built-in method posix.pipe}
+        6    0.002    0.000    0.002    0.000 {built-in method posix.read}
+        3    0.000    0.000    0.000    0.000 {built-in method posix.statvfs}
+        6    0.000    0.000    0.000    0.000 {built-in method posix.waitpid}
+        1    0.000    0.000    0.000    0.000 {built-in method psutil_linux.disk_partitions}
+        1    0.000    0.000    0.000    0.000 {built-in method psutil_linux.linux_sysinfo}
+        2    2.001    1.001    2.001    1.001 {built-in method time.sleep}
+        6    0.000    0.000    0.000    0.000 {function HTTPResponse.close at 0x7fec89dc3840}
+        6    0.000    0.000    0.000    0.000 {function HTTPResponse.flush at 0x7fec89dc38c8}
+        6    0.000    0.000    0.000    0.000 {method '_checkClosed' of '_io._IOBase' objects}
+        6    0.000    0.000    0.000    0.000 {method '_checkReadable' of '_io._IOBase' objects}
+       12    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+      229    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+       30    0.000    0.000    0.000    0.000 {method 'capitalize' of 'str' objects}
+       18    0.000    0.000    0.001    0.000 {method 'close' of '_io.BufferedReader' objects}
+        6    0.001    0.000    0.001    0.000 {method 'connect' of '_socket.socket' objects}
+        6    0.000    0.000    0.000    0.000 {method 'count' of 'list' objects}
+       24    0.000    0.000    0.000    0.000 {method 'count' of 'str' objects}
+       12    0.000    0.000    0.000    0.000 {method 'decode' of 'bytes' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+      138    0.000    0.000    0.000    0.000 {method 'encode' of 'str' objects}
+       12    0.000    0.000    0.000    0.000 {method 'end' of '_sre.SRE_Match' objects}
+       12    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
+       12    0.000    0.000    0.000    0.000 {method 'extend' of 'collections.deque' objects}
+        8    0.000    0.000    0.000    0.000 {method 'extend' of 'list' objects}
+       68    0.000    0.000    0.000    0.000 {method 'find' of 'str' objects}
+       36    0.000    0.000    0.000    0.000 {method 'fullmatch' of '_sre.SRE_Pattern' objects}
+       34    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+       12    0.000    0.000    0.000    0.000 {method 'groups' of '_sre.SRE_Match' objects}
+       27    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+       54    0.000    0.000    0.000    0.000 {method 'join' of 'bytes' objects}
+       56    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+      370    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+       94    0.000    0.000    0.000    0.000 {method 'lstrip' of 'str' objects}
+       80    0.000    0.000    0.000    0.000 {method 'match' of '_sre.SRE_Pattern' objects}
+       24    0.000    0.000    0.000    0.000 {method 'partition' of 'str' objects}
+        6    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+       50    0.000    0.000    0.000    0.000 {method 'popleft' of 'collections.deque' objects}
+       12    0.006    0.000    0.006    0.000 {method 'read' of '_io.BufferedReader' objects}
+       12    0.000    0.000    0.000    0.000 {method 'read' of '_io.StringIO' objects}
+       58    0.000    0.000    0.034    0.001 {method 'readline' of '_io.BufferedReader' objects}
+        6    0.034    0.006    0.034    0.006 {method 'recv_into' of '_socket.socket' objects}
+        6    0.000    0.000    0.000    0.000 {method 'rfind' of 'bytes' objects}
+       12    0.000    0.000    0.000    0.000 {method 'rfind' of 'str' objects}
+        6    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+        6    0.000    0.000    0.000    0.000 {method 'rstrip' of 'bytes' objects}
+       99    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+       36    0.000    0.000    0.000    0.000 {method 'search' of '_sre.SRE_Pattern' objects}
+       12    0.001    0.000    0.001    0.000 {method 'sendall' of '_socket.socket' objects}
+        2    0.000    0.000    0.000    0.000 {method 'setdefault' of 'dict' objects}
+        6    0.000    0.000    0.000    0.000 {method 'setsockopt' of '_socket.socket' objects}
+        6    0.000    0.000    0.000    0.000 {method 'settimeout' of '_socket.socket' objects}
+       50    0.000    0.000    0.000    0.000 {method 'split' of '_sre.SRE_Pattern' objects}
+       11    0.000    0.000    0.000    0.000 {method 'split' of 'bytes' objects}
+       94    0.000    0.000    0.000    0.000 {method 'split' of 'str' objects}
+       12    0.000    0.000    0.000    0.000 {method 'splitlines' of 'str' objects}
+       21    0.000    0.000    0.000    0.000 {method 'startswith' of 'bytes' objects}
+       93    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+       79    0.000    0.000    0.000    0.000 {method 'strip' of 'str' objects}
+        6    0.000    0.000    0.000    0.000 {method 'sub' of '_sre.SRE_Pattern' objects}
+       30    0.000    0.000    0.000    0.000 {method 'title' of 'str' objects}
+        6    0.000    0.000    0.000    0.000 {method 'update' of 'dict' objects}
+
+
+         840 function calls in 0.013 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.013    0.013 <string>:1(<module>)
+        1    0.000    0.000    0.000    0.000 <string>:12(__new__)
+        1    0.000    0.000    0.000    0.000 __init__.py:271(loads)
+        7    0.000    0.000    0.000    0.000 _policybase.py:277(_sanitize_header)
+        8    0.000    0.000    0.000    0.000 _policybase.py:289(header_source_parse)
+        7    0.000    0.000    0.000    0.000 _policybase.py:307(header_fetch_parse)
+        6    0.000    0.000    0.000    0.000 client.py:1053(putheader)
+        1    0.000    0.000    0.000    0.000 client.py:1081(endheaders)
+        1    0.000    0.000    0.000    0.000 client.py:1096(request)
+        1    0.000    0.000    0.000    0.000 client.py:1124(_send_request)
+        1    0.000    0.000    0.000    0.000 client.py:1126(<listcomp>)
+        1    0.000    0.000    0.001    0.001 client.py:1145(getresponse)
+        1    0.000    0.000    0.000    0.000 client.py:194(parse_headers)
+        1    0.000    0.000    0.000    0.000 client.py:227(__init__)
+        1    0.000    0.000    0.001    0.001 client.py:257(_read_status)
+        1    0.000    0.000    0.001    0.001 client.py:290(begin)
+        1    0.000    0.000    0.000    0.000 client.py:370(_check_close)
+        1    0.000    0.000    0.000    0.000 client.py:400(_close_conn)
+        1    0.000    0.000    0.000    0.000 client.py:405(close)
+        1    0.000    0.000    0.000    0.000 client.py:417(flush)
+        1    0.000    0.000    0.000    0.000 client.py:437(read)
+        1    0.000    0.000    0.000    0.000 client.py:591(_safe_read)
+        1    0.000    0.000    0.000    0.000 client.py:722(info)
+        1    0.000    0.000    0.000    0.000 client.py:741(__init__)
+        1    0.000    0.000    0.000    0.000 client.py:784(_get_hostport)
+        1    0.000    0.000    0.000    0.000 client.py:838(connect)
+        1    0.000    0.000    0.000    0.000 client.py:847(close)
+        2    0.000    0.000    0.000    0.000 client.py:861(send)
+        7    0.000    0.000    0.000    0.000 client.py:909(_output)
+        1    0.000    0.000    0.000    0.000 client.py:916(_send_output)
+        1    0.000    0.000    0.000    0.000 client.py:930(putrequest)
+        1    0.000    0.000    0.000    0.000 decoder.py:334(decode)
+        1    0.000    0.000    0.000    0.000 decoder.py:345(raw_decode)
+        2    0.000    0.000    0.000    0.000 enum.py:209(__call__)
+        2    0.000    0.000    0.000    0.000 enum.py:453(__new__)
+        1    0.000    0.000    0.002    0.002 etcdlib.py:17(dorequest)
+        1    0.000    0.000    0.002    0.002 etcdlib.py:89(setkey)
+        2    0.000    0.000    0.000    0.000 feedparser.py:122(pushlines)
+        2    0.000    0.000    0.000    0.000 feedparser.py:125(__iter__)
+       11    0.000    0.000    0.000    0.000 feedparser.py:128(__next__)
+        1    0.000    0.000    0.000    0.000 feedparser.py:139(__init__)
+        1    0.000    0.000    0.000    0.000 feedparser.py:148(<lambda>)
+        1    0.000    0.000    0.000    0.000 feedparser.py:175(feed)
+        2    0.000    0.000    0.000    0.000 feedparser.py:180(_call_parse)
+        1    0.000    0.000    0.000    0.000 feedparser.py:186(close)
+        1    0.000    0.000    0.000    0.000 feedparser.py:199(_new_message)
+        1    0.000    0.000    0.000    0.000 feedparser.py:209(_pop_message)
+        2    0.000    0.000    0.000    0.000 feedparser.py:217(_parsegen)
+        1    0.000    0.000    0.000    0.000 feedparser.py:470(_parse_headers)
+        1    0.000    0.000    0.000    0.000 feedparser.py:53(__init__)
+        1    0.000    0.000    0.000    0.000 feedparser.py:69(close)
+       11    0.000    0.000    0.000    0.000 feedparser.py:75(readline)
+        1    0.000    0.000    0.000    0.000 feedparser.py:98(push)
+        1    0.000    0.000    0.000    0.000 idna.py:147(encode)
+        2    0.000    0.000    0.000    0.000 message.py:121(__init__)
+        4    0.000    0.000    0.000    0.000 message.py:30(_splitparam)
+        1    0.000    0.000    0.000    0.000 message.py:304(set_payload)
+        9    0.000    0.000    0.000    0.000 message.py:463(get)
+        8    0.000    0.000    0.000    0.000 message.py:480(set_raw)
+        4    0.000    0.000    0.000    0.000 message.py:565(get_content_type)
+        3    0.000    0.000    0.000    0.000 message.py:589(get_content_maintype)
+        1    0.000    0.000    0.013    0.013 monitor.py:177(collect_osinfo)
+        5    0.000    0.000    0.000    0.000 os.py:817(fsencode)
+        2    0.000    0.000    0.000    0.000 parse.py:100(_coerce_args)
+        1    0.000    0.000    0.000    0.000 parse.py:288(urlparse)
+        1    0.000    0.000    0.000    0.000 parse.py:321(urlsplit)
+        1    0.000    0.000    0.000    0.000 parse.py:527(unquote)
+        1    0.000    0.000    0.000    0.000 parse.py:846(unwrap)
+        1    0.000    0.000    0.000    0.000 parse.py:855(splittype)
+        1    0.000    0.000    0.000    0.000 parse.py:868(splithost)
+        2    0.000    0.000    0.000    0.000 parse.py:89(_noop)
+        1    0.000    0.000    0.000    0.000 parse.py:930(splittag)
+        1    0.000    0.000    0.000    0.000 parser.py:18(__init__)
+        1    0.000    0.000    0.000    0.000 parser.py:42(parse)
+        1    0.000    0.000    0.000    0.000 parser.py:60(parsestr)
+        5    0.000    0.000    0.000    0.000 posixpath.py:145(dirname)
+        5    0.000    0.000    0.000    0.000 posixpath.py:39(_get_sep)
+        1    0.000    0.000    0.000    0.000 request.py:1160(do_request_)
+        1    0.000    0.000    0.002    0.002 request.py:1200(do_open)
+        1    0.000    0.000    0.000    0.000 request.py:1213(<genexpr>)
+        6    0.000    0.000    0.000    0.000 request.py:1226(<genexpr>)
+        1    0.000    0.000    0.002    0.002 request.py:1267(http_open)
+        1    0.000    0.000    0.002    0.002 request.py:139(urlopen)
+        1    0.000    0.000    0.000    0.000 request.py:247(request_host)
+        1    0.000    0.000    0.000    0.000 request.py:265(__init__)
+        3    0.000    0.000    0.000    0.000 request.py:283(full_url)
+        1    0.000    0.000    0.000    0.000 request.py:289(full_url)
+        4    0.000    0.000    0.000    0.000 request.py:302(data)
+        1    0.000    0.000    0.000    0.000 request.py:306(data)
+        1    0.000    0.000    0.000    0.000 request.py:320(_parse)
+        1    0.000    0.000    0.000    0.000 request.py:328(get_method)
+        1    0.000    0.000    0.000    0.000 request.py:333(get_full_url)
+        1    0.000    0.000    0.000    0.000 request.py:344(has_proxy)
+        4    0.000    0.000    0.000    0.000 request.py:351(add_unredirected_header)
+        5    0.000    0.000    0.000    0.000 request.py:355(has_header)
+        2    0.000    0.000    0.002    0.001 request.py:436(_call_chain)
+        1    0.000    0.000    0.002    0.002 request.py:447(open)
+        1    0.000    0.000    0.002    0.002 request.py:475(_open)
+        1    0.000    0.000    0.000    0.000 request.py:574(http_response)
+        1    0.000    0.000    0.000    0.000 socket.py:129(__init__)
+        1    0.000    0.000    0.000    0.000 socket.py:208(makefile)
+        1    0.000    0.000    0.000    0.000 socket.py:393(_decref_socketios)
+        1    0.000    0.000    0.000    0.000 socket.py:399(_real_close)
+        2    0.000    0.000    0.000    0.000 socket.py:403(close)
+        1    0.000    0.000    0.000    0.000 socket.py:549(__init__)
+        1    0.000    0.000    0.001    0.001 socket.py:561(readinto)
+        2    0.000    0.000    0.000    0.000 socket.py:600(readable)
+        1    0.000    0.000    0.000    0.000 socket.py:638(close)
+        1    0.000    0.000    0.000    0.000 socket.py:677(create_connection)
+        1    0.000    0.000    0.000    0.000 socket.py:715(getaddrinfo)
+        2    0.000    0.000    0.000    0.000 socket.py:87(_intenum_converter)
+        5    0.000    0.000    0.006    0.001 subprocess.py:1025(communicate)
+        5    0.000    0.000    0.000    0.000 subprocess.py:1074(poll)
+        5    0.000    0.000    0.000    0.000 subprocess.py:1367(_get_handles)
+        5    0.001    0.000    0.005    0.001 subprocess.py:1418(_execute_child)
+        5    0.000    0.000    0.000    0.000 subprocess.py:1545(_handle_exitstatus)
+       10    0.000    0.000    0.000    0.000 subprocess.py:1560(_internal_poll)
+        5    0.000    0.000    0.000    0.000 subprocess.py:1595(_try_wait)
+       10    0.000    0.000    0.000    0.000 subprocess.py:1608(wait)
+        5    0.000    0.000    0.000    0.000 subprocess.py:503(_cleanup)
+        5    0.000    0.000    0.011    0.002 subprocess.py:585(check_output)
+        5    0.000    0.000    0.000    0.000 subprocess.py:640(__init__)
+        5    0.000    0.000    0.011    0.002 subprocess.py:662(run)
+        5    0.000    0.000    0.005    0.001 subprocess.py:834(__init__)
+        5    0.000    0.000    0.000    0.000 subprocess.py:979(__enter__)
+        5    0.000    0.000    0.000    0.000 subprocess.py:982(__exit__)
+        5    0.000    0.000    0.000    0.000 subprocess.py:994(__del__)
+        7    0.000    0.000    0.000    0.000 utils.py:51(_has_surrogates)
+        1    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0xa1b980}
+        5    0.002    0.000    0.002    0.000 {built-in method _posixsubprocess.fork_exec}
+        1    0.000    0.000    0.000    0.000 {built-in method _socket.getaddrinfo}
+        5    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+        1    0.000    0.000    0.013    0.013 {built-in method builtins.exec}
+        9    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+       15    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+       38    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+       29    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+        5    0.000    0.000    0.000    0.000 {built-in method builtins.sorted}
+        1    0.000    0.000    0.000    0.000 {built-in method fromkeys}
+        5    0.000    0.000    0.000    0.000 {built-in method io.open}
+        5    0.000    0.000    0.000    0.000 {built-in method posix.WEXITSTATUS}
+        5    0.000    0.000    0.000    0.000 {built-in method posix.WIFEXITED}
+        5    0.000    0.000    0.000    0.000 {built-in method posix.WIFSIGNALED}
+       15    0.000    0.000    0.000    0.000 {built-in method posix.close}
+       10    0.000    0.000    0.000    0.000 {built-in method posix.pipe}
+        5    0.002    0.000    0.002    0.000 {built-in method posix.read}
+        5    0.000    0.000    0.000    0.000 {built-in method posix.waitpid}
+        1    0.000    0.000    0.000    0.000 {function HTTPResponse.close at 0x7fec89dc3840}
+        1    0.000    0.000    0.000    0.000 {function HTTPResponse.flush at 0x7fec89dc38c8}
+        1    0.000    0.000    0.000    0.000 {method '_checkClosed' of '_io._IOBase' objects}
+        1    0.000    0.000    0.000    0.000 {method '_checkReadable' of '_io._IOBase' objects}
+        5    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+       35    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        5    0.000    0.000    0.000    0.000 {method 'capitalize' of 'str' objects}
+       11    0.000    0.000    0.000    0.000 {method 'close' of '_io.BufferedReader' objects}
+        1    0.000    0.000    0.000    0.000 {method 'connect' of '_socket.socket' objects}
+        5    0.000    0.000    0.000    0.000 {method 'count' of 'list' objects}
+        4    0.000    0.000    0.000    0.000 {method 'count' of 'str' objects}
+        6    0.000    0.000    0.000    0.000 {method 'decode' of 'bytes' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+       27    0.000    0.000    0.000    0.000 {method 'encode' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 {method 'end' of '_sre.SRE_Match' objects}
+        2    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 {method 'extend' of 'collections.deque' objects}
+        1    0.000    0.000    0.000    0.000 {method 'extend' of 'list' objects}
+        8    0.000    0.000    0.000    0.000 {method 'find' of 'str' objects}
+        6    0.000    0.000    0.000    0.000 {method 'fullmatch' of '_sre.SRE_Pattern' objects}
+        5    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+        2    0.000    0.000    0.000    0.000 {method 'groups' of '_sre.SRE_Match' objects}
+        4    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+        9    0.000    0.000    0.000    0.000 {method 'join' of 'bytes' objects}
+       10    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+       64    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+        8    0.000    0.000    0.000    0.000 {method 'lstrip' of 'str' objects}
+       14    0.000    0.000    0.000    0.000 {method 'match' of '_sre.SRE_Pattern' objects}
+        4    0.000    0.000    0.000    0.000 {method 'partition' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+        9    0.000    0.000    0.000    0.000 {method 'popleft' of 'collections.deque' objects}
+        6    0.005    0.001    0.005    0.001 {method 'read' of '_io.BufferedReader' objects}
+        2    0.000    0.000    0.000    0.000 {method 'read' of '_io.StringIO' objects}
+       10    0.000    0.000    0.001    0.000 {method 'readline' of '_io.BufferedReader' objects}
+        1    0.001    0.001    0.001    0.001 {method 'recv_into' of '_socket.socket' objects}
+        5    0.000    0.000    0.000    0.000 {method 'rfind' of 'bytes' objects}
+        2    0.000    0.000    0.000    0.000 {method 'rfind' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+        5    0.000    0.000    0.000    0.000 {method 'rstrip' of 'bytes' objects}
+       13    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+        6    0.000    0.000    0.000    0.000 {method 'search' of '_sre.SRE_Pattern' objects}
+        2    0.000    0.000    0.000    0.000 {method 'sendall' of '_socket.socket' objects}
+        1    0.000    0.000    0.000    0.000 {method 'setsockopt' of '_socket.socket' objects}
+        1    0.000    0.000    0.000    0.000 {method 'settimeout' of '_socket.socket' objects}
+        1    0.000    0.000    0.000    0.000 {method 'split' of 'bytes' objects}
+       12    0.000    0.000    0.000    0.000 {method 'split' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 {method 'splitlines' of 'str' objects}
+       11    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+        7    0.000    0.000    0.000    0.000 {method 'strip' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {method 'sub' of '_sre.SRE_Pattern' objects}
+        5    0.000    0.000    0.000    0.000 {method 'title' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {method 'update' of 'dict' objects}
+
+
+         6825 function calls (6819 primitive calls) in 2.094 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    2.094    2.094 <string>:1(<module>)
+       11    0.000    0.000    0.000    0.000 <string>:12(__new__)
+       11    0.000    0.000    0.000    0.000 __init__.py:271(loads)
+       77    0.000    0.000    0.000    0.000 _policybase.py:277(_sanitize_header)
+       88    0.000    0.000    0.000    0.000 _policybase.py:289(header_source_parse)
+       77    0.000    0.000    0.000    0.000 _policybase.py:307(header_fetch_parse)
+       64    0.000    0.000    0.001    0.000 client.py:1053(putheader)
+       11    0.000    0.000    0.006    0.001 client.py:1081(endheaders)
+       11    0.000    0.000    0.007    0.001 client.py:1096(request)
+        1    0.000    0.000    0.000    0.000 client.py:1100(_set_content_length)
+       11    0.000    0.000    0.007    0.001 client.py:1124(_send_request)
+       11    0.000    0.000    0.000    0.000 client.py:1126(<listcomp>)
+       11    0.000    0.000    0.022    0.002 client.py:1145(getresponse)
+       11    0.000    0.000    0.004    0.000 client.py:194(parse_headers)
+       11    0.000    0.000    0.000    0.000 client.py:227(__init__)
+       11    0.000    0.000    0.018    0.002 client.py:257(_read_status)
+       11    0.000    0.000    0.022    0.002 client.py:290(begin)
+       11    0.000    0.000    0.000    0.000 client.py:370(_check_close)
+       11    0.000    0.000    0.000    0.000 client.py:400(_close_conn)
+       11    0.000    0.000    0.000    0.000 client.py:405(close)
+       11    0.000    0.000    0.000    0.000 client.py:417(flush)
+       11    0.000    0.000    0.001    0.000 client.py:437(read)
+       11    0.000    0.000    0.000    0.000 client.py:591(_safe_read)
+       11    0.000    0.000    0.000    0.000 client.py:722(info)
+       11    0.000    0.000    0.000    0.000 client.py:741(__init__)
+       11    0.000    0.000    0.000    0.000 client.py:784(_get_hostport)
+       11    0.000    0.000    0.003    0.000 client.py:838(connect)
+       11    0.000    0.000    0.000    0.000 client.py:847(close)
+       21    0.000    0.000    0.006    0.000 client.py:861(send)
+       75    0.000    0.000    0.000    0.000 client.py:909(_output)
+       11    0.000    0.000    0.006    0.001 client.py:916(_send_output)
+       11    0.000    0.000    0.000    0.000 client.py:930(putrequest)
+       11    0.000    0.000    0.000    0.000 decoder.py:334(decode)
+       11    0.000    0.000    0.000    0.000 decoder.py:345(raw_decode)
+       22    0.000    0.000    0.000    0.000 enum.py:209(__call__)
+       22    0.000    0.000    0.000    0.000 enum.py:453(__new__)
+       11    0.000    0.000    0.033    0.003 etcdlib.py:17(dorequest)
+        1    0.000    0.000    0.001    0.001 etcdlib.py:81(getkey)
+       10    0.000    0.000    0.032    0.003 etcdlib.py:89(setkey)
+       22    0.000    0.000    0.000    0.000 feedparser.py:122(pushlines)
+       22    0.000    0.000    0.000    0.000 feedparser.py:125(__iter__)
+      121    0.000    0.000    0.000    0.000 feedparser.py:128(__next__)
+       11    0.000    0.000    0.000    0.000 feedparser.py:139(__init__)
+       11    0.000    0.000    0.000    0.000 feedparser.py:148(<lambda>)
+       11    0.000    0.000    0.002    0.000 feedparser.py:175(feed)
+       22    0.000    0.000    0.002    0.000 feedparser.py:180(_call_parse)
+       11    0.000    0.000    0.001    0.000 feedparser.py:186(close)
+       11    0.000    0.000    0.000    0.000 feedparser.py:199(_new_message)
+       11    0.000    0.000    0.000    0.000 feedparser.py:209(_pop_message)
+       22    0.000    0.000    0.002    0.000 feedparser.py:217(_parsegen)
+       11    0.000    0.000    0.001    0.000 feedparser.py:470(_parse_headers)
+       11    0.000    0.000    0.000    0.000 feedparser.py:53(__init__)
+       11    0.000    0.000    0.000    0.000 feedparser.py:69(close)
+      121    0.000    0.000    0.000    0.000 feedparser.py:75(readline)
+       11    0.000    0.000    0.000    0.000 feedparser.py:98(push)
+       11    0.000    0.000    0.000    0.000 idna.py:147(encode)
+       22    0.000    0.000    0.000    0.000 message.py:121(__init__)
+       44    0.000    0.000    0.000    0.000 message.py:30(_splitparam)
+       11    0.000    0.000    0.000    0.000 message.py:304(set_payload)
+       99    0.000    0.000    0.001    0.000 message.py:463(get)
+       88    0.000    0.000    0.000    0.000 message.py:480(set_raw)
+       44    0.000    0.000    0.001    0.000 message.py:565(get_content_type)
+       33    0.000    0.000    0.001    0.000 message.py:589(get_content_maintype)
+        1    0.000    0.000    0.018    0.018 monitor.py:23(list_container)
+        1    0.000    0.000    0.064    0.064 monitor.py:29(collect_containerinfo)
+        1    0.000    0.000    2.094    2.094 monitor.py:75(run)
+        2    0.000    0.000    0.000    0.000 os.py:817(fsencode)
+       22    0.000    0.000    0.000    0.000 parse.py:100(_coerce_args)
+       11    0.000    0.000    0.000    0.000 parse.py:288(urlparse)
+       10    0.000    0.000    0.000    0.000 parse.py:313(_splitnetloc)
+       11    0.000    0.000    0.000    0.000 parse.py:321(urlsplit)
+       11    0.000    0.000    0.000    0.000 parse.py:527(unquote)
+       11    0.000    0.000    0.000    0.000 parse.py:846(unwrap)
+       11    0.000    0.000    0.000    0.000 parse.py:855(splittype)
+       11    0.000    0.000    0.000    0.000 parse.py:868(splithost)
+       22    0.000    0.000    0.000    0.000 parse.py:89(_noop)
+       11    0.000    0.000    0.000    0.000 parse.py:930(splittag)
+       11    0.000    0.000    0.000    0.000 parser.py:18(__init__)
+       11    0.000    0.000    0.003    0.000 parser.py:42(parse)
+       11    0.000    0.000    0.003    0.000 parser.py:60(parsestr)
+        2    0.000    0.000    0.000    0.000 posixpath.py:145(dirname)
+        2    0.000    0.000    0.000    0.000 posixpath.py:39(_get_sep)
+       16    0.000    0.000    0.001    0.000 re.py:195(split)
+       16    0.000    0.000    0.001    0.000 re.py:278(_compile)
+       11    0.000    0.000    0.000    0.000 request.py:1160(do_request_)
+       11    0.000    0.000    0.030    0.003 request.py:1200(do_open)
+       11    0.000    0.000    0.000    0.000 request.py:1213(<genexpr>)
+       64    0.000    0.000    0.000    0.000 request.py:1226(<genexpr>)
+       11    0.000    0.000    0.030    0.003 request.py:1267(http_open)
+       11    0.000    0.000    0.030    0.003 request.py:139(urlopen)
+       11    0.000    0.000    0.001    0.000 request.py:247(request_host)
+       11    0.000    0.000    0.002    0.000 request.py:265(__init__)
+       33    0.000    0.000    0.000    0.000 request.py:283(full_url)
+       11    0.000    0.000    0.001    0.000 request.py:289(full_url)
+       43    0.000    0.000    0.000    0.000 request.py:302(data)
+       11    0.000    0.000    0.000    0.000 request.py:306(data)
+       11    0.000    0.000    0.000    0.000 request.py:320(_parse)
+       11    0.000    0.000    0.000    0.000 request.py:328(get_method)
+       11    0.000    0.000    0.000    0.000 request.py:333(get_full_url)
+       11    0.000    0.000    0.000    0.000 request.py:344(has_proxy)
+       42    0.000    0.000    0.000    0.000 request.py:351(add_unredirected_header)
+       52    0.000    0.000    0.000    0.000 request.py:355(has_header)
+       22    0.000    0.000    0.030    0.001 request.py:436(_call_chain)
+       11    0.000    0.000    0.030    0.003 request.py:447(open)
+       11    0.000    0.000    0.030    0.003 request.py:475(_open)
+       11    0.000    0.000    0.000    0.000 request.py:574(http_response)
+       11    0.000    0.000    0.000    0.000 socket.py:129(__init__)
+       11    0.000    0.000    0.000    0.000 socket.py:208(makefile)
+       11    0.000    0.000    0.000    0.000 socket.py:393(_decref_socketios)
+       11    0.000    0.000    0.000    0.000 socket.py:399(_real_close)
+       22    0.000    0.000    0.000    0.000 socket.py:403(close)
+       11    0.000    0.000    0.000    0.000 socket.py:549(__init__)
+       11    0.000    0.000    0.017    0.002 socket.py:561(readinto)
+       22    0.000    0.000    0.000    0.000 socket.py:600(readable)
+       11    0.000    0.000    0.000    0.000 socket.py:638(close)
+       11    0.000    0.000    0.003    0.000 socket.py:677(create_connection)
+       11    0.000    0.000    0.001    0.000 socket.py:715(getaddrinfo)
+       22    0.000    0.000    0.000    0.000 socket.py:87(_intenum_converter)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:221(_compile_charset)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:248(_optimize_charset)
+        2    0.000    0.000    0.000    0.000 sre_compile.py:386(_simple)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:391(_generate_overlap_table)
+        3    0.000    0.000    0.000    0.000 sre_compile.py:412(_compile_info)
+        6    0.000    0.000    0.000    0.000 sre_compile.py:513(isstring)
+        3    0.000    0.000    0.000    0.000 sre_compile.py:516(_code)
+        3    0.000    0.000    0.001    0.000 sre_compile.py:531(compile)
+      5/3    0.000    0.000    0.000    0.000 sre_compile.py:64(_compile)
+        5    0.000    0.000    0.000    0.000 sre_parse.py:105(__init__)
+        6    0.000    0.000    0.000    0.000 sre_parse.py:153(__len__)
+       12    0.000    0.000    0.000    0.000 sre_parse.py:157(__getitem__)
+        2    0.000    0.000    0.000    0.000 sre_parse.py:161(__setitem__)
+        3    0.000    0.000    0.000    0.000 sre_parse.py:165(append)
+      7/5    0.000    0.000    0.000    0.000 sre_parse.py:167(getwidth)
+        3    0.000    0.000    0.000    0.000 sre_parse.py:217(__init__)
+        8    0.000    0.000    0.000    0.000 sre_parse.py:226(__next)
+        5    0.000    0.000    0.000    0.000 sre_parse.py:242(match)
+        5    0.000    0.000    0.000    0.000 sre_parse.py:247(get)
+        5    0.000    0.000    0.000    0.000 sre_parse.py:276(tell)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:362(_escape)
+        3    0.000    0.000    0.000    0.000 sre_parse.py:429(_parse_sub)
+        3    0.000    0.000    0.000    0.000 sre_parse.py:491(_parse)
+        3    0.000    0.000    0.000    0.000 sre_parse.py:70(__init__)
+        6    0.000    0.000    0.000    0.000 sre_parse.py:75(groups)
+        3    0.000    0.000    0.000    0.000 sre_parse.py:797(fix_flags)
+        3    0.000    0.000    0.000    0.000 sre_parse.py:819(parse)
+        2    0.000    0.000    0.048    0.024 subprocess.py:1025(communicate)
+        2    0.000    0.000    0.000    0.000 subprocess.py:1074(poll)
+        2    0.000    0.000    0.000    0.000 subprocess.py:1367(_get_handles)
+        2    0.000    0.000    0.008    0.004 subprocess.py:1418(_execute_child)
+        2    0.000    0.000    0.000    0.000 subprocess.py:1545(_handle_exitstatus)
+        4    0.000    0.000    0.000    0.000 subprocess.py:1560(_internal_poll)
+        2    0.000    0.000    0.000    0.000 subprocess.py:1595(_try_wait)
+        4    0.000    0.000    0.000    0.000 subprocess.py:1608(wait)
+        2    0.000    0.000    0.000    0.000 subprocess.py:503(_cleanup)
+        2    0.000    0.000    0.057    0.028 subprocess.py:585(check_output)
+        2    0.000    0.000    0.000    0.000 subprocess.py:640(__init__)
+        2    0.000    0.000    0.057    0.028 subprocess.py:662(run)
+        2    0.000    0.000    0.008    0.004 subprocess.py:834(__init__)
+        2    0.000    0.000    0.000    0.000 subprocess.py:979(__enter__)
+        2    0.000    0.000    0.000    0.000 subprocess.py:982(__exit__)
+        2    0.000    0.000    0.000    0.000 subprocess.py:994(__del__)
+       77    0.000    0.000    0.000    0.000 utils.py:51(_has_surrogates)
+       21    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0xa1b980}
+        2    0.001    0.000    0.001    0.000 {built-in method _posixsubprocess.fork_exec}
+       11    0.001    0.000    0.001    0.000 {built-in method _socket.getaddrinfo}
+        3    0.000    0.000    0.000    0.000 {built-in method _sre.compile}
+        2    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+        1    0.000    0.000    2.094    2.094 {built-in method builtins.exec}
+       46    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+      160    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+      179    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+  331/329    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+       34    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.ord}
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.sorted}
+       11    0.000    0.000    0.000    0.000 {built-in method fromkeys}
+        2    0.000    0.000    0.000    0.000 {built-in method io.open}
+        2    0.000    0.000    0.000    0.000 {built-in method posix.WEXITSTATUS}
+        2    0.000    0.000    0.000    0.000 {built-in method posix.WIFEXITED}
+        2    0.000    0.000    0.000    0.000 {built-in method posix.WIFSIGNALED}
+        6    0.000    0.000    0.000    0.000 {built-in method posix.close}
+        4    0.000    0.000    0.000    0.000 {built-in method posix.pipe}
+        2    0.007    0.003    0.007    0.003 {built-in method posix.read}
+        2    0.000    0.000    0.000    0.000 {built-in method posix.waitpid}
+        1    2.003    2.003    2.003    2.003 {built-in method time.sleep}
+       11    0.000    0.000    0.000    0.000 {function HTTPResponse.close at 0x7fec89dc3840}
+       11    0.000    0.000    0.000    0.000 {function HTTPResponse.flush at 0x7fec89dc38c8}
+       11    0.000    0.000    0.000    0.000 {method '_checkClosed' of '_io._IOBase' objects}
+       11    0.000    0.000    0.000    0.000 {method '_checkReadable' of '_io._IOBase' objects}
+        2    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+      431    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+       53    0.000    0.000    0.000    0.000 {method 'capitalize' of 'str' objects}
+       15    0.000    0.000    0.001    0.000 {method 'close' of '_io.BufferedReader' objects}
+       11    0.002    0.000    0.002    0.000 {method 'connect' of '_socket.socket' objects}
+        2    0.000    0.000    0.000    0.000 {method 'count' of 'list' objects}
+       44    0.000    0.000    0.000    0.000 {method 'count' of 'str' objects}
+       13    0.000    0.000    0.000    0.000 {method 'decode' of 'bytes' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+      239    0.000    0.000    0.000    0.000 {method 'encode' of 'str' objects}
+       22    0.000    0.000    0.000    0.000 {method 'end' of '_sre.SRE_Match' objects}
+       22    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
+       22    0.000    0.000    0.000    0.000 {method 'extend' of 'collections.deque' objects}
+       13    0.000    0.000    0.000    0.000 {method 'extend' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'find' of 'bytearray' objects}
+      128    0.000    0.000    0.000    0.000 {method 'find' of 'str' objects}
+       64    0.000    0.000    0.000    0.000 {method 'fullmatch' of '_sre.SRE_Pattern' objects}
+       56    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+       22    0.000    0.000    0.000    0.000 {method 'groups' of '_sre.SRE_Match' objects}
+       47    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+       97    0.000    0.000    0.000    0.000 {method 'join' of 'bytes' objects}
+      110    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+      712    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+      100    0.000    0.000    0.000    0.000 {method 'lstrip' of 'str' objects}
+      154    0.000    0.000    0.000    0.000 {method 'match' of '_sre.SRE_Pattern' objects}
+       44    0.000    0.000    0.000    0.000 {method 'partition' of 'str' objects}
+       11    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+       99    0.000    0.000    0.000    0.000 {method 'popleft' of 'collections.deque' objects}
+       13    0.048    0.004    0.048    0.004 {method 'read' of '_io.BufferedReader' objects}
+       22    0.000    0.000    0.000    0.000 {method 'read' of '_io.StringIO' objects}
+      110    0.000    0.000    0.018    0.000 {method 'readline' of '_io.BufferedReader' objects}
+       11    0.017    0.002    0.017    0.002 {method 'recv_into' of '_socket.socket' objects}
+        2    0.000    0.000    0.000    0.000 {method 'rfind' of 'bytes' objects}
+       22    0.000    0.000    0.000    0.000 {method 'rfind' of 'str' objects}
+       11    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 {method 'rstrip' of 'bytes' objects}
+       88    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+       64    0.000    0.000    0.000    0.000 {method 'search' of '_sre.SRE_Pattern' objects}
+       21    0.003    0.000    0.003    0.000 {method 'sendall' of '_socket.socket' objects}
+       11    0.000    0.000    0.000    0.000 {method 'setsockopt' of '_socket.socket' objects}
+       11    0.000    0.000    0.000    0.000 {method 'settimeout' of '_socket.socket' objects}
+       16    0.000    0.000    0.000    0.000 {method 'split' of '_sre.SRE_Pattern' objects}
+       11    0.000    0.000    0.000    0.000 {method 'split' of 'bytes' objects}
+      132    0.000    0.000    0.000    0.000 {method 'split' of 'str' objects}
+       22    0.000    0.000    0.000    0.000 {method 'splitlines' of 'str' objects}
+      121    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+       81    0.000    0.000    0.000    0.000 {method 'strip' of 'str' objects}
+       11    0.000    0.000    0.000    0.000 {method 'sub' of '_sre.SRE_Pattern' objects}
+       53    0.000    0.000    0.000    0.000 {method 'title' of 'str' objects}
+       11    0.000    0.000    0.000    0.000 {method 'update' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 {method 'upper' of 'str' objects}
+
+
