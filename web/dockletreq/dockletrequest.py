@@ -14,7 +14,7 @@ class dockletRequest():
         data['token'] = session['token']
         print("Docklet Request: data = %s, url = %s"%(data, url))
         result = requests.post(endpoint + url, data = data).json()
-        if (result.get('success', None) == "false" and result.get('reason', None) == "Unauthorized Action"):
+        if (result.get('success', None) == "false" and (result.get('reason', None) == "Unauthorized Action" or result.get('Unauthorized', None) == 'True')):
             abort(401)
         print(result)
         return result
