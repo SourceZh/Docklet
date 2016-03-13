@@ -79,17 +79,23 @@ pre_start () {
 	fi
 }
 
+do_start() {
+    pre_start
+    start-stop-daemon --start --oknodo --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON -- $DAEMON_OPTS
+    log_end_msg $?
+}
+
 do_stop () {
     log_daemon_msg "Stopping $DAEMON_NAME daemon"
     start-stop-daemon --stop --quiet --oknodo --remove-pidfile --pidfile $PIDFILE --retry 10
     log_end_msg $?
 }
 
+
+
 case "$1" in
     start)
-        pre_start
-        start-stop-daemon --start --oknodo --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON -- $DAEMON_OPTS
-        log_end_msg $?
+        do_start
         ;;
 
     stop)
