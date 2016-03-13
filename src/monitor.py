@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import subprocess,re,sys,etcdlib,psutil
-import time,threading,json,traceback
+import time,threading,json,traceback,platform
 
 from log import logger
 
@@ -182,23 +182,16 @@ class Collector(threading.Thread):
         return
 
     def collect_osinfo(self):
-        res = {}
-        output = subprocess.check_output(["cat /etc/issue.net"],shell=True)
-        output = output.decode('utf-8')
-        res["OSIssue"] = output.rstrip('\n')
-        output = subprocess.check_output(["uname -s"],shell=True)
-        output = output.decode('utf-8')
-        res["OSKname"] = output.rstrip('\n')
-        output = subprocess.check_output(["uname -r"],shell=True)
-        output = output.decode('utf-8')
-        res["OSKrelease"] = output.rstrip('\n')
-        output = subprocess.check_output(["uname -v"],shell=True)
-        output = output.decode('utf-8')
-        res["OSKversion"] = output.rstrip('\n')
-        output = subprocess.check_output(["uname -m"],shell=True)
-        output = output.decode('utf-8')
-        res["OSKmachine"] = output.rstrip('\n')
-        self.etcdser.setkey('/osinfo',res)
+        uname = platform.uname()
+        osinfo = {}
+        osinfo['platform'] = platform.platform()
+        osinfo['system'] = uname.system
+        osinfo['node'] = uname.node
+        osinfo['release'] = uname.release
+        osinfo['version'] = uname.version
+        osinfo['machine'] = uname.machine
+        osinfo['processor'] = uname.processor
+        self.etcdser.setkey('/osinfo',osinfo)
         return
 
     def run(self):

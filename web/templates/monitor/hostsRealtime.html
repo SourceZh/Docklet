@@ -82,25 +82,25 @@
                          <table class="table table-bordered">
                              <tbody>
                              <tr>
-				 <th>OS Issue</th>
-                                 <td>{{ OSinfo['OSIssue']}}</td>
-			     </tr>
-			     <tr>
-				 <th>OS Kernel name</th>
-                                 <td>{{ OSinfo['OSKname']}}</td>
-			     </tr>
-			     <tr>
-				 <th>OS Kernel release</th>
-                                 <td>{{ OSinfo['OSKrelease']}}</td>
-			     </tr>
-			     <tr>
-				 <th>OS Kernel version</th>
-                                 <td>{{ OSinfo['OSKversion']}}</td>
-			     </tr>
-			     <tr>
-				 <th>OS Kernel machine</th>
-                                 <td>{{ OSinfo['OSKmachine']}}</td>
-			     </tr>
+                             <th>OS name</th>
+                                 <td>{{ OSinfo['platform']}}</td>
+                             </tr>
+			                 <tr>
+				             <th>OS node name</th>
+                                 <td>{{ OSinfo['node']}}</td>
+			                 </tr>
+			                 <tr>
+				             <th>OS kernel release</th>
+                                 <td>{{ OSinfo['release']}}</td>
+			                 </tr>
+			                 <tr>
+				             <th>OS kernel version</th>
+                                 <td>{{ OSinfo['version']}}</td>
+			                 </tr>
+			                 <tr>
+				             <th>OS kernel machine</th>
+                                 <td>{{ OSinfo['machine']}}</td>
+			                 </tr>
                              </tbody>
                          </table>
 
