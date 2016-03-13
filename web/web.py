@@ -360,7 +360,20 @@ if __name__ == '__main__':
     secret_key = b64encode(secret_key).decode('utf-8')
 
     '''
-    app.secret_key = 'DrjgnIwcbla+KxF4yWpOXZu4s+HpJnwb'
+    try:
+        secret_key_file = open(env.getenv('FS_PREFIX') + '/local/web_secret_key.txt')
+        app.secret_key = secret_key_file.read()
+        secret_key_file.close()
+    except:
+        from base64 import b64encode
+        from os import urandom
+        secret_key = urandom(24)
+        secret_key = b64encode(secret_key).decode('utf-8')
+        app.secret_key = secret_key
+        secret_key_file = open(env.getenv('FS_PREFIX') + '/local/web_secret_key.txt', 'w')
+        secret_key_file.write(secret_key)
+        secret_key_file.close()
+
     os.environ['APP_KEY'] = app.secret_key
     runcmd = sys.argv[0]
     app.runpath = runcmd.rsplit('/', 1)[0]
@@ -369,7 +382,7 @@ if __name__ == '__main__':
     webport = env.getenv("WEB_PORT")
 
     import dockletreq.dockletrequest
-    dockletreq.dockletrequest.endpoint = 'http://%s:%d' % (env.getenv('MASTER_IP'), env.getenv('MASTER_PORT')) 
+    dockletreq.dockletrequest.endpoint = 'http://%s:%d' % (env.getenv('MASTER_IP'), env.getenv('MASTER_PORT'))
 
     print(dockletreq.dockletrequest.endpoint)
 

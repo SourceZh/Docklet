@@ -41,7 +41,19 @@ fsdir = env.getenv('FS_PREFIX')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+fsdir+'/local/UserTable.db'
-app.secret_key = 'TT+WldpsXkRYnnHyKrIYghYJfmjSxZT5'
+try:
+    secret_key_file = open(env.getenv('FS_PREFIX') + '/local/token_secret_key.txt')
+    app.secret_key = secret_key_file.read()
+    secret_key_file.close()
+except:
+    from os import urandom
+    secret_key = urandom(24)
+    secret_key = b64encode(secret_key).decode('utf-8')
+    app.secret_key = secret_key
+    secret_key_file = open(env.getenv('FS_PREFIX') + '/local/token_secret_key.txt', 'w')
+    secret_key_file.write(secret_key)
+    secret_key_file.close()
+
 db = SQLAlchemy(app)
 
 class User(db.Model):
