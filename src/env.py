@@ -48,5 +48,7 @@ def getenv(key):
         return os.environ.get("EXTERNAL_LOGIN_URL", "/external_login/")
     elif key =="EXTERNAL_LOGIN_CALLBACK_URL":
         return os.environ.get("EXTERNAL_LOGIN_CALLBACK_URL", "/external_login_callback/")
+    elif key =="EXTERNAL_LOGIN_LINK":
+        return os.environ.get("EXTERNAL_LOGIN_LINK", "External User Login")
     else:
         return os.environ[key]

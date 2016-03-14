@@ -2,10 +2,8 @@
 
 from flask import Flask, request, session, render_template, redirect, send_from_directory, make_response, url_for, abort
 from authenticate.auth import login_required, administration_required,activated_required
-from authenticate.login import loginView, logoutView
 from authenticate.register import registerView
 from dashboard.dashboard import dashboardView
-from monitor.monitor import *
 from user.userlist import userlistView, useraddView, usermodifyView, groupaddView, userdataView, userqueryView
 from user.userinfo import userinfoView
 from user.userActivate import userActivateView
@@ -13,6 +11,10 @@ from user.grouplist import grouplistView, groupqueryView, groupdetailView, group
 from functools import wraps
 from dockletreq.dockletrequest import dockletRequest
 from cluster.cluster import *
+from monitor.monitor import *
+from authenticate.login import loginView, logoutView
+
+
 import json
 from jupytercookie import cookie_tool
 import os
@@ -36,7 +38,7 @@ from log import logger
 
 external_login = env.getenv('EXTERNAL_LOGIN')
 external_login_url = env.getenv('EXTERNAL_LOGIN_URL')
-external_login_callback_url = env.getenv('EXTERNAL_LOGIN_CALLBACK_URL') 
+external_login_callback_url = env.getenv('EXTERNAL_LOGIN_CALLBACK_URL')
 if (external_login == 'TRUE'):
     from authenticate.external import external_loginView, external_login_callbackView
 

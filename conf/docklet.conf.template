@@ -115,8 +115,11 @@
 #EXTERNAL_LOGIN: whether docklet will use external account to log in
 # EXTERNAL_LOGIN=FALSE
 
+#EXTERNAL_LOGIN_LINK: the href text for EXTERNAL_LOGIN_URL
+# EXTERNAL_LOGIN_LINK=EXTERNAL_LOGIN
+
 #EXTERNAL_LOGIN_URL: the url docklet will listen for external logging in
-# EXTERNAL_LOGIN_URL=/iaaa_auth/
+# EXTERNAL_LOGIN_URL=/external_login/
 
 #EXTERNAL_LOGIN_CALLBACK_URL: the callback url docklet will listen for external logging in
-# EXTERNAL_LOGIN_CALLBACK_URL=/pkulogin/
+# EXTERNAL_LOGIN_CALLBACK_URL=/external_login_callback/

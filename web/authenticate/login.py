@@ -9,6 +9,16 @@ from jupytercookie import cookie_tool
 import hashlib
 #from suds.client import Client
 
+import sys, inspect
+this_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
+src_folder = os.path.realpath(os.path.abspath(os.path.join(this_folder,"../..", "src")))
+if src_folder not in sys.path:
+    sys.path.insert(0, src_folder)
+
+import env
+
+
+
 
 
 def refreshInfo():
@@ -30,7 +40,13 @@ class loginView(normalView):
         if is_authenticated():
             #refreshInfo()
             return redirect(request.args.get('next',None) or '/dashboard/')
-        return render_template(self.template_path)
+        if (env.getenv('EXTERNAL_LOGIN') == 'TRUE'):
+            url =  env.getenv('EXTERNAL_LOGIN_URL')
+            link = env.getenv('EXTERNAL_LOGIN_LINK')
+        else:
+            link = ''
+            url = ''
+        return render_template(self.template_path, link = link, url = url)
 
     @classmethod
     def post(self):
