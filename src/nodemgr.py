@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 import threading, random, time, xmlrpc.client, sys
-import network
+#import network
+from nettools import netcontrol
 from log import logger
 import env
 
@@ -21,16 +22,23 @@ class NodeMgr(object):
         self.networkmgr = networkmgr
         self.etcd = etcdclient
         self.mode = self.etcd.getkey("service/mode")[1]
+
         # initialize the network
         logger.info ("initialize network")
-        [status, result] = self.networkmgr.acquire_sysips_cidr()
-        self.networkmgr.printpools()
-        if not status:
-            logger.info ("initialize network failed, no IP for system bridge")
-            sys.exit(1)
-        self.bridgeip = result[0]
-        logger.info ("initialize bridge wih ip %s" % self.bridgeip)
-        network.netsetup("init", self.bridgeip)
+
+        # 'docklet-br' not need ip address. Because every user has gateway
+        #[status, result] = self.networkmgr.acquire_sysips_cidr()
+        #self.networkmgr.printpools()
+        #if not status:
+        #    logger.info ("initialize network failed, no IP for system bridge")
+        #    sys.exit(1)
+        #self.bridgeip = result[0]
+        #logger.info ("initialize bridge wih ip %s" % self.bridgeip)
+        #network.netsetup("init", self.bridgeip)
+
+        if not netcontrol.bridge_exists('docklet-br'):
+            netcontrol.new_bridge('docklet-br')
+
         # get allnodes
         self.allnodes = self._nodelist_etcd("allnodes")
         self.runnodes = self._nodelist_etcd("runnodes")
@@ -83,14 +91,15 @@ class NodeMgr(object):
                 nodeip = node['key'].rsplit('/',1)[1]
                 if node['value']=='waiting':
                     logger.info ("%s want to joins, call it to init first" % nodeip)
-                    if nodeip != self.addr:
-                        [status, result] = self.networkmgr.acquire_sysips_cidr()
-                        self.networkmgr.printpools()
-                        if not status:
-                            logger.error("no IP for worker bridge, please check network system pool")
-                            continue
-                        bridgeip = result[0]
-                        self.etcd.setkey("network/workbridge", bridgeip)
+                    # 'docklet-br' of worker do not need IP Addr. Not need to allocate an IP to it
+                    #if nodeip != self.addr:
+                    #    [status, result] = self.networkmgr.acquire_sysips_cidr()
+                    #    self.networkmgr.printpools()
+                    #    if not status:
+                    #        logger.error("no IP for worker bridge, please check network system pool")
+                    #        continue
+                    #    bridgeip = result[0]
+                    #    self.etcd.setkey("network/workbridge", bridgeip)
                     if nodeip in self.allnodes:
                         ######## HERE MAYBE NEED TO FIX ###############
                         # here we must use "machines/runnodes/nodeip"
@@ -108,7 +117,7 @@ class NodeMgr(object):
                         logger.debug ("worker start on master node. not need to setup GRE")
                     else:
                         logger.debug ("setup GRE for %s" % nodeip)
-                        network.netsetup("gre", nodeip)
+                        netcontrol.setup_gre('docklet-br', nodeip)
                     self.runnodes.append(nodeip)
                     self.etcd.setkey("machines/runnodes/"+nodeip, "ok")
                     if nodeip not in self.allnodes:

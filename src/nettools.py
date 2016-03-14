@@ -44,7 +44,7 @@ class ipcontrol(object):
     @staticmethod
     def link_exist(linkname):
         try:
-            subprocess.run(['ip', 'link', 'show', 'dev', linkname], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            subprocess.run(['ip', 'link', 'show', 'dev', str(linkname)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
             return True
         except subprocess.CalledProcessError:
             return False
@@ -53,7 +53,7 @@ class ipcontrol(object):
     def link_info(linkname):
         try:
             ret = subprocess.run(['ip', 'address', 'show', 'dev', str(linkname)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
-            return [True, ipcontrol.parse(ret.stdout.decode('utf-8'))[linkname]]
+            return [True, ipcontrol.parse(ret.stdout.decode('utf-8'))[str(linkname)]]
         except subprocess.CalledProcessError as suberror:
             return [False, "get link info failed : %s" % suberror.stdout.decode('utf-8')]
 
@@ -61,13 +61,13 @@ class ipcontrol(object):
     def link_state(linkname):
         try:
             ret = subprocess.run(['ip', 'link', 'show', 'dev', str(linkname)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
-            return [True, ipcontrol.parse(ret.stdout.decode('utf-8'))[linkname]['state']]
+            return [True, ipcontrol.parse(ret.stdout.decode('utf-8'))[str(linkname)]['state']]
         except subprocess.CalledProcessError as suberror:
             return [False, "get link state failed : %s" % suberror.stdout.decode('utf-8')]
 
     @staticmethod
     def link_ips(linkname):
-        [status, info] = ipcontrol.link_info(linkname)
+        [status, info] = ipcontrol.link_info(str(linkname))
         if status:
             if 'inet' not in info:
                 return [True, []]
@@ -80,7 +80,7 @@ class ipcontrol(object):
     def up_link(linkname):
         try:
             subprocess.run(['ip', 'link', 'set', 'dev', str(linkname), 'up'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
-            return [True, linkname]
+            return [True, str(linkname)]
         except subprocess.CalledProcessError as suberror:
             return [False, "set link up failed : %s" % suberror.stdout.decode('utf-8')]
 
@@ -88,7 +88,7 @@ class ipcontrol(object):
     def down_link(linkname):
         try:
             subprocess.run(['ip', 'link', 'set', 'dev', str(linkname), 'down'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
-            return [True, linkname]
+            return [True, str(linkname)]
         except subprocess.CalledProcessError as suberror:
             return [False, "set link down failed : %s" % suberror.stdout.decode('utf-8')]
 
@@ -96,7 +96,7 @@ class ipcontrol(object):
     def add_addr(linkname, address):
         try:
             subprocess.run(['ip', 'address', 'add', address, 'dev', str(linkname)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
-            return [True, linkname]
+            return [True, str(linkname)]
         except subprocess.CalledProcessError as suberror:
             return [False, "add address failed : %s" % suberror.stdout.decode('utf-8')]
 
@@ -104,14 +104,149 @@ class ipcontrol(object):
     def del_addr(linkname, address):
         try:
             subprocess.run(['ip', 'address', 'del', address, 'dev', str(linkname)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
-            return [True, linkname]
+            return [True, str(linkname)]
         except subprocess.CalledProcessError as suberror:
             return [False, "delete address failed : %s" % suberror.stdout.decode('utf-8')]
 
 
+# ovs-vsctl list-br 
+# ovs-vsctl br-exists <Bridge>
+# ovs-vsctl add-br <Bridge>
+# ovs-vsctl del-br <Bridge>
+# ovs-vsctl list-ports <Bridge>
+# ovs-vsctl del-port <Bridge> <Port>
+# ovs-vsctl add-port <Bridge> <Port> -- set interface <Port> type=gre options:remote_ip=<RemoteIP>
+# ovs-vsctl add-port <Bridge> <Port> tag=<ID> -- set interface <Port> type=internal
+# ovs-vsctl port-to-br <Port>
+# ovs-vsctl set Port <Port> tag=<ID>
+# ovs-vsctl clear Port <Port> tag
+
 class ovscontrol(object):
     @staticmethod
     def list_bridges():
-        pass
+        try:
+            ret = subprocess.run(['ovs-vsctl', 'list-br'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, ret.stdout.decode('utf-8').split()]
+        except subprocess.CalledProcessError as suberror:
+            return [False, "list bridges failed : %s" % suberror.stdout.decode('utf-8')]
+
+    @staticmethod
+    def bridge_exist(bridge):
+        try:
+            subprocess.run(['ovs-vsctl', 'br-exists', str(bridge)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return True
+        except subprocess.CalledProcessError:
+            return False
+
+    @staticmethod
+    def port_tobridge(port):
+        try:
+            ret = subprocess.run(['ovs-vsctl', 'port-to-br', str(port)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, ret.stdout.decode('utf-8').strip()]
+        except subprocess.CalledProcessError as suberror:
+            return [False, suberror.stdout.decode('utf-8')]
+
+    @staticmethod
+    def port_exists(port):
+        return ovscontrol.port_tobridge(port)[0]
+
+    @staticmethod
+    def add_bridge(bridge):
+        try:
+            subprocess.run(['ovs-vsctl', 'add-br', str(bridge)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, str(bridge)]
+        except subprocess.CalledProcessError as suberror:
+            return [False, "add bridge failed : %s" % suberror.stdout.decode('utf-8')]
+
+    @staticmethod
+    def del_bridge(bridge):
+        try:
+            subprocess.run(['ovs-vsctl', 'del-br', str(bridge)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, str(bridge)]
+        except subprocess.CalledProcessError as suberror:
+            return [False, "del bridge failed : %s" % suberror.stdout.decode('utf-8')]
+
+    @staticmethod
+    def list_ports(bridge):
+        try:
+            ret = subprocess.run(['ovs-vsctl', 'list-ports', str(bridge)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, ret.stdout.decode('utf-8').split()]
+        except subprocess.CalledProcessError as suberror:
+            return [False, "list ports failed : %s" % suberror.stdout.decode('utf-8')]
+
+    @staticmethod
+    def del_port(bridge, port):
+        try:
+            subprocess.run(['ovs-vsctl', 'del-port', str(bridge), str(port)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, str(port)]
+        except subprocess.CalledProcessError as suberror:
+            return [False, "delete port failed : %s" % suberror.stdout.decode('utf-8')]
+
+    @staticmethod
+    def add_port_internal(bridge, port):
+        try:
+            subprocess.run(['ovs-vsctl', 'add-port', str(bridge), str(port), '--', 'set', 'interface', str(port), 'type=internal'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, str(port)]
+        except subprocess.CalledProcessError as suberror:
+            return [False, "add port failed : %s" % suberror.stdout.decode('utf-8')]
+
+    @staticmethod
+    def add_port_internal_withtag(bridge, port, tag):
+        try:
+            subprocess.run(['ovs-vsctl', 'add-port', str(bridge), str(port), 'tag='+str(tag), '--', 'set', 'interface', str(port), 'type=internal'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, str(port)]
+        except subprocess.CalledProcessError as suberror:
+            return [False, "add port failed : %s" % suberror.stdout.decode('utf-8')]
+
+    @staticmethod
+    def add_port_gre(bridge, port, remote):
+        try:
+            subprocess.run(['ovs-vsctl', 'add-port', str(bridge), str(port), '--', 'set', 'interface', str(port), 'type=gre', 'options:remote_ip='+str(remote)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, str(port)]
+        except subprocess.CalledProcessError as suberror:
+            return [False, "add port failed : %s" % suberror.stdout.decode('utf-8')]
+
+    @staticmethod
+    def set_port_tag(port, tag):
+        try:
+            subprocess.run(['ovs-vsctl', 'set', 'Port', str(port), 'tag='+str(tag)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False, check=True)
+            return [True, str(port)]
+        except subprocess.CalledProcessError as suberror:
+            return [False, "set port tag failed : %s" % suberror.stdout.decode('utf-8')]
 
 
+class netcontrol(object):
+    @staticmethod
+    def bridge_exists(bridge):
+        return ovscontrol.bridge_exist(bridge)
+
+    @staticmethod
+    def new_bridge(bridge):
+        return ovscontrol.add_bridge(bridge)
+
+    @staticmethod
+    def gre_exists(bridge, remote):
+        # port is unique, bridge is not necessary
+        return ovscontrol.port_exists('gre-'+str(remote))
+
+    @staticmethod
+    def setup_gre(bridge, remote):
+        return ovscontrol.add_port_gre(bridge, 'gre-'+str(remote), remote)
+
+    @staticmethod
+    def gw_exists(bridge, username):
+        return ovscontrol.port_exists(username)
+
+    @staticmethod
+    def setup_gw(bridge, username, addr, tag):
+        [status, result] = ovscontrol.add_port_internal_withtag(bridge, username, tag)
+        if not status:
+            return [status, result]
+        [status, result] = ipcontrol.add_addr(username, addr)
+        if not status:
+            return [status, result]
+        return ipcontrol.up_link(username)
+
+    @staticmethod
+    def del_gw(bridge, username):
+        return ovscontrol.del_port(bridge, username)
