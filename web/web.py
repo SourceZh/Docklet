@@ -190,6 +190,20 @@ def saveImage_force(clustername,containername):
     saveImageView.description = request.form['description']
     return saveImageView.as_view()
 
+@app.route("/addproxy/<clustername>/", methods=['POST'])
+@login_required
+def addproxy(clustername):
+    addproxyView.clustername = clustername
+    addproxyView.ip = request.form['proxy_ip']
+    addproxyView.port = request.form['proxy_port']
+    return addproxyView.as_view()
+
+@app.route("/deleteproxy/<clustername>/", methods=['GET'])
+@login_required
+def deleteproxy(clustername):
+    deleteproxyView.clustername = clustername
+    return deleteproxyView.as_view()
+
 @app.route("/image/description/<image>/", methods=['GET'])
 @login_required
 def descriptionImage(image):

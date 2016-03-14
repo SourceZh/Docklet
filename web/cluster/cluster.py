@@ -249,6 +249,38 @@ class deleteImageView(normalView):
         else:
             self.error()
 
+class addproxyView(normalView):
+    
+    @classmethod
+    def post(self):
+        data = {
+            "clustername": self.clustername,
+            "ip": self.ip,
+            "port": self.port
+        }
+        result = dockletRequest.post("/addproxy/", data)
+        if(result):
+            return configView.as_view()
+        else:
+            self.error()
+
+class deleteproxyView(normalView):
+    
+    @classmethod
+    def get(self):
+        data = {
+            "clustername":self.clustername
+        }
+        result = dockletRequest.post("/deleteproxy/", data)
+        if(result):
+            return configView.as_view()
+        else:
+            self.error()
+    
+    @classmethod
+    def post(self):
+        return self.get()
+
 class configView(normalView):
     @classmethod
     def get(self):
