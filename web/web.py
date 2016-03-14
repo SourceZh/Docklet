@@ -100,7 +100,7 @@ def dashboard_guest():
 
 @app.route("/document/", methods=['GET'])
 def redirect_dochome():
-    return redirect("http://docklet.unias.org/doc/userguide")
+    return redirect("http://docklet.unias.org/userguide")
 
 @app.route("/config/", methods=['GET'])
 @login_required
