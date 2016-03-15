@@ -40,7 +40,7 @@
 						<div class="ibox float-e-margins">
 							<div class="ibox-title">
 							<h4>VCLUSTER</h4>
-							<h5>create_time:{{clusterinfo['create_time']}}<br/>start_time:{{clusterinfo['start_time']}}</h5>
+							<h5>create_time:{{clusterinfo['create_time']}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstart_time:{{clusterinfo['start_time']}}</h5>
                          				<div class="ibox-tools">
                          				    <a class="collapse-link">
                          				        <i class="fa fa-chevron-up"></i>
@@ -184,7 +184,8 @@
 							<div class="col-md-12">
 								<div class="ibox float-e-gargins">
 									<div class="ibox-title">
-										<p>SERVICE</p>
+										<h4>SERVICE</h4>
+                                        <a href="/_web/{{ mysession['username'] }}/{{ clustername }}/">{{ clusterinfo['proxy_url'] }}</a>
                          							<div class="ibox-tools">
                          							    <a class="collapse-link">
                          							        <i class="fa fa-chevron-up"></i>
@@ -195,9 +196,17 @@
                          							</div>
 									</div>
 									<div class="ibox-content">
-			 						<p>
-			  							service can add in here
-			 						</p>
+                                        <form action="/addproxy/{{ clustername }}/" id="addproxy" method="POST">
+                                        {% if 'proxy_ip' in clusterinfo %}
+                                            <p>ip:<input type="text" id="proxy_ip" name="proxy_ip" value={{ clusterinfo['proxy_ip'][:clusterinfo['proxy_ip'].index(':')] }} readonly="true"/>port:<input type="text" id="proxy_port" name="proxy_port" value={{ clusterinfo['proxy_ip'][clusterinfo['proxy_ip'].index(':')+1:] }} readonly="true"/>
+                                            <button type="button" class="btn-xs btn-default">enable</button>
+                                            <a href="/deleteproxy/{{ clustername }}/"><button type="button" class="btn btn-xs btn-danger">disable</button></a></p>
+                                        {% else %}
+                                            <p>ip:<input type="text" id="proxy_ip" name="proxy_ip"/>port:<input type="text" id="proxy_port" name="proxy_port"/>
+                                            <button type="submit" class="btn-xs btn-success">enable</button>
+                                            <button class="btn btn-xs btn-default">disable</button></p>
+                                        {% endif %}
+                                        </form>
 									</div>
 								</div>
 							</div>

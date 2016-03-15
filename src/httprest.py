@@ -255,7 +255,8 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
             else:
                 logger.warning ("request not supported ")
                 self.response(400, {'success':'false', 'message':'not supported request'})
-
+        
+        # Request for Image
         elif cmds[0] == 'image':
             if cmds[1] == 'list':
                 images = G_imagemgr.list_images(user)
@@ -282,6 +283,25 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
             else:
                 logger.warning("request not supported ")
                 self.response(400, {'success':'false', 'message':'not supported request'})
+        
+        # Add Proxy
+        elif cmds[0] == 'addproxy':
+            logger.info ("handle request : add proxy")
+            proxy_ip = form.getvalue("ip")
+            proxy_port = form.getvalue("port")
+            clustername = form.getvalue("clustername")
+            [status, message] = G_vclustermgr.addproxy(user,clustername,proxy_ip,proxy_port)
+            if status is True:
+                self.response(200, {'success':'true', 'action':'addproxy'}) 
+            else:
+                self.response(400, {'success':'false', 'message': message})
+        # Delete Proxy
+        elif cmds[0] == 'deleteproxy': 
+            logger.info ("handle request : delete proxy")
+            clustername = form.getvalue("clustername")
+            G_vclustermgr.deleteproxy(user,clustername)
+            self.response(200, {'success':'true', 'action':'deleteproxy'})
+
         # Request for Monitor
         elif cmds[0] == 'monitor':
             logger.info("handle request: monitor")

@@ -5,6 +5,7 @@ import datetime
 
 from log import logger
 import env
+import proxytool
 
 ##################################################
 #                  VclusterMgr
@@ -95,7 +96,8 @@ class VclusterMgr(object):
         hostfile.write(hosts)
         hostfile.close()
         clusterfile = open(clusterpath, 'w')
-        info = {'clusterid':clusterid, 'status':'stopped', 'size':clustersize, 'containers':containers, 'nextcid': clustersize, 'create_time':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'start_time':"------" }
+        proxy_url = env.getenv("PORTAL_URL") + "/_web/" + username + "/" + clustername
+        info = {'clusterid':clusterid, 'status':'stopped', 'size':clustersize, 'containers':containers, 'nextcid': clustersize, 'create_time':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'start_time':"------" , 'proxy_url':proxy_url}
         clusterfile.write(json.dumps(info))
         clusterfile.close()
         return [True, info]
@@ -143,7 +145,30 @@ class VclusterMgr(object):
         clusterfile.write(json.dumps(clusterinfo))
         clusterfile.close()
         return [True, clusterinfo]
+    
+    def addproxy(self,username,clustername,ip,port):
+        [status, clusterinfo] = self.get_clusterinfo(clustername, username)
+        if 'proxy_ip' in clusterinfo:
+            return [False, "proxy already exists"]
+        target = "http://" + ip + ":" + port
+        clusterinfo['proxy_ip'] = ip + ":" + port 
+        clusterfile = open(self.fspath + "/global/users/" + username + "/clusters/" + clustername, 'w')
+        clusterfile.write(json.dumps(clusterinfo))
+        clusterfile.close()
+        proxytool.set_route("/_web/" + username + "/" + clustername, target)
+        return [True, clusterinfo]        
 
+    def deleteproxy(self, username, clustername):
+        [status, clusterinfo] = self.get_clusterinfo(clustername, username)
+        if 'proxy_ip' not in clusterinfo:
+            return [False, "proxy not exists"]
+        clusterinfo.pop('proxy_ip')
+        clusterfile = open(self.fspath + "/global/users/" + username + "/clusters/" + clustername, 'w')
+        clusterfile.write(json.dumps(clusterinfo))
+        clusterfile.close()
+        proxytool.delete_route("/_web/" + username + "/" + clustername)
+        return [True, clusterinfo]
+         
     def flush_cluster(self,username,clustername,containername):
         begintime = datetime.datetime.now()
         [status, info] = self.get_clusterinfo(clustername, username)

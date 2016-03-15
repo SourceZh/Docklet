@@ -100,7 +100,7 @@ def dashboard_guest():
 
 @app.route("/document/", methods=['GET'])
 def redirect_dochome():
-    return redirect("http://docklet.unias.org/doc/userguide")
+    return redirect("http://docklet.unias.org/userguide")
 
 @app.route("/config/", methods=['GET'])
 @login_required
@@ -189,6 +189,20 @@ def saveImage_force(clustername,containername):
     saveImageView.imagename = request.form['ImageName']
     saveImageView.description = request.form['description']
     return saveImageView.as_view()
+
+@app.route("/addproxy/<clustername>/", methods=['POST'])
+@login_required
+def addproxy(clustername):
+    addproxyView.clustername = clustername
+    addproxyView.ip = request.form['proxy_ip']
+    addproxyView.port = request.form['proxy_port']
+    return addproxyView.as_view()
+
+@app.route("/deleteproxy/<clustername>/", methods=['GET'])
+@login_required
+def deleteproxy(clustername):
+    deleteproxyView.clustername = clustername
+    return deleteproxyView.as_view()
 
 @app.route("/image/description/<image>/", methods=['GET'])
 @login_required
