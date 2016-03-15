@@ -355,6 +355,7 @@ class NetworkMgr(object):
         if self.has_user(username):
             return [False, "user already exists in users set"]
         [status, result] = self.center.allocate(cidr) 
+        self.dump_center()
         if status == False:
             return [False, result]
         [status, vlanid] = self.acquire_vlanid()
@@ -362,6 +363,7 @@ class NetworkMgr(object):
             vlanid = int(vlanid)
         else:
             self.center.free(result, cidr)
+            self.dump_center()
             return [False, vlanid]
         self.users[username] = UserPool(addr_cidr = result+"/"+str(cidr), vlanid=vlanid)
         logger.info("setup gateway for %s with %s and vlan=%s" % (username, self.users[username].get_gateway_cidr(), str(vlanid)))
