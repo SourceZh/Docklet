@@ -42,8 +42,8 @@ class loginView(normalView):
             #refreshInfo()
             return redirect(request.args.get('next',None) or '/dashboard/')
         if (env.getenv('EXTERNAL_LOGIN') == 'True'):
-            url =  env.getenv('EXTERNAL_LOGIN_URL')
-            link = env.getenv('EXTERNAL_LOGIN_LINK')
+            url =  external_generate.external_login_url
+            link = external_generate.external_login_link
         else:
             link = ''
             url = ''
@@ -93,6 +93,29 @@ class logoutView(normalView):
 class external_login_callbackView(normalView):
     @classmethod
     def get(self):
+
+        form = external_generate.external_auth_generate_request()
+        result = dockletRequest.unauthorizedpost('/external_login/', form)
+        ok = result and result.get('success', None)
+        if (ok and (ok == "true")):
+            # set cookie:docklet-jupyter-cookie for jupyter notebook
+            resp = make_response(redirect(request.args.get('next',None) or '/dashboard/'))
+            app_key = os.environ['APP_KEY']
+            resp.set_cookie('docklet-jupyter-cookie', cookie_tool.generate_cookie(result['data']['username'], app_key))
+            # set session for docklet
+            session['username'] = result['data']['username']
+            session['nickname'] = result['data']['nickname']
+            session['description'] = result['data']['description'][0:10]
+            session['avatar'] = '/static/avatar/'+ result['data']['avatar']
+            session['usergroup'] = result['data']['group']
+            session['status'] = result['data']['status']
+            session['token'] = result['data']['token']
+            return resp
+        else:
+            return redirect('/login/')
+
+    @classmethod
+    def post(self):
 
         form = external_generate.external_auth_generate_request()
         result = dockletRequest.unauthorizedpost('/external_login/', form)

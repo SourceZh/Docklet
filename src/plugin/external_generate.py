@@ -9,3 +9,9 @@ def external_auth_generate_request():
     return form
 
 html_path = "user/iaaa_auth.html"
+
+external_login_link = 'PKU User?'
+
+external_login_url =  '/external_login/'
+
+external_login_callback_url = '/pkulogin/'

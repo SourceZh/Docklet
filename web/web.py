@@ -37,10 +37,14 @@ initlogging("docklet-web")
 from log import logger
 
 external_login = env.getenv('EXTERNAL_LOGIN')
-external_login_url = env.getenv('EXTERNAL_LOGIN_URL')
-external_login_callback_url = env.getenv('EXTERNAL_LOGIN_CALLBACK_URL')
+
 if (external_login == 'True'):
+    sys.path.insert(0, os.path.realpath(os.path.abspath(os.path.join(this_folder,"../src", "plugin"))))
+    import external_generate
     from authenticate.login import external_loginView, external_login_callbackView
+    external_login_url = external_generate.external_login_url
+    external_login_callback_url = external_generate.external_login_callback_url
+
 
 app = Flask(__name__)
 

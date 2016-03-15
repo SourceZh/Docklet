@@ -207,7 +207,7 @@ class userManager:
             result = {'success': 'false', 'reason': 'other kinds of account already exists'}
             return result
         #user == None , register an account for external user
-        newuser = G_usermgr.newuser();
+        newuser = self.newuser();
         newuser.username = result['username']
         newuser.password = result['password']
         newuser.avatar = result['avatar']
@@ -221,7 +221,7 @@ class userManager:
         newuser.auth_method = result['auth_method']
         newuser.department = result['department']
         newuser.tel = result['tel']
-        G_usermgr.register(user = newuser)
+        self.register(user = newuser)
         user = User.query.filter_by(username = username).first()
         result = {
             "success": 'true',
