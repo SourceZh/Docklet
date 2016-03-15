@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import os, random, json, sys, imagemgr, threading 
+import os, random, json, sys, imagemgr
 import datetime
 
 from log import logger
@@ -186,7 +186,6 @@ class VclusterMgr(object):
                 break
         else:
             logger.error("container: %s not found" % containername)
-        threads = []
         for container in containers:
             if container['containername'] != containername:
                 logger.info("container: %s now flush" % container['containername'])
@@ -197,10 +196,6 @@ class VclusterMgr(object):
                 container['lastsave'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 container['image'] = fimage
                 logger.info("thread for container: %s has been prepared" % container['containername'])
-       # for t in threads:
-       #     t.start()
-       # for t in threads:
-       #     t.join()
         clusterpath = self.fspath + "/global/users/" + username + "/clusters/" + clustername
         infofile = open(clusterpath,'w')
         infofile.write(json.dumps(info))
@@ -297,6 +292,16 @@ class VclusterMgr(object):
             return [False, "cluster not found"]
         if info['status'] == 'running':
             return [False, "cluster is already running"]
+        # check gateway for user
+        # after reboot, user gateway goes down and lose its configuration
+        # so, check is necessary
+        self.networkmgr.check_usergw(username)
+        # set proxy 
+        try:
+            target = 'http://'+info['containers'][0]['ip'].split('/')[0]+":10000" 
+            proxytool.set_route('/go/'+username+'/'+clustername, target)
+        except:
+            return [False, "start cluster failed with setting proxy failed"]
         for container in info['containers']:
             worker = self.nodemgr.ip_to_rpc(container['host'])
             worker.start_container(container['containername'])
@@ -314,8 +319,15 @@ class VclusterMgr(object):
             return [False, "cluster not found"]
         if info['status'] == 'stopped':
             return [True, "cluster no need to start"]
-        # TODO : need to check and recover gateway of this user
-        # TODO : need to check and recover proxy of this cluster
+        # need to check and recover gateway of this user
+        self.networkmgr.check_usergw(username)
+        # recover proxy of cluster
+        try:
+            target = 'http://'+info['containers'][0]['ip'].split('/')[0]+":10000" 
+            proxytool.set_route('/go/'+username+'/'+clustername, target)
+        except:
+            return [False, "start cluster failed with setting proxy failed"]
+        info['containers'][0]
         # recover containers of this cluster
         for container in info['containers']:
             worker = self.nodemgr.ip_to_rpc(container['host'])

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import subprocess, os, json, random
+import subprocess, os, json
 import imagemgr
 from log import logger
 import env
@@ -149,14 +149,22 @@ IP=%s
     # recover container: if running, do nothing. if stopped, start it
     def recover_container(self, lxc_name):
         logger.info ("recover container:%s" % lxc_name)
-        # TODO : check and recover veth(network link) of running container
-        status = subprocess.call([self.libpath+"/lxc_control.sh", "recover", lxc_name])
+        status = subprocess.call([self.libpath+"/lxc_control.sh", "status", lxc_name])
         if int(status) == 1:
-            logger.error ("recover container %s failed" % lxc_name)
-            return [False, "recover container failed"]
+            logger.info("%s stopped, recover it to running" % lxc_name)
+            if self.start_container(lxc_name)[0]:
+                if self.start_services(lxc_name)[0]:
+                    logger.info("%s recover success" % lxc_name)
+                    return [True, "recover success"]
+                else:
+                    logger.error("%s recover failed with services not start" % lxc_name)
+                    return [False, "recover failed for services not start"]
+            else:
+                logger.error("%s recover failed for container starting failed" % lxc_name)
+                return [False, "recover failed for container starting failed"]
         else:
-            logger.info ("recover container %s success" % lxc_name)
-            return [True, "recover container success"]
+            logger.info("%s recover success" % lxc_name)
+            return [True, "recover success"]
 
     def stop_container(self, lxc_name):
         logger.info ("stop container:%s" % lxc_name)

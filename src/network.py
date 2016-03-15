@@ -386,6 +386,12 @@ class NetworkMgr(object):
         del self.users[username]
         return [True, 'delete user success']
 
+    def check_usergw(self, username):
+        self.load_user(username)
+        netcontrol.check_gw('docklet-br', username, self.users[username].get_gateway_cidr(), str(self.users[username].vlanid))
+        del self.users[username]
+        return [True, 'check gw ok']
+
     def has_user(self, username):
         [status, _value] = self.etcd.getkey("network/users/"+username)
         return status

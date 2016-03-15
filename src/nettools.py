@@ -234,19 +234,38 @@ class netcontrol(object):
         return ovscontrol.add_port_gre(bridge, 'gre-'+str(remote), remote)
 
     @staticmethod
-    def gw_exists(bridge, username):
-        return ovscontrol.port_exists(username)
+    def gw_exists(bridge, gwport):
+        return ovscontrol.port_exists(gwport)
 
     @staticmethod
-    def setup_gw(bridge, username, addr, tag):
-        [status, result] = ovscontrol.add_port_internal_withtag(bridge, username, tag)
+    def setup_gw(bridge, gwport, addr, tag):
+        [status, result] = ovscontrol.add_port_internal_withtag(bridge, gwport, tag)
         if not status:
             return [status, result]
-        [status, result] = ipcontrol.add_addr(username, addr)
+        [status, result] = ipcontrol.add_addr(gwport, addr)
         if not status:
             return [status, result]
-        return ipcontrol.up_link(username)
+        return ipcontrol.up_link(gwport)
 
     @staticmethod
-    def del_gw(bridge, username):
-        return ovscontrol.del_port(bridge, username)
+    def del_gw(bridge, gwport):
+        return ovscontrol.del_port(bridge, gwport)
+
+    @staticmethod
+    def check_gw(bridge, gwport, addr, tag):
+        if not netcontrol.gw_exists(bridge, gwport):
+            return netcontrol.setup_gw(bridge, gwport, addr, tag)
+        [status, info] = ipcontrol.link_info(gwport)
+        if not status:
+            return [False, "get gateway info failed"]
+        if ('inet' not in info) or (addr not in info['inet']):
+            ipcontrol.add_addr(gwport, addr)
+        else:
+            info['inet'].remove(addr)
+            for otheraddr in info['inet']:
+                ipcontrol.del_addr(otheraddr)
+        if info['state'] == 'DOWN':
+            ipcontrol.up_link(gwport)
+        return [True, "check gateway port %s" % gwport]
+        
+        

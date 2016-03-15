@@ -117,7 +117,10 @@ class NodeMgr(object):
                         logger.debug ("worker start on master node. not need to setup GRE")
                     else:
                         logger.debug ("setup GRE for %s" % nodeip)
-                        netcontrol.setup_gre('docklet-br', nodeip)
+                        if netcontrol.gre_exists('docklet-br', nodeip):
+                            logger.debug("GRE for %s already exists, reuse it" % nodeip)
+                        else:
+                            netcontrol.setup_gre('docklet-br', nodeip)
                     self.runnodes.append(nodeip)
                     self.etcd.setkey("machines/runnodes/"+nodeip, "ok")
                     if nodeip not in self.allnodes:

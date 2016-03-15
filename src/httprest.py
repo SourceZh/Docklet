@@ -21,7 +21,6 @@ from socketserver import ThreadingMixIn
 import nodemgr, vclustermgr, etcdlib, network, imagemgr
 from userManager import userManager
 import monitor
-import proxytool
 import guest_control, threading
 
 external_login = env.getenv('EXTERNAL_LOGIN')
@@ -189,11 +188,6 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
                 logger.info ("handle request : start cluster %s" % clustername)
                 [status, result] = G_vclustermgr.start_cluster(clustername, user)
                 if status:
-                    # add proxy in configurable-http-proxy
-                    [infostatus, clusterinfo] = G_vclustermgr.get_clusterinfo(clustername, user)
-                    if clusterinfo['size'] > 0:
-                        target = 'http://' + clusterinfo['containers'][0]['ip'].split('/')[0]+":10000"
-                        proxytool.set_route('go/'+user+'/'+clustername, target)
                     self.response(200, {'success':'true', 'action':'start cluster', 'message':result})
                 else:
                     self.response(200, {'success':'false', 'action':'start cluster', 'message':result})
@@ -201,10 +195,6 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
                 logger.info ("handle request : stop cluster %s" % clustername)
                 [status, result] = G_vclustermgr.stop_cluster(clustername, user)
                 if status:
-                    # delete proxy in configurable-http-proxy
-                    [infostatus, clusterinfo] = G_vclustermgr.get_clusterinfo(clustername, user)
-                    # target = 'http://' + clusterinfo['containers'][0]['ip'].split('/')[0]+":10000"
-                    proxytool.delete_route('go/'+user+'/'+clustername)
                     self.response(200, {'success':'true', 'action':'stop cluster', 'message':result})
                 else:
                     self.response(200, {'success':'false', 'action':'stop cluster', 'message':result})
