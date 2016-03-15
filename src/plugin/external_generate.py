@@ -1,6 +1,6 @@
 from flask import request
 
-def external_auth_generate_request(self):
+def external_auth_generate_request():
 
     token =  request.args.get('token','0')
     form = {}

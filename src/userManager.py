@@ -25,7 +25,7 @@ from datetime import datetime
 e_mail_from_address = 'NoReply@internetware.org'
 
 if (env.getenv('EXTERNAL_LOGIN') == 'True'):
-    import plugin.external_receive
+    from plugin import external_receive
 
 def administration_required(func):
     @wraps(func)

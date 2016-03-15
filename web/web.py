@@ -56,10 +56,10 @@ def login():
 
 @app.route(external_login_url, methods=['GET'])
 def external_login_func():
-    #try:
-    return external_loginView.as_view()
-    #except:
-        #abort(404)
+    try:
+        return external_loginView.as_view()
+    except:
+        abort(404)
 
 @app.route(external_login_callback_url, methods=['GET'])
 def external_login_callback():
