@@ -37,7 +37,9 @@ initlogging("docklet-web")
 from log import logger
 
 external_login = env.getenv('EXTERNAL_LOGIN')
-
+#default config
+external_login_url = '/external_auth/'
+external_login_callback_url = '/external_auth_callback/'
 if (external_login == 'True'):
     sys.path.insert(0, os.path.realpath(os.path.abspath(os.path.join(this_folder,"../src", "plugin"))))
     import external_generate

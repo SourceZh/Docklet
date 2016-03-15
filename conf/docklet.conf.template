@@ -113,4 +113,4 @@
 # LOG_LIFE=10
 
 #EXTERNAL_LOGIN: whether docklet will use external account to log in, True or False
-# EXTERNAL_LOGIN=True
+# EXTERNAL_LOGIN=False

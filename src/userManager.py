@@ -323,6 +323,7 @@ class userManager:
         List informantion for oneself
         '''
         user = kwargs['cur_user']
+        group = UserGroup.query.filter_by(name = user.user_group).first()
         result = {
             "success": 'true',
             "data":{
@@ -339,6 +340,12 @@ class userManager:
                 "tel" : user.tel,
                 "register_date" : "%s"%(user.register_date),
                 "group" : user.user_group,
+                "groupinfo": {
+                    "cpu": group.cpu,
+                    "memory": group.memory,
+                    "imageQuantity": group.imageQuantity,
+                    "lifeCycle":group.lifeCycle,
+                    },
             },
         }
         return result

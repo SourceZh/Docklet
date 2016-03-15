@@ -1,5 +1,12 @@
 from flask import render_template, request, abort, session
 
+import os, inspect
+this_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
+
+version_file = open(this_folder + '/../../VERSION')
+version = version_file.read()
+version_file.close()
+
 class normalView():
     template_path = "dashboard.html"
 
@@ -28,4 +35,5 @@ class normalView():
     def render(self, *args, **kwargs):
         self.mysession = dict(session)
         kwargs['mysession'] = self.mysession
+        kwargs['version'] = version
         return render_template(*args, **kwargs)
