@@ -52,7 +52,7 @@ class VclusterMgr(object):
                 self.recover_cluster(cluster, user)
         logger.info("recovered all vclusters for all users")
 
-    def create_cluster(self, clustername, username, image):
+    def create_cluster(self, clustername, username, image, cur_user):
         if self.is_cluster(clustername, username):
             return [False, "cluster:%s already exists" % clustername]
         clustersize = int(self.defaultsize);
@@ -85,7 +85,7 @@ class VclusterMgr(object):
             lxc_name = username + "-" + str(clusterid) + "-" + str(i)
             hostname = "host-"+str(i)
             logger.info ("create container with : name-%s, username-%s, clustername-%s, clusterid-%s, hostname-%s, ip-%s, gateway-%s, imagename-%s, imageowner-%s, imagetype-%s" % (lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, imagename, imageowner, imagetype))
-            [success,message] = onework.create_container(lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, str(vlanid), imagename, imageowner, imagetype )
+            [success,message] = onework.create_container(lxc_name, username, cur_user, clustername, str(clusterid), hostname, ips[i], gateway, str(vlanid), imagename, imageowner, imagetype )
             if success is False:
                 logger.info("container create failed, so vcluster create failed")
                 return [False, message]
@@ -102,7 +102,7 @@ class VclusterMgr(object):
         clusterfile.close()
         return [True, info]
 
-    def scale_out_cluster(self,clustername,username,image):
+    def scale_out_cluster(self,clustername,username,image,cur_user):
         if not self.is_cluster(clustername,username):
             return [False, "cluster:%s not found" % clustername]
         workers = self.nodemgr.get_rpcs()
@@ -127,7 +127,7 @@ class VclusterMgr(object):
         onework = workers[random.randint(0, len(workers)-1)]
         lxc_name = username + "-" + str(clusterid) + "-" + str(cid)
         hostname = "host-" + str(cid)
-        [success, message] = onework.create_container(lxc_name, username, clustername, clusterid, hostname, ip, gateway, str(vlanid), imagename, imageowner, imagetype)
+        [success, message] = onework.create_container(lxc_name, username, cur_user, clustername, clusterid, hostname, ip, gateway, str(vlanid), imagename, imageowner, imagetype)
         if success is False:
             logger.info("create container failed, so scale out failed")
             return [False, message]

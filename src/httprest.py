@@ -157,7 +157,7 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
                 image['type'] = form.getvalue("imagetype")
                 image['owner'] = form.getvalue("imageowner")
                 logger.info ("handle request : create cluster %s with image %s " % (clustername, image['name']))
-                [status, result] = G_vclustermgr.create_cluster(clustername, user, image)
+                [status, result] = G_vclustermgr.create_cluster(clustername, user, image, cur_user)
                 if status:
                     self.response(200, {'success':'true', 'action':'create cluster', 'message':result})
                 else:
@@ -171,7 +171,7 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
                 logger.debug("imagename:" + image['name'])
                 logger.debug("imagetype:" + image['type'])
                 logger.debug("imageowner:" + image['owner'])
-                [status, result] = G_vclustermgr.scale_out_cluster(clustername, user, image)
+                [status, result] = G_vclustermgr.scale_out_cluster(clustername, user, image, cur_user)
                 if status:
                     self.response(200, {'success':'true', 'action':'scale out', 'message':result})
                 else:

@@ -4,6 +4,7 @@ import subprocess, os, json
 import imagemgr
 from log import logger
 import env
+import userManager
 
 class Container(object):
     def __init__(self, addr, etcdclient):
@@ -19,13 +20,17 @@ class Container(object):
 
         self.lxcpath = "/var/lib/lxc"
         self.imgmgr = imagemgr.ImageMgr()
+        self.usermgr = userManager.userManager()
 
-    def create_container(self, lxc_name, username, clustername, clusterid, hostname, ip, gateway, vlanid, imagename, imageowner, imagetype ):
+    def create_container(self, lxc_name, username, cur_user, clustername, clusterid, hostname, ip, gateway, vlanid, imagename, imageowner, imagetype ):
         logger.info("create container %s of %s for %s" %(lxc_name, clustername, username))
         try:
+            user_info = self.usermgr.selfQuery(cur_user = cur_user)
+            cpu = user_info["data"]["cpu"]
+            memory = user_info["data"]["memory"]
             Ret = subprocess.run([self.libpath+"/lxc_control.sh",
                 "create", lxc_name, username, str(clusterid), hostname,
-                ip, gateway, str(vlanid)], stdout=subprocess.PIPE,
+                ip, gateway, str(vlanid), str(cpu), str(memory)], stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,shell=False, check=True)
             logger.debug(Ret.stdout.decode('utf-8'))
             logger.info("create container %s success" % lxc_name)

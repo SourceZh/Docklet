@@ -15,12 +15,17 @@ HOSTNAME=$5
 IP=$6
 GATEWAY=$7
 VLANID=$8
+CPU=$9
+MEMORY=$10
 
 # FS_PREFIX, DOCKLET_HOME, DOCKLET_LIB, ... are all set in python
 [ -z $FS_PREFIX ] && FS_PREFIX="/opt/docklet"
 [ -z $CONTAINER_CPU ] && CONTAINER_CPU=100000
 [ -z $CONTAINER_MEMORY ] && CONTAINER_MEMORY=1000
 [ -z $CONTAINER_DISK ] && CONTAINER_DISK=1000
+
+[ -z $CPU ] || CONTAINER_CPU=$CPU
+[ -z $MEMORY ] || CONTAINER_MEMORY=$MEMORY
 
 [ -z $DOCKLET_LIB ] && echo "[lxc_control.sh] DOCKLET_LIB is null" && exit 1
 [ -z $DOCKLET_CONF ] && echo "[lxc_control.sh] DOCKLET_CONF is null" && exit 1
