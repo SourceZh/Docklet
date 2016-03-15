@@ -78,7 +78,7 @@ class User(db.Model):
     def __init__(self, username, password, avatar="default.png", nickname = "", description = "", status = "init",
                     e_mail = "" , student_number = "", department = "", truename = "", tel="", date = None, usergroup = "primary"
                 , auth_method = "local"):
-        # using sha512, length cannot be less than 6
+        # using sha512
         #if (len(password) <= 6):
         #    self = None
         #    return None

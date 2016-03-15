@@ -39,8 +39,8 @@ from log import logger
 external_login = env.getenv('EXTERNAL_LOGIN')
 external_login_url = env.getenv('EXTERNAL_LOGIN_URL')
 external_login_callback_url = env.getenv('EXTERNAL_LOGIN_CALLBACK_URL')
-if (external_login == 'TRUE'):
-    from authenticate.external import external_loginView, external_login_callbackView
+if (external_login == 'True'):
+    from authenticate.login import external_loginView, external_login_callbackView
 
 app = Flask(__name__)
 
@@ -56,17 +56,17 @@ def login():
 
 @app.route(external_login_url, methods=['GET'])
 def external_login_func():
-    try:
-        return external_loginView.as_view()
-    except:
-        abort(500)
+    #try:
+    return external_loginView.as_view()
+    #except:
+        #abort(404)
 
 @app.route(external_login_callback_url, methods=['GET'])
 def external_login_callback():
     try:
         return external_login_callbackView.as_view()
     except:
-        abort(500)
+        abort(404)
 
 @app.route("/logout/", methods=["GET"])
 @login_required

@@ -24,6 +24,9 @@ from datetime import datetime
 
 e_mail_from_address = 'NoReply@internetware.org'
 
+if (env.getenv('EXTERNAL_LOGIN') == 'True'):
+    import plugin.external_receive
+
 def administration_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -172,7 +175,67 @@ class userManager:
         }
         return result
 
+    def auth_external(self, form):
 
+        if (env.getenv('EXTERNAL_LOGIN') != 'True'):
+            failed_result = {'success': 'false', 'reason' : 'external auth disabled'}
+            return failed_result
+
+        result = external_receive.external_auth_receive_request(form)
+
+        if (result['success'] != 'True'):
+            failed_result =  {'success':'false',  'result': result}
+            return failed_result
+
+        username = result['username']
+        user = User.query.filter_by(username = username).first()
+        if (user != None and user.auth_method == result['auth_method']):
+            result = {
+                "success": 'true',
+                "data":{
+                    "username" : user.username,
+                    "avatar" : user.avatar,
+                    "nickname" : user.nickname,
+                    "description" : user.description,
+                    "status" : user.status,
+                    "group" : user.user_group,
+                    "token" : user.generate_auth_token(),
+                }
+            }
+            return result
+        if (user != None and user.auth_method != result['auth_method']):
+            result = {'success': 'false', 'reason': 'other kinds of account already exists'}
+            return result
+        #user == None , register an account for external user
+        newuser = G_usermgr.newuser();
+        newuser.username = result['username']
+        newuser.password = result['password']
+        newuser.avatar = result['avatar']
+        newuser.nickname = result['nickname']
+        newuser.description = result['description']
+        newuser.e_mail = result['e_mail']
+        newuser.truename = result['truename']
+        newuser.student_number = result['student_number']
+        newuser.status = result['status']
+        newuser.user_group = result['user_group']
+        newuser.auth_method = result['auth_method']
+        newuser.department = result['department']
+        newuser.tel = result['tel']
+        G_usermgr.register(user = newuser)
+        user = User.query.filter_by(username = username).first()
+        result = {
+            "success": 'true',
+            "data":{
+                "username" : user.username,
+                "avatar" : user.avatar,
+                "nickname" : user.nickname,
+                "description" : user.description,
+                "status" : user.status,
+                "group" : user.user_group,
+                "token" : user.generate_auth_token(),
+            }
+        }
+        return result
 
     def auth(self, username, password):
         '''
@@ -481,7 +544,7 @@ class userManager:
             db.session.commit()
         newuser = kwargs['user']
         newuser.password = hashlib.sha512(newuser.password.encode('utf-8')).hexdigest()
-        db.session.add(kwargs['user'])
+        db.session.add(newuser)
         db.session.commit()
 
         # if newuser status is normal, init some data for this user

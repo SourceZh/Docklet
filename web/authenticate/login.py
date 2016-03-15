@@ -1,5 +1,5 @@
 import sys, os
-sys.path.append("..")
+sys.path.append('..')
 from view.view import normalView
 from authenticate.auth import is_authenticated
 from dockletreq.dockletrequest import dockletRequest
@@ -17,11 +17,12 @@ if src_folder not in sys.path:
 
 import env
 
-
-
-
+if (env.getenv('EXTERNAL_LOGIN') == 'True'):
+    sys.path.insert(0, os.path.realpath(os.path.abspath(os.path.join(this_folder,"../../src", "plugin"))))
+    import external_generate
 
 def refreshInfo():
+    '''not used now'''
     result = dockletRequest.post('/login/', data)
     ok = result and result.get('success', None)
     session['username'] = request.form['username']
@@ -40,7 +41,7 @@ class loginView(normalView):
         if is_authenticated():
             #refreshInfo()
             return redirect(request.args.get('next',None) or '/dashboard/')
-        if (env.getenv('EXTERNAL_LOGIN') == 'TRUE'):
+        if (env.getenv('EXTERNAL_LOGIN') == 'True'):
             url =  env.getenv('EXTERNAL_LOGIN_URL')
             link = env.getenv('EXTERNAL_LOGIN_LINK')
         else:
@@ -87,3 +88,32 @@ class logoutView(normalView):
         session.pop('token', None)
         resp.set_cookie('docklet-jupyter-cookie', '', expires=0)
         return resp
+
+
+class external_login_callbackView(normalView):
+    @classmethod
+    def get(self):
+
+        form = external_generate.external_auth_generate_request()
+        result = dockletRequest.unauthorizedpost('/external_login/', form)
+        ok = result and result.get('success', None)
+        if (ok and (ok == "true")):
+            # set cookie:docklet-jupyter-cookie for jupyter notebook
+            resp = make_response(redirect(request.args.get('next',None) or '/dashboard/'))
+            app_key = os.environ['APP_KEY']
+            resp.set_cookie('docklet-jupyter-cookie', cookie_tool.generate_cookie(result['data']['username'], app_key))
+            # set session for docklet
+            session['username'] = result['data']['username']
+            session['nickname'] = result['data']['nickname']
+            session['description'] = result['data']['description'][0:10]
+            session['avatar'] = '/static/avatar/'+ result['data']['avatar']
+            session['usergroup'] = result['data']['group']
+            session['status'] = result['data']['status']
+            session['token'] = result['data']['token']
+            return resp
+        else:
+            return redirect('/login/')
+
+class external_loginView(normalView):
+    if (env.getenv('EXTERNAL_LOGIN') == 'True'):
+        template_path = external_generate.html_path

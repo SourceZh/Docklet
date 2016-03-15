@@ -117,7 +117,7 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
         if cmds[0] == 'external_login':
             logger.info ("handle request : external user login")
             try:
-                result = external_auth.auth_external(form)
+                result = G_usermgr.auth_external(form)
                 self.response(200, result)
                 return result
             except:

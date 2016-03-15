@@ -112,8 +112,8 @@
 # LOG_LIFE: how many days the logs will be kept, default is 10
 # LOG_LIFE=10
 
-#EXTERNAL_LOGIN: whether docklet will use external account to log in
-# EXTERNAL_LOGIN=FALSE
+#EXTERNAL_LOGIN: whether docklet will use external account to log in, True or False
+# EXTERNAL_LOGIN=True
 
 #EXTERNAL_LOGIN_LINK: the href text for EXTERNAL_LOGIN_URL
 # EXTERNAL_LOGIN_LINK=EXTERNAL_LOGIN
