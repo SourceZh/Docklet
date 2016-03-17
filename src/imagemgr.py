@@ -22,6 +22,7 @@ import os,sys,subprocess,time,re,datetime,threading
 
 from log import logger
 import env
+from lvmtool import *
 
 class ImageMgr():
     def sys_call(self,command):
@@ -59,7 +60,7 @@ class ImageMgr():
             return fspath
     
     def createImage(self,user,image,lxc,description="Not thing",isforce = False):
-        fspath = self.NFS_PREFIX + "/local/volume/" + lxc + "/upper"
+        fspath = self.NFS_PREFIX + "/local/volume/" + lxc
         imgpath = self.imgpath + "private/" + user + "/"
         if isforce is False:
             logger.info("this save operation is not force")
@@ -86,67 +87,32 @@ class ImageMgr():
         #self.sys_call("rsync -a --delete --exclude=nfs/ %s/ %s/" % (imgpath+image,self.dealpath(fspath)))
         #self.updatetime(imgpath,image)
         return 
-   
-    def flush_one(self,user,image,lxc):
-        imaget = {}
-        imaget['name'] = image
-        imaget['type'] = "private"
-        imaget['owner'] = user
-        layer = self.NFS_PREFIX + "/local/volume/" + lxc + "/upper"
-        self.sys_call(self.srcpath+"lxc_control.sh stop %s" % lxc)
-        logger.info("LXC:%s stop success" % lxc)
-        self.prepareImage(user,imaget,layer)
-        logger.info("LXC:%s rootfs prepare success" % lxc)
-        self.sys_call(self.srcpath+"lxc_control.sh start %s" % lxc)
-        logger.info("LXC:%s start success" % lxc)
-
-    def flush(self,user,from_lxc,to_lxcs):
-        imgpath = self.imgpath + "private" + user + "/"
-        imagetmp = {}
-        imagetmp['name'] = user + "_tmp_docklet"
-        imagetmp['type'] = "private"
-        self.createImage(user,imagetmp,from_lxc)
-        logger.info("image:%s create success" % imagetmp)
-        threads = []
-        for to_lxc in to_lxcs:
-            """
-            layer = self.NFS_PREFIX + "/local/volume/" + to_lxc + "/upper"
-            self.sys_call(self.srcpath+"lxc_control.sh stop %s" % to_lxc)
-            logger.info("LXC:%s stop success" % to_lxc)
-            self.prepareImage(user,imagetmp,layer)
-            logger.info("LXC:%s rootfs prepare success" % to_lxc)
-            self.sys_call(self.srcpath+"lxc_control.sh start %s" % to_lxc)
-            logger.info("LXC:%s start success" % to_lxc)
-            """
-            t = threading.Thread(target=ImageMgr.flush_one,args=(self,user,imagetmp,to_lxc))
-            threads.append(t)
-        for t in threads:
-            t.start()
-        for t in threads:
-            t.join()
-        self.removeImage(user,imagetmp)
-        logger.info("image:%s remove success" % imagetmp)
-
-        
-    def newvg(self,size=1000,vgname="docklet-group",fp="/opt/docklet/local/docklet-storage"):
-        logger.info("size: %s, vg: %s, fp: %s" % (size, vgname, fp))
-        info=self.sys_call(self.srcpath+"lvmtool.sh new group %s %s %s" % (vgname,size,fp))
-        logger.info(info)
-
-    def recoveryvg(self,vgname="docklet-group",fp="/opt/docklet/local/docklet-storage"):
-        """
-        rv = self.sys_return(self.srcpath+"lvmtool.sh check group %s" % vgname)
-        if rv == 1:
-            self.sys_call(self.srcpath+"lvmtool.sh mount group %s %s" % (vgname,fp))
-        elif rv == 2:
-            self.newvg()
-        else:
-            pass
-        """
-        self.sys_call(self.srcpath+"lvmtool.sh recover group %s %s" % (vgname,fp))
-    def prepareFS(self,user,image,lxc,size="200",vgname="docklet-group"):
+    
+    def prepareFS(self,user,image,lxc,size="1000",vgname="docklet-group"):
         rootfs = "/var/lib/lxc/%s/rootfs" % lxc
-        layer = self.NFS_PREFIX + "/local/volume/" + lxc + "/upper"
+        layer = self.NFS_PREFIX + "/local/volume/" + lxc
+        #check mountpoint
+        Ret = sys_run("mountpoint %s" % rootfs)
+        if Ret.returncode == 0:
+            logger.info("%s not clean" % rootfs)
+            sys_run("umount -l %s" % rootfs)
+        Ret = sys_run("mountpoint %s" % layer)
+        if Ret.returncode == 0:
+            logger.info("%s not clean" % layer)
+            sys_run("umount -l %s" % layer)
+        sys_run("rm -rf %s %s" % (rootfs, layer))
+        sys_run("mkdir -p %s %s" % (rootfs, layer))
+        
+        #prepare volume
+        if check_volume(vgname,lxc):
+            logger.info("volume %s already exists, delete it")
+            delete_volume(vgname,lxc)
+        if not new_volume(vgname,lxc,size):
+            logger.error("volume %s create failed" % lxc)
+            return False
+        sys_run("mkfs.ext4 /dev/%s/%s" % (vgname,lxc))
+        sys_run("mkdir -p %s" % layer)
+        sys_run("mount /dev/%s/%s %s" %(vgname,lxc,layer))
         #self.sys_call("mountpoint %s &>/dev/null && umount -l %s" % (rootfs,rootfs))
         #self.sys_call("mountpoint %s &>/dev/null && umount -l %s" % (layer,layer))
         #self.sys_call("rm -rf %s %s && mkdir -p %s %s" % (rootfs,layer,rootfs,layer))
@@ -162,42 +128,24 @@ class ImageMgr():
         #self.prepareImage(user,image,layer+"/overlay")
         self.prepareImage(user,image,layer)
         logger.info("image has been prepared")
+        return True
 
     def deleteFS(self,lxc,vgname="docklet-group"):
         rootfs = "/var/lib/lxc/%s/rootfs" % lxc
-        layer = self.NFS_PREFIX + "/local/aufs" + lxc
-        self.sys_call("mountpoint %s &>/dev/null && umount -l %s" % (rootfs,rootfs))
-        self.sys_call("mountpoint %s &>/dev/null && umount -l %s" % (layer,layer))  
-        self.sys_call("rm -rf /var/lib/lxc/%s" % lxc)
-        self.sys_call("lvremove -f %s/%s" % (vgname,lxc))
-
-    def checkFS(self,lxc,vgname="docklet-group"):
-        rv = self.sys_return(self.srcpath+"lvmtool.sh check volume %s %s" % (vgname,lxc))
-        if rv == 0:
-            logger.info("lv %s exist" % lxc)
-            return 0
-        else:
-            logger.info("lv %s not exist" % lxc)
-            return 1
-
-    def checkPOOL(self,vgname="docklet-group",fp="/opt/docklet/local/docklet-storage"):
-        rv = self.sys_return(self.srcpath+"lvmtool.sh check group %s" % vgname)
-        if rv == 1:
-            logger.info("vg %s not exist" % vgname)
-            return 1
-        elif rv == 2:
-            logger.info("loop file %s not exist" % fp)
-            return 2
-        else:
-            logger.info("vg %s exist" % vgname)
-            return 0
-
-    def deletePOOL(self,vgname="docklet-group",fp="/opt/docklet/local/docklet-storage"):
-        self.sys_call("vgremove -f %s" % vgname)
-        self.sys_call("umount /dev/loop0")
-        self.sys_call("losetup -d /dev/loop0")
-        self.sys_call("rm -f %s" % fp)
-
+        layer = self.NFS_PREFIX + "/local/volume" + lxc
+        lxcpath = "/var/lib/lxc/%s" % lxc
+        sys_run("lxc-stop -k -n %s" % lxc)
+        #check mountpoint
+        Ret = sys_run("mountpoint %s" % rootfs)
+        if Ret.returncode == 0:
+            sys_run("umount -l %s" % rootfs)
+        Ret = sys_run("mountpoint %s" % layer)
+        if Ret.returncode == 0:
+            sys_run("umount -l %s" % layer)
+        if check_volume(vgname, lxc):
+            delete_volume(vgname, lxc)
+        sys_run("rm -rf %s %s" % (layer,lxcpath))
+        return True
 
     def removeImage(self,user,image):
         imgpath = self.imgpath + "private/" + user + "/"

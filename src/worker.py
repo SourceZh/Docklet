@@ -15,6 +15,7 @@ from socketserver import ThreadingMixIn
 import etcdlib, network, container, imagemgr
 from nettools import netcontrol
 import monitor
+from lvmtool import *
 
 ##################################################################
 #                       Worker
@@ -72,7 +73,6 @@ class Worker(object):
         logger.info ("worker registered in master and checked the token")
 
         Containers = container.Container(self.addr, etcdclient)
-        imgmgr = imagemgr.ImageMgr()
         if value == 'init-new':
             logger.info ("init worker with mode:new")
             # check global directory do not have containers on this worker
@@ -85,12 +85,12 @@ class Worker(object):
                 logger.error ("delete all containers failed")
                 sys.exit(1)
             # create new lvm VG at last
-            imgmgr.newvg(self.poolsize,"docklet-group",self.fspath+"/local/docklet-storage")
+            new_group("docklet-group",self.poolsize,self.fspath+"/local/docklet-storage")
             #subprocess.call([self.libpath+"/lvmtool.sh", "new", "group", "docklet-group", self.poolsize, self.fspath+"/local/docklet-storage"])
         elif value == 'init-recovery':
             logger.info ("init worker with mode:recovery")
             # recover lvm VG first
-            imgmgr.recoveryvg("docklet-group",self.fspath+"/local/docklet-storage")
+            recover_group("docklet-group",self.fspath+"/local/docklet-storage")
             #subprocess.call([self.libpath+"/lvmtool.sh", "recover", "group", "docklet-group", self.fspath+"/local/docklet-storage"])
             [status, meg] = Containers.check_allcontainers()
             if status:

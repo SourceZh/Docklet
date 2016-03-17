@@ -52,18 +52,16 @@ class VclusterMgr(object):
                 self.recover_cluster(cluster, user)
         logger.info("recovered all vclusters for all users")
 
-    def create_cluster(self, clustername, username, image, cur_user):
+    def create_cluster(self, clustername, username, image, user_info):
         if self.is_cluster(clustername, username):
             return [False, "cluster:%s already exists" % clustername]
         clustersize = int(self.defaultsize);
         logger.info ("starting cluster %s with %d containers for %s" % (clustername, int(clustersize), username))
         workers = self.nodemgr.get_rpcs()
+        image_json = json.dumps(image)
         if (len(workers) == 0):
             logger.warning ("no workers to start containers, start cluster failed")
             return [False, "no workers are running"]
-        imagename = image['name']
-        imageowner = image['owner']
-        imagetype = image['type']
         # check user IP pool status, should be moved to user init later
         if not self.networkmgr.has_user(username):
             self.networkmgr.add_user(username, cidr=29)
@@ -84,8 +82,8 @@ class VclusterMgr(object):
             onework = workers[random.randint(0, len(workers)-1)]
             lxc_name = username + "-" + str(clusterid) + "-" + str(i)
             hostname = "host-"+str(i)
-            logger.info ("create container with : name-%s, username-%s, clustername-%s, clusterid-%s, hostname-%s, ip-%s, gateway-%s, imagename-%s, imageowner-%s, imagetype-%s" % (lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, imagename, imageowner, imagetype))
-            [success,message] = onework.create_container(lxc_name, username, cur_user, clustername, str(clusterid), hostname, ips[i], gateway, str(vlanid), imagename, imageowner, imagetype )
+            logger.info ("create container with : name-%s, username-%s, clustername-%s, clusterid-%s, hostname-%s, ip-%s, gateway-%s, image-%s" % (lxc_name, username, clustername, str(clusterid), hostname, ips[i], gateway, image_json))
+            [success,message] = onework.create_container(lxc_name, username, user_info , clustername, str(clusterid), hostname, ips[i], gateway, str(vlanid), image_json)
             if success is False:
                 logger.info("container create failed, so vcluster create failed")
                 return [False, message]
@@ -102,16 +100,14 @@ class VclusterMgr(object):
         clusterfile.close()
         return [True, info]
 
-    def scale_out_cluster(self,clustername,username,image,cur_user):
+    def scale_out_cluster(self,clustername,username,image,user_info):
         if not self.is_cluster(clustername,username):
             return [False, "cluster:%s not found" % clustername]
         workers = self.nodemgr.get_rpcs()
         if (len(workers) == 0):
             logger.warning("no workers to start containers, scale out failed")
             return [False, "no workers are running"]
-        imagename = image['name']
-        imageowner = image['owner']
-        imagetype = image['type']
+        image_json = json.dumps(image)
         [status, result] = self.networkmgr.acquire_userips_cidr(username)
         gateway = self.networkmgr.get_usergw(username)
         vlanid = self.networkmgr.get_uservlanid(username)
@@ -127,7 +123,7 @@ class VclusterMgr(object):
         onework = workers[random.randint(0, len(workers)-1)]
         lxc_name = username + "-" + str(clusterid) + "-" + str(cid)
         hostname = "host-" + str(cid)
-        [success, message] = onework.create_container(lxc_name, username, cur_user, clustername, clusterid, hostname, ip, gateway, str(vlanid), imagename, imageowner, imagetype)
+        [success, message] = onework.create_container(lxc_name, username, user_info, clustername, clusterid, hostname, ip, gateway, str(vlanid), image_json)
         if success is False:
             logger.info("create container failed, so scale out failed")
             return [False, message]

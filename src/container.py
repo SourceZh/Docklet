@@ -4,7 +4,7 @@ import subprocess, os, json
 import imagemgr
 from log import logger
 import env
-import userManager
+from lvmtool import *
 
 class Container(object):
     def __init__(self, addr, etcdclient):
@@ -20,14 +20,16 @@ class Container(object):
 
         self.lxcpath = "/var/lib/lxc"
         self.imgmgr = imagemgr.ImageMgr()
-        self.usermgr = userManager.userManager()
 
-    def create_container(self, lxc_name, username, cur_user, clustername, clusterid, hostname, ip, gateway, vlanid, imagename, imageowner, imagetype ):
+    def create_container(self, lxc_name, username, user_info, clustername, clusterid, hostname, ip, gateway, vlanid, image):
         logger.info("create container %s of %s for %s" %(lxc_name, clustername, username))
         try:
-            user_info = self.usermgr.selfQuery(cur_user = cur_user)
-            cpu = user_info["data"]["cpu"]
-            memory = user_info["data"]["memory"]
+            user_info = json.loads(user_info) 
+            cpu = user_info["data"]["groupinfo"]["cpu"]
+            memory = user_info["data"]["groupinfo"]["memory"]
+            image = json.loads(image) 
+            self.imgmgr.prepareFS(username,image,lxc_name)
+            
             Ret = subprocess.run([self.libpath+"/lxc_control.sh",
                 "create", lxc_name, username, str(clusterid), hostname,
                 ip, gateway, str(vlanid), str(cpu), str(memory)], stdout=subprocess.PIPE,
@@ -35,11 +37,6 @@ class Container(object):
             logger.debug(Ret.stdout.decode('utf-8'))
             logger.info("create container %s success" % lxc_name)
 
-            image = {}
-            image['name'] = imagename
-            image['owner'] = imageowner
-            image['type'] = imagetype
-            self.imgmgr.prepareFS(username,image,lxc_name)
             # get AUTH COOKIE URL for jupyter
             [status, authurl] = self.etcd.getkey("web/authurl")
             if not status:
@@ -92,13 +89,19 @@ IP=%s
 
     def delete_container(self, lxc_name):
         logger.info ("delete container:%s" % lxc_name)
-        status = subprocess.call([self.libpath+"/lxc_control.sh", "delete", lxc_name])
-        if int(status) == 1:
-            logger.error("delete container %s failed" % lxc_name)
-            return [False, "delete container failed"]
-        else:
-            logger.info ("delete container %s success" % lxc_name)
+        if self.imgmgr.deleteFS(lxc_name):
+            logger.info("delete container %s success" % lxc_name)
             return [True, "delete container success"]
+        else:
+            logger.info("delete container %s failed" % lxc_name)
+            return [False, "delete container failed"]
+        #status = subprocess.call([self.libpath+"/lxc_control.sh", "delete", lxc_name])
+        #if int(status) == 1:
+        #    logger.error("delete container %s failed" % lxc_name)
+        #    return [False, "delete container failed"]
+        #else:
+        #    logger.info ("delete container %s success" % lxc_name)
+        #    return [True, "delete container success"]
 
     # start container, if running, restart it
     def start_container(self, lxc_name):
@@ -184,13 +187,12 @@ IP=%s
     # check container: check LV and mountpoints, if wrong, try to repair it
     def check_container(self, lxc_name):
         logger.info ("check container:%s" % lxc_name)
-        status = subprocess.call([self.libpath+"/lxc_control.sh", "check", lxc_name])
-        if int(status) == 1:
-            logger.error ("check container %s failed" % lxc_name)
+        if not check_volume("docklet-group", lxc_name):
+            logger.error("check container %s failed" % lxc_name)
             return [False, "check container failed"]
-        else:
-            logger.info ("check container %s success" % lxc_name)
-            return [True, "check container success"]
+        status = subprocess.call([self.libpath+"/lxc_control.sh", "check", lxc_name])
+        logger.info ("check container %s success" % lxc_name)
+        return [True, "check container success"]
 
     def is_container(self, lxc_name):
         if os.path.isdir(self.lxcpath+"/"+lxc_name):

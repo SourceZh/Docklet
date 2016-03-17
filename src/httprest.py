@@ -132,7 +132,7 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
         if cur_user == None:
             self.response(401, {'success':'false', 'message':'token failed or expired', 'Unauthorized': 'True'})
             return [False, "auth failed"]
-
+        
 
 
         user = cur_user.username
@@ -156,8 +156,10 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
                 image['name'] = form.getvalue("imagename")
                 image['type'] = form.getvalue("imagetype")
                 image['owner'] = form.getvalue("imageowner")
+                user_info = G_usermgr.selfQuery(cur_user = cur_user)
+                user_info = json.dumps(user_info)
                 logger.info ("handle request : create cluster %s with image %s " % (clustername, image['name']))
-                [status, result] = G_vclustermgr.create_cluster(clustername, user, image, cur_user)
+                [status, result] = G_vclustermgr.create_cluster(clustername, user, image, user_info)
                 if status:
                     self.response(200, {'success':'true', 'action':'create cluster', 'message':result})
                 else:
@@ -171,7 +173,9 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
                 logger.debug("imagename:" + image['name'])
                 logger.debug("imagetype:" + image['type'])
                 logger.debug("imageowner:" + image['owner'])
-                [status, result] = G_vclustermgr.scale_out_cluster(clustername, user, image, cur_user)
+                user_info = G_usermgr.selfQuery(cur_user = cur_user)
+                user_info = json.dumps(user_info)
+                [status, result] = G_vclustermgr.scale_out_cluster(clustername, user, image, user_info)
                 if status:
                     self.response(200, {'success':'true', 'action':'scale out', 'message':result})
                 else:
