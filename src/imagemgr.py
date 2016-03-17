@@ -132,7 +132,7 @@ class ImageMgr():
 
     def deleteFS(self,lxc,vgname="docklet-group"):
         rootfs = "/var/lib/lxc/%s/rootfs" % lxc
-        layer = self.NFS_PREFIX + "/local/volume" + lxc
+        layer = self.NFS_PREFIX + "/local/volume/" + lxc
         lxcpath = "/var/lib/lxc/%s" % lxc
         sys_run("lxc-stop -k -n %s" % lxc)
         #check mountpoint
