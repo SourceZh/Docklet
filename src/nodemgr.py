@@ -16,12 +16,12 @@ import env
 #         machines/runnodes  -- run nodes of this start up 
 ##############################################
 class NodeMgr(object):
-    def __init__(self, networkmgr, etcdclient, addr):
+    def __init__(self, networkmgr, etcdclient, addr, mode):
         self.addr = addr
         logger.info ("begin initialize on %s" % self.addr)
         self.networkmgr = networkmgr
         self.etcd = etcdclient
-        self.mode = self.etcd.getkey("service/mode")[1]
+        self.mode = mode
 
         # initialize the network
         logger.info ("initialize network")
@@ -36,8 +36,14 @@ class NodeMgr(object):
         #logger.info ("initialize bridge wih ip %s" % self.bridgeip)
         #network.netsetup("init", self.bridgeip)
 
-        if not netcontrol.bridge_exists('docklet-br'):
+        if self.mode == 'new':
+            if netcontrol.bridge_exists('docklet-br'):
+                netcontrol.del_bridge('docklet-br')
             netcontrol.new_bridge('docklet-br')
+        else:
+            if not netcontrol.bridge_exists('docklet-br'):
+                logger.error("docklet-br not found")
+                sys.exit(1)
 
         # get allnodes
         self.allnodes = self._nodelist_etcd("allnodes")

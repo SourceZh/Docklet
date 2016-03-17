@@ -221,6 +221,10 @@ class netcontrol(object):
         return ovscontrol.bridge_exist(bridge)
 
     @staticmethod
+    def del_bridge(bridge):
+        return ovscontrol.del_bridge(bridge)
+
+    @staticmethod
     def new_bridge(bridge):
         return ovscontrol.add_bridge(bridge)
 

@@ -12,7 +12,7 @@ from log import logger
 
 import xmlrpc.server, sys, time
 from socketserver import ThreadingMixIn
-import etcdlib, network, container, imagemgr
+import etcdlib, network, container
 from nettools import netcontrol
 import monitor
 from lvmtool import *
@@ -46,6 +46,7 @@ class Worker(object):
 
         self.etcd = etcdclient
         self.master = self.etcd.getkey("service/master")[1]
+        self.mode=None
 
         # register self to master
         self.etcd.setkey("machines/runnodes/"+self.addr, "waiting")
@@ -75,6 +76,7 @@ class Worker(object):
         Containers = container.Container(self.addr, etcdclient)
         if value == 'init-new':
             logger.info ("init worker with mode:new")
+            self.mode='new'
             # check global directory do not have containers on this worker
             [both, onlylocal, onlyglobal] = Containers.diff_containers()
             if len(both+onlyglobal) > 0:
@@ -89,6 +91,7 @@ class Worker(object):
             #subprocess.call([self.libpath+"/lvmtool.sh", "new", "group", "docklet-group", self.poolsize, self.fspath+"/local/docklet-storage"])
         elif value == 'init-recovery':
             logger.info ("init worker with mode:recovery")
+            self.mode='recovery'
             # recover lvm VG first
             recover_group("docklet-group",self.fspath+"/local/docklet-storage")
             #subprocess.call([self.libpath+"/lvmtool.sh", "recover", "group", "docklet-group", self.fspath+"/local/docklet-storage"])
@@ -127,8 +130,14 @@ class Worker(object):
             #self.bridgeip = result
             # create bridges for worker
             #network.netsetup("init", self.bridgeip)
-            if not netcontrol.bridge_exists('docklet-br'):
+            if self.mode == 'new':
+                if netcontrol.bridge_exists('docklet-br'):
+                    netcontrol.del_bridge('docklet-br')
                 netcontrol.new_bridge('docklet-br')
+            else:
+                if not netcontrol.bridge_exists('docklet-br'):
+                    logger.error("docklet-br not found")
+                    sys.exit(1)
             logger.info ("setup GRE tunnel to master %s" % self.master)
             #network.netsetup("gre", self.master)
             if not netcontrol.gre_exists('docklet-br', self.master):
