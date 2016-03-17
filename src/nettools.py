@@ -263,7 +263,7 @@ class netcontrol(object):
         else:
             info['inet'].remove(addr)
             for otheraddr in info['inet']:
-                ipcontrol.del_addr(otheraddr)
+                ipcontrol.del_addr(gwport, otheraddr)
         if info['state'] == 'DOWN':
             ipcontrol.up_link(gwport)
         return [True, "check gateway port %s" % gwport]
