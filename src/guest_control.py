@@ -20,7 +20,12 @@ class Guest(object):
             time.sleep(10)
         if not os.path.isdir(self.fspath+"/global/users/guest"):
             subprocess.getoutput(self.libpath+"/userinit.sh guest")
-        self.G_vclustermgr.create_cluster("guestspace", "guest", image)
+        user_info = {}
+        user_info["data"] = {}
+        user_info["data"]["groupinfo"] = {}
+        user_info["data"]["groupinfo"]["cpu"] = 100000
+        user_info["data"]["groupinfo"]["memory"] = 2000
+        self.G_vclustermgr.create_cluster("guestspace", "guest", image, user_info)
         while True:
             self.G_vclustermgr.start_cluster("guestspace", "guest")
             time.sleep(3600)
