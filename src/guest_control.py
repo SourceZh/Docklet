@@ -32,5 +32,5 @@ class Guest(object):
             self.G_vclustermgr.start_cluster("guestspace", "guest")
             time.sleep(3600)
             self.G_vclustermgr.stop_cluster("guestspace", "guest")
-            fspath = self.fspath + "/global/local/volume/guest-1-0/upper/"
+            fspath = self.fspath + "/global/local/volume/guest-1-0/"
             subprocess.getoutput("(cd %s && rm -rf *)" % fspath)
