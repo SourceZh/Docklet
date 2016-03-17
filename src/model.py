@@ -136,7 +136,7 @@ class UserGroup(db.Model):
 
     def __init__(self, name):
         self.name = name
-        self.cpu = '2000'
+        self.cpu = '100000'
         self.memory = '2000'
         self.imageQuantity = '10'
         self.lifeCycle = '24'
