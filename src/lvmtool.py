@@ -44,7 +44,7 @@ def new_group(group_name, size = "5000", file_path = "/opt/docklet/local/docklet
         return True
          
     elif storage == "disk":
-        disk = env.getenv("disk")
+        disk = env.getenv("DISK")
         if disk is None:
             logger.error("use disk for story without a physical disk")
             return False        
