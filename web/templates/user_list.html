@@ -127,6 +127,13 @@
                                     <option>iaaa</option>
                               </select>
                             </div>
+          
+                            <div class="form-group">
+                              <label>Description</label>
+                              <textarea class="form-control" name="description" id="mDescription" readonly="readonly">
+
+                              </textarea>
+                            </div>
 
                           </form>
 
@@ -337,6 +344,7 @@
         $("#mStatus").val(result.status);
         $("#mUserGroup").val(result.group);
         $("#mAuthMethod").val(result.auth_method);
+        $("#mDescription").val(result.description);
       });
     }
     function setFormGroup(arg){

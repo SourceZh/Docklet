@@ -44,5 +44,9 @@ def getenv(key):
         return os.environ.get("STORAGE", "file")
     elif key =="EXTERNAL_LOGIN":
         return os.environ.get("EXTERNAL_LOGIN", "False")
+    elif key =="EMAIL_FROM_ADDRESS":
+        return os.environ.get("EMAIL_FROM_ADDRESS", "None")
+    elif key =="ADMIN_EMAIL_ADDRESS":
+        return os.environ.get("ADMIN_EMAIL_ADDRESS", "None")
     else:
         return os.environ[key]

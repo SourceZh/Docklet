@@ -19,7 +19,7 @@ import os
 import http.server, cgi, json, sys, shutil
 from socketserver import ThreadingMixIn
 import nodemgr, vclustermgr, etcdlib, network, imagemgr
-from userManager import userManager
+import userManager
 import monitor
 import guest_control, threading
 
@@ -249,7 +249,7 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
             else:
                 logger.warning ("request not supported ")
                 self.response(400, {'success':'false', 'message':'not supported request'})
-        
+
         # Request for Image
         elif cmds[0] == 'image':
             if cmds[1] == 'list':
@@ -277,7 +277,7 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
             else:
                 logger.warning("request not supported ")
                 self.response(400, {'success':'false', 'message':'not supported request'})
-        
+
         # Add Proxy
         elif cmds[0] == 'addproxy':
             logger.info ("handle request : add proxy")
@@ -286,11 +286,11 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
             clustername = form.getvalue("clustername")
             [status, message] = G_vclustermgr.addproxy(user,clustername,proxy_ip,proxy_port)
             if status is True:
-                self.response(200, {'success':'true', 'action':'addproxy'}) 
+                self.response(200, {'success':'true', 'action':'addproxy'})
             else:
                 self.response(400, {'success':'false', 'message': message})
         # Delete Proxy
-        elif cmds[0] == 'deleteproxy': 
+        elif cmds[0] == 'deleteproxy':
             logger.info ("handle request : delete proxy")
             clustername = form.getvalue("clustername")
             G_vclustermgr.deleteproxy(user,clustername)
@@ -459,7 +459,9 @@ class DockletHttpHandler(http.server.BaseHTTPRequestHandler):
             newuser.department = form.getvalue('department', '')
             newuser.truename = form.getvalue('truename', '')
             newuser.tel = form.getvalue('tel', '')
+            newuser.description = form.getvalue('description', '')
             result = G_usermgr.register(user = newuser)
+            userManager.send_remind_activating_email(newuser.username)
             self.response(200,result)
         else:
             logger.warning ("request not supported ")
@@ -552,7 +554,7 @@ if __name__ == '__main__':
             etcdclient.deldir("machines/runnodes")
         etcdclient.createdir("machines/runnodes")
 
-    G_usermgr = userManager('root')
+    G_usermgr = userManager.userManager('root')
     clusternet = env.getenv("CLUSTER_NET")
     logger.info("using CLUSTER_NET %s" % clusternet)
 

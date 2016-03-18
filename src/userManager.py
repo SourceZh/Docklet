@@ -22,7 +22,8 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from datetime import datetime
 
-e_mail_from_address = 'NoReply@internetware.org'
+email_from_address = env.getenv('EMAIL_FROM_ADDRESS')
+admin_email_address = env.getenv('ADMIN_EMAIL_ADDRESS')
 
 if (env.getenv('EXTERNAL_LOGIN') == 'True'):
     from plugin import external_receive
@@ -63,6 +64,8 @@ def token_required(func):
     return wrapper
 
 def send_activated_email(to_address, username):
+    if (email_from_address == 'None'):
+        return
     #text = 'Dear '+ username + ':\n' + '  Your account in docklet has been activated'
     text = '<html><h4>Dear '+ username + ':</h4>'
     text += '''<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your account in <a href='%s'>%s</a> has been activated</p>
@@ -78,12 +81,38 @@ def send_activated_email(to_address, username):
     msg = MIMEMultipart()
     textmsg = MIMEText(text,'html','utf-8')
     msg['Subject'] = Header(subject, 'utf-8')
-    msg['From'] = e_mail_from_address
+    msg['From'] = email_from_address
     msg['To'] = to_address
     msg.attach(textmsg)
     s = smtplib.SMTP()
     s.connect()
-    s.sendmail(e_mail_from_address, to_address, msg.as_string())
+    s.sendmail(email_from_address, to_address, msg.as_string())
+    s.close()
+
+def send_remind_activating_email(username):
+    if (email_from_address == 'None' or admin_email_address == 'None'):
+        return
+    #text = 'Dear '+ username + ':\n' + '  Your account in docklet has been activated'
+    text = '<html><h4>Dear '+ 'admin' + ':</h4>'
+    text += '''<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An activating request for %s in <a href='%s'>%s</a> has been sent</p>
+               <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please check it !</p>
+               <br/>
+               <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please No Reply !</p>
+               <br/><br/>
+               <p> Docklet Team, SEI, PKU</p>
+            ''' % (username, env.getenv("PORTAL_URL"), env.getenv("PORTAL_URL"))
+    text += '<p>'+  str(datetime.utcnow()) + '</p>'
+    text += '</html>'
+    subject = 'An activating request in Docklet has been sent'
+    msg = MIMEMultipart()
+    textmsg = MIMEText(text,'html','utf-8')
+    msg['Subject'] = Header(subject, 'utf-8')
+    msg['From'] = email_from_address
+    msg['To'] = admin_email_address
+    msg.attach(textmsg)
+    s = smtplib.SMTP()
+    s.connect()
+    s.sendmail(email_from_address, admin_email_address, msg.as_string())
     s.close()
 
 
@@ -284,6 +313,7 @@ class userManager:
                     "tel" : user.tel,
                     "register_date" : "%s"%(user.register_date),
                     "group" : user.user_group,
+                    "description" : user.description,
                 },
                 "token": user
             }
