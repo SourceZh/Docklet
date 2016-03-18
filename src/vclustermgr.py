@@ -71,6 +71,7 @@ class VclusterMgr(object):
         logger.info ("create cluster with gateway : %s" % gateway)
         self.networkmgr.printpools()
         if not status:
+            logger.info ("create cluster failed: %s" % result)
             return [False, result]
         ips = result
         clusterid = self._acquire_id()

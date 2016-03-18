@@ -87,7 +87,7 @@ def recover_group(group_name,file_path="/opt/docklet/local/docklet-storage"):
         logger.info("recover VG %s success" % group_name)
 
     elif storage == "disk":
-        disk = env.getenv("disk")
+        disk = env.getenv("DISK")
         if disk is None:
             logger.error("use disk for story without a physical disk")
             return False        
