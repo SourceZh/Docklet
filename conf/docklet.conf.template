@@ -116,7 +116,7 @@
 # EXTERNAL_LOGIN=False
 
 #EMAIL_FROM_ADDRESS : the e-mail address to send activating e-mail to user
-# EMAIL_FROM_ADDRESS=None
+# EMAIL_FROM_ADDRESS=''
 
 #ADMIN_EMAIL_ADDRESS : when an activating request is sent, an e-mail will be sent to this address
-# ADMIN_E_MAIL_ADDRESS=None
+# ADMIN_E_MAIL_ADDRESS=''

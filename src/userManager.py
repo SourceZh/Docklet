@@ -64,7 +64,7 @@ def token_required(func):
     return wrapper
 
 def send_activated_email(to_address, username):
-    if (email_from_address == 'None'):
+    if (email_from_address == '\'\''):
         return
     #text = 'Dear '+ username + ':\n' + '  Your account in docklet has been activated'
     text = '<html><h4>Dear '+ username + ':</h4>'
@@ -90,7 +90,7 @@ def send_activated_email(to_address, username):
     s.close()
 
 def send_remind_activating_email(username):
-    if (email_from_address == 'None' or admin_email_address == 'None'):
+    if (email_from_address == '\'\'' or admin_email_address == "\'\'"):
         return
     #text = 'Dear '+ username + ':\n' + '  Your account in docklet has been activated'
     text = '<html><h4>Dear '+ 'admin' + ':</h4>'
