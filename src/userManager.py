@@ -276,6 +276,8 @@ class userManager:
             return self.auth_pam(username, password)
         elif (user.auth_method == 'local'):
             return self.auth_local(username, password)
+        elif:
+            return {'success':'false', 'reason':'auth_method error'}
 
     def auth_token(self, token):
         '''
