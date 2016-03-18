@@ -51,7 +51,7 @@
 # A single CPU core has total=100000 (100ms), so the default 100000
 # mean a single container can occupy a whole core.
 # For a CPU with two cores, this can be set to 200000
-# CONTAINER_CPU=50000
+# CONTAINER_CPU=100000
 
 # CONTAINER_DISK: disk quota of container image upper layer, count in MB,
 # default is 1000
@@ -112,7 +112,9 @@
 # LOG_LIFE: how many days the logs will be kept, default is 10
 # LOG_LIFE=10
 
-#EXTERNAL_LOGIN: whether docklet will use external account to log in, True or False
+# EXTERNAL_LOGIN: whether docklet will use external account to log in
+# True or False, default is False
+# default: authenticate local and PAM users
 # EXTERNAL_LOGIN=False
 
 #EMAIL_FROM_ADDRESS : the e-mail address to send activating e-mail to user
