@@ -173,7 +173,7 @@ class EnumPool(object):
 
     def acquire(self, num=1):
         if num > len(self.pool):
-            return [False, "No enough IPs"]
+            return [False, "No enough IPs: %s" % self.info]
         result = []
         for i in range(0, num):
             result.append(self.pool.pop())

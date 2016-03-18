@@ -37,7 +37,7 @@ class createClusterView(normalView):
             return dashboardView.as_view()
             #return self.render(self.template_path, user = session['username'])
         else:
-            return self.render(self.error_path, message = "create cluster failed, please contact the administrator")
+            return self.render(self.error_path, message = result.get('message'))
 
 class descriptionImageView(normalView):
     template_path = "image_description.html"
@@ -75,7 +75,7 @@ class scaleoutView(normalView):
         if(result.get('success', None) == "true"):
             return configView.as_view()
         else:
-            return self.render(self.error_path, message = "scale out failed, please contact the administrator")
+            return self.render(self.error_path, message = result.get('message'))
 
 class scaleinView(normalView):
     @classmethod
