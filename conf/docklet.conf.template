@@ -121,4 +121,4 @@
 # EMAIL_FROM_ADDRESS=''
 
 #ADMIN_EMAIL_ADDRESS : when an activating request is sent, an e-mail will be sent to this address
-# ADMIN_E_MAIL_ADDRESS=''
+# ADMIN_EMAIL_ADDRESS=''
