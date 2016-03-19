@@ -62,12 +62,14 @@ DAEMON_NAME_WEB=docklet-web
 PIDFILE_WEB=$RUN_DIR/docklet-web.pid
 DAEMON_OPTS_WEB=
 
+RUNNING_CONFIG=$FS_PREFIX/local/docklet-running.conf
+export CONFIG=$RUNNING_CONFIG
 
 . /lib/lsb/init-functions
 
 ###########
 
-do_start_master () {
+pre_start_master () {
     log_daemon_msg "Starting $DAEMON_NAME_MASTER in $FS_PREFIX"
 
     [ ! -d $FS_PREFIX/global ] && mkdir -p $FS_PREFIX/global
@@ -78,8 +80,6 @@ do_start_master () {
     [ ! -d $FS_PREFIX/local/run ] && mkdir -p $FS_PREFIX/local/run
     [ ! -d $FS_PREFIX/local/log ] && mkdir -p $FS_PREFIX/local/log
 
-    RUNNING_CONFIG=$FS_PREFIX/local/docklet-running.conf
-
     grep -P "^[\s]*[a-zA-Z]" $DOCKLET_CONF/docklet.conf > $RUNNING_CONFIG
 
     echo "DOCKLET_HOME=$DOCKLET_HOME" >> $RUNNING_CONFIG
@@ -89,11 +89,15 @@ do_start_master () {
     echo "DOCKLET_SRC=$DOCKLET_SRC" >> $RUNNING_CONFIG
     echo "DOCKLET_LIB=$DOCKLET_LIB" >> $RUNNING_CONFIG
 
-    export CONFIG=$RUNNING_CONFIG
 
     # iptables for NAT network for containers to access web
     iptables -t nat -F
     iptables -t nat -A POSTROUTING -s $CLUSTER_NET -j MASQUERADE
+
+}
+
+do_start_master () {
+    pre_start_master
 
     DAEMON_OPTS_MASTER=$1
 
@@ -101,17 +105,6 @@ do_start_master () {
 	#    new : clean old data in etcd, global directory and start a new cluster
 	#    recovery : start cluster and recover status from etcd and global directory
 	# Default is "recovery"
-
-	###########################################
-	# in shell, run other script or other not built-in commands
-	# the command will run in new process and new process group ( see csapp shell lab)
-	# so, the environment variables set in shell can not be see in python/...
-	# but, command like: A=ab ./python.py , variable A can be see in python
-	# here we pass config path to python and python load environment variables from config file
-	############################################
-	# 'python3 -u' can disable the buffer of python process
-	# so redirect output of python will immediately appear in redirect file
-	# otherwise the 'print' content will not appear in log file immediately
 
     start-stop-daemon --start --oknodo --background --pidfile $PIDFILE_MASTER --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON_MASTER -- $DAEMON_OPTS_MASTER
     log_end_msg $?
@@ -125,7 +118,7 @@ do_start_proxy () {
     log_end_msg $?
 }
 
-do_start_web () {
+pre_start_web () {
     log_daemon_msg "Starting  $DAEMON_NAME_WEB in $FS_PREFIX"
 
     webip=$(ip addr show $NETWORK_DEVICE | grep -oE "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+")
@@ -138,6 +131,10 @@ do_start_web () {
     #echo "set AUTH_COOKIE_URL:$AUTH_COOKIE_URL in etcd with key:$CLUSTER_NAME/web/authurl"
     curl -XPUT http://$ETCD/v2/keys/$CLUSTER_NAME/web/authurl -d value="$AUTH_COOKIE_URL" > /dev/null 2>&1
     [ $? != 0 ] && echo "set AUTH_COOKIE_URL failed in etcd" && exit 1
+}
+
+do_start_web () {
+    pre_start_web
 
     DAEMON_OPTS_WEB="-p $WEB_PORT"
 
@@ -183,6 +180,15 @@ case "$1" in
         do_stop_master
         ;;
 
+    restart)
+        do_stop_web
+        do_stop_proxy
+        do_stop_master
+        do_start_master "recovery"
+        do_start_proxy
+        do_start_web
+        ;;
+
     start_proxy)
         do_start_proxy
         ;;
@@ -191,11 +197,12 @@ case "$1" in
         do_stop_proxy
         ;;
 
-    restart)
-        do_stop_web
-        do_stop_master
-        do_start_master "recovery"
+    start_web)
         do_start_web
+        ;;
+
+    stop_web)
+        do_stop_web
         ;;
 
     reinit)
@@ -216,7 +223,7 @@ case "$1" in
         ;;
 
     *)
-        echo "Usage: $DAEMON_NAME_MASTER {init|start|stop|start_proxy|stop_proxy|restart|reinit|status}"
+        echo "Usage: $DAEMON_NAME_MASTER {init|start|stop|restart|reinit|status|start_proxy|stop_proxy|start_web|stop_web}"
         exit 1
         ;;
 esac

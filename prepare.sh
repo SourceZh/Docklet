@@ -58,7 +58,7 @@ echo "  /opt/docklet/local/basefs/bin "
 echo "  /opt/docklet/local/basefs/..."
 echo " "
 
-echo "Next, make sure exim4 is can deliver mail out. To enable, run:"
+echo "Next, make sure exim4 can deliver mail out. To enable, run:"
 echo "dpkg-reconfigure exim4-config"
 echo "select internet site"
 
