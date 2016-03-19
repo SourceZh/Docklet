@@ -55,6 +55,7 @@ cat $BASEFS/etc/network/interfaces | sed 's/^/OLD    /'
 
 sed -i -- 's/dhcp/static/g' $BASEFS/etc/network/interfaces 
 
+# setting resolv.conf, use your own resolv.conf for your image
 echo "[*] Setting $BASEFS/etc/resolv.conf"
 cp resolv.conf $BASEFS/etc/resolvconf/resolv.conf.d/base
 
