@@ -106,10 +106,11 @@ def new_volume(group_name,volume_name,size):
         logger.info("logical volume already exists, delete it")
         Ret = sys_run("lvremove -f %s/%s" % (group_name,volume_name))
         if Ret.returncode != 0:
-            logger.error("delete logical volume %s failed" % volume_name)
+            logger.error("delete logical volume %s failed: %s" %
+                    (volume_name, Ret.stdout.decode('utf-8')))
     Ret = sys_run("lvcreate -L %sM -n %s %s" % (size,volume_name,group_name))
     if Ret.returncode != 0:
-        logger.error("lvcreate failed, maybe exceed the limit of vg")
+        logger.error("lvcreate failed: %s" % Ret.stdout.decode('utf-8'))
         return False
     logger.info("create lv success")
     return True

@@ -100,7 +100,7 @@ class Worker(object):
                 logger.info ("all containers check ok")
             else:
                 logger.info ("not all containers check ok")
-                sys.exit(1)
+                #sys.exit(1)
         else:
             logger.error ("worker init mode:%s not supported" % value)
             sys.exit(1)

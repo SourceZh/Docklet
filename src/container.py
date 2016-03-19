@@ -28,7 +28,9 @@ class Container(object):
             cpu = user_info["data"]["groupinfo"]["cpu"]
             memory = user_info["data"]["groupinfo"]["memory"]
             image = json.loads(image) 
-            self.imgmgr.prepareFS(username,image,lxc_name)
+            status = self.imgmgr.prepareFS(username,image,lxc_name)
+            if not status:
+                return [False, "Create container failed when preparing filesystem, possibly insufficient space"]
             
             Ret = subprocess.run([self.libpath+"/lxc_control.sh",
                 "create", lxc_name, username, str(clusterid), hostname,
