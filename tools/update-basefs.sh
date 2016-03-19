@@ -86,6 +86,9 @@ chroot $BASEFS update-rc.d mysql disable
 echo "[*] Disabling nginx service(if installed)"
 chroot $BASEFS update-rc.d nginx disable
 
+echo "[*] Setting worker_processes of nginx to 1(if installed)"
+[ -f $BASEFS/etc/nginx/nginx.conf ] && sed -i -- 's/worker_processes\ auto/worker_processes\ 1/g' $BASEFS/etc/nginx/nginx.conf 
+
 echo "[*] Copying vimrc.local to $BASEFS/etc/vim/"
 cp vimrc.local $BASEFS/etc/vim
 
@@ -95,3 +98,4 @@ cp pip.conf $BASEFS/root/.pip
 
 echo "[*] Copying npmrc to $BASEFS/.npmrc"
 cp npmrc $BASEFS/root/.npmrc
+
