@@ -161,9 +161,6 @@ More usages can be found by typing `bin/docklet-master`
 The master logs are in **FS_PREFIX/local/log/docklet-master.log** and
 **docklet-web.log**.
 
-The `doc/userguide` may needs to get compiled. run `make` in
-`doc/userguide` to generate the userguide help.
-
 ### worker ###
 
 Worker needs a basefs image to boot container.
@@ -197,7 +194,6 @@ If the system is just deployed in single host for testing purpose,
 then the PORTAL_URL defaults to `http://MASTER_IP:PROXY_PORT`,
 e.g., `http://localhost:8000`.
 
-See **userguide** in **doc** directory for detailed help.
+That is it.
 
 ## system admin ##
-
