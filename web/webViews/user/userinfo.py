@@ -1,6 +1,6 @@
 from flask import redirect, request
-from dockletreq.dockletrequest import dockletRequest
-from view.view import normalView
+from webViews.dockletrequest import dockletRequest
+from webViews.view import normalView
 import json
 
 class userinfoView(normalView):

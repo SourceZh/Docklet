@@ -1,8 +1,6 @@
-import sys
-sys.path.append("..")
 from flask import session
-from view.view import normalView
-from dockletreq.dockletrequest import dockletRequest
+from webViews.view import normalView
+from webViews.dockletrequest import dockletRequest
 
 
 class statusView(normalView):
@@ -57,7 +55,7 @@ class hostsRealtimeView(normalView):
         osinfo = result.get('monitor').get('osinfo')
         result = dockletRequest.post('/monitor/hosts/%s/diskinfo'%(self.com_ip), data)
         diskinfos = result.get('monitor').get('diskinfo')
-	
+
         return self.render(self.template_path, com_ip = self.com_ip, user = session['username'],processors = proc, OSinfo = osinfo, diskinfos = diskinfos)
 
 class hostsConAllView(normalView):
@@ -96,7 +94,7 @@ class hostsView(normalView):
            result = dockletRequest.post('/monitor/hosts/%s/status'%(ip), data)
            status = result.get('monitor').get('status')
            machines.append({'ip':ip,'containers':containers, 'status':status})
-        print(machines)
+        #print(machines)
         return self.render(self.template_path, machines = machines, user = session['username'])
 
 class monitorUserAllView(normalView):

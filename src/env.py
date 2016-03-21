@@ -40,6 +40,8 @@ def getenv(key):
         return os.environ.get("LOG_LEVEL", "DEBUG")
     elif key == "LOG_LIFE":
         return int(os.environ.get("LOG_LIFE", 10))
+    elif key == "WEB_LOG_LEVEL":
+        return os.environ.get("WEB_LOG_LEVEL", "DEBUG")
     elif key == "STORAGE":
         return os.environ.get("STORAGE", "file")
     elif key =="EXTERNAL_LOGIN":

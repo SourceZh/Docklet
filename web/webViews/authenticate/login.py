@@ -1,24 +1,22 @@
-import sys, os
-sys.path.append('..')
-from view.view import normalView
-from authenticate.auth import is_authenticated
-from dockletreq.dockletrequest import dockletRequest
+from webViews.view import normalView
+from webViews.authenticate.auth import is_authenticated
+from webViews.dockletrequest import dockletRequest
 from flask import redirect, request, render_template, session, make_response
-from jupytercookie import cookie_tool
+from webViews import cookie_tool
 
 import hashlib
 #from suds.client import Client
 
-import sys, inspect
+import os, sys, inspect
 this_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
-src_folder = os.path.realpath(os.path.abspath(os.path.join(this_folder,"../..", "src")))
+src_folder = os.path.realpath(os.path.abspath(os.path.join(this_folder,"../../..", "src")))
 if src_folder not in sys.path:
     sys.path.insert(0, src_folder)
 
 import env
 
 if (env.getenv('EXTERNAL_LOGIN') == 'True'):
-    sys.path.insert(0, os.path.realpath(os.path.abspath(os.path.join(this_folder,"../../src", "plugin"))))
+    sys.path.insert(0, os.path.realpath(os.path.abspath(os.path.join(this_folder,"../../../src", "plugin"))))
     import external_generate
 
 def refreshInfo():

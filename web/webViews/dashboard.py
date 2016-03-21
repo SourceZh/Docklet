@@ -1,8 +1,6 @@
-import sys
-sys.path.append("..")
 from flask import session
-from view.view import normalView
-from dockletreq.dockletrequest import dockletRequest
+from webViews.view import normalView
+from webViews.dockletrequest import dockletRequest
 
 
 class dashboardView(normalView):

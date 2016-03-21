@@ -1,9 +1,7 @@
-import sys
-sys.path.append("..")
 from flask import session
-from view.view import normalView
-from dockletreq.dockletrequest import dockletRequest
-from dashboard.dashboard import *
+from webViews.view import normalView
+from webViews.dockletrequest import dockletRequest
+from webViews.dashboard import *
 import time, re
 
 class addClusterView(normalView):
@@ -250,7 +248,7 @@ class deleteImageView(normalView):
             self.error()
 
 class addproxyView(normalView):
-    
+
     @classmethod
     def post(self):
         data = {
@@ -265,7 +263,7 @@ class addproxyView(normalView):
             self.error()
 
 class deleteproxyView(normalView):
-    
+
     @classmethod
     def get(self):
         data = {
@@ -276,7 +274,7 @@ class deleteproxyView(normalView):
             return configView.as_view()
         else:
             self.error()
-    
+
     @classmethod
     def post(self):
         return self.get()

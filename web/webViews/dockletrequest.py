@@ -1,7 +1,8 @@
 import requests
 import json
-from flask import abort
-from flask import session
+from flask import abort, session
+from webViews.log import logger
+
 
 endpoint = "http://0.0.0.0:9000"
 
@@ -12,11 +13,12 @@ class dockletRequest():
         #try:
         data = dict(data)
         data['token'] = session['token']
-        print("Docklet Request: data = %s, url = %s"%(data, url))
+        logger.info ("Docklet Request: user = %s data = %s, url = %s"%(session['username'], data, url))
+
         result = requests.post(endpoint + url, data = data).json()
         if (result.get('success', None) == "false" and (result.get('reason', None) == "Unauthorized Action" or result.get('Unauthorized', None) == 'True')):
             abort(401)
-        print(result)
+        logger.info ("Docklet Response: user = %s result = %s, url = %s"%(session['username'], result, url))
         return result
         #except:
             #abort(500)
@@ -24,7 +26,7 @@ class dockletRequest():
     @classmethod
     def unauthorizedpost(self, url = '/', data = None):
         data = dict(data)
-        print("Docklet Request: data = %s, url = %s" % (data, url))
+        logger.info("Docklet Unauthorized Request: data = %s, url = %s" % (data, url))
         result = requests.post(endpoint + url, data = data).json()
-        print(result)
+        logger.info("Docklet Unauthorized Response: result = %s, url = %s"%(result, url))
         return result

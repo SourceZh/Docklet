@@ -1,25 +1,7 @@
 #!/usr/bin/python3
-
-from flask import Flask, request, session, render_template, redirect, send_from_directory, make_response, url_for, abort
-from authenticate.auth import login_required, administration_required,activated_required
-from authenticate.register import registerView
-from dashboard.dashboard import dashboardView
-from user.userlist import userlistView, useraddView, usermodifyView, groupaddView, userdataView, userqueryView
-from user.userinfo import userinfoView
-from user.userActivate import userActivateView
-from user.grouplist import grouplistView, groupqueryView, groupdetailView, groupmodifyView
-from functools import wraps
-from dockletreq.dockletrequest import dockletRequest
-from cluster.cluster import *
-from monitor.monitor import *
-from authenticate.login import loginView, logoutView
-
-
 import json
-from jupytercookie import cookie_tool
 import os
 import getopt
-
 
 import sys, inspect
 this_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
@@ -32,9 +14,29 @@ import tools, env
 config = env.getenv("CONFIG")
 tools.loadenv(config)
 
-from log import initlogging
+from webViews.log import initlogging
 initlogging("docklet-web")
-from log import logger
+from webViews.log import logger
+
+from flask import Flask, request, session, render_template, redirect, send_from_directory, make_response, url_for, abort
+from webViews.dashboard import dashboardView
+from webViews.user.userlist import userlistView, useraddView, usermodifyView, groupaddView, userdataView, userqueryView
+from webViews.user.userinfo import userinfoView
+from webViews.user.userActivate import userActivateView
+from webViews.user.grouplist import grouplistView, groupqueryView, groupdetailView, groupmodifyView
+from functools import wraps
+from webViews.dockletrequest import dockletRequest
+from webViews.cluster import *
+from webViews.monitor import *
+from webViews.authenticate.auth import login_required, administration_required,activated_required
+from webViews.authenticate.register import registerView
+from webViews.authenticate.login import loginView, logoutView
+import webViews.dockletrequest
+from webViews import cookie_tool
+
+
+
+
 
 external_login = env.getenv('EXTERNAL_LOGIN')
 #default config
@@ -395,6 +397,7 @@ if __name__ == '__main__':
     secret_key = b64encode(secret_key).decode('utf-8')
 
     '''
+    logger.info('Start Flask...:')
     try:
         secret_key_file = open(env.getenv('FS_PREFIX') + '/local/web_secret_key.txt')
         app.secret_key = secret_key_file.read()
@@ -416,10 +419,8 @@ if __name__ == '__main__':
     webip = "0.0.0.0"
     webport = env.getenv("WEB_PORT")
 
-    import dockletreq.dockletrequest
-    dockletreq.dockletrequest.endpoint = 'http://%s:%d' % (env.getenv('MASTER_IP'), env.getenv('MASTER_PORT'))
+    webViews.dockletrequest.endpoint = 'http://%s:%d' % (env.getenv('MASTER_IP'), env.getenv('MASTER_PORT'))
 
-    print(dockletreq.dockletrequest.endpoint)
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "i:p:", ["ip=", "port="])

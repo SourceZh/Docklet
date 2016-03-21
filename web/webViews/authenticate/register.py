@@ -1,5 +1,5 @@
-from view.view import normalView
-from dockletreq.dockletrequest import dockletRequest
+from webViews.view import normalView
+from webViews.dockletrequest import dockletRequest
 from flask import redirect, request, abort
 
 class registerView(normalView):
@@ -8,7 +8,6 @@ class registerView(normalView):
     @classmethod
     def post(self):
         form = dict(request.form)
-        print(form)
         if (request.form.get('username') == None or request.form.get('password') == None or request.form.get('password') != request.form.get('password2') or request.form.get('email') == None or request.form.get('description') == None):
             abort(500)
         result = dockletRequest.unauthorizedpost('/register/', form)

@@ -112,6 +112,10 @@
 # LOG_LIFE: how many days the logs will be kept, default is 10
 # LOG_LIFE=10
 
+# WEB_LOG_LEVEL: logging level, of DEBUG, INFO, WARNING, ERROR, CRITICAL
+# default is DEBUG
+# WEB_LOG_LEVEL=DEBUG
+
 # EXTERNAL_LOGIN: whether docklet will use external account to log in
 # True or False, default is False
 # default: authenticate local and PAM users

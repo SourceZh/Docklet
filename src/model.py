@@ -73,7 +73,6 @@ class User(db.Model):
     user_group = db.Column(db.String(50))
     auth_method = db.Column(db.String(10))
 
-    #可以改成关系型数据，目前为了修改方便只存组别名
 
     def __init__(self, username, password, avatar="default.png", nickname = "", description = "", status = "init",
                     e_mail = "" , student_number = "", department = "", truename = "", tel="", date = None, usergroup = "primary"
